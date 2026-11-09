@@ -26,4 +26,5 @@ jobs:
       - run: python -m scripts.verify_all
       - run: python -m scripts.part2.verify_live --check
       - run: python -m scripts.part3.verify_evidence --check
+      - run: python -m scripts.check_docs
       - run: git diff --exit-code

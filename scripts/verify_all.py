@@ -13,6 +13,23 @@ from helpdesk.part3.scenarios import run_memory_scenario
 from scripts.part3.verify_evidence import verify_part3
 from tests.part2.fake_model import DemoFakeModel
 
+EXPECTED = {
+    'S01': 'Original routes to wifi_help and retrieves GUIDE-WIFI.',
+    'S02': 'Original matches PASSWORD case-insensitively and returns password_help.',
+    'S03': 'Original routes unsupported text to other_help.',
+    'S04': 'Original prioritizes Wi-Fi over password.',
+    'S05': 'Main routes both topics to clarify_problem.',
+    'S06': 'Operational current-turn Wi-Fi check precedes one local draft with reported steps.',
+    'S07': 'Wi-Fi outage does not authorize an operational-only draft.',
+    'S08': 'Unknown Wi-Fi status does not authorize an operational-only draft.',
+    'S09': 'Clarify missing issue/steps, then save one unconditional draft with exact saved fields.',
+    'S10': 'Restore the same thread and recall enabled/forgot/reconnected without invented steps.',
+    'S11': 'Fresh process restores conversation and Kazakh preference.',
+    'S12': 'Fresh process/new thread shares Kazakh preference without previous conversation.',
+    'S13': 'Other user has no previous problem or saved preference.',
+    'S14': 'Check account_recovery outage and create no draft.',
+}
+
 
 def check_agent(log, scenario, storage):
     turns = log['turns']
@@ -45,7 +62,7 @@ def verify_all(output=None):
         root = Path(temporary)
         for scenario in read_fixture('scenarios.json')['scenarios']:
             sid = scenario['id']
-            row = {'scenario_id': sid, 'expected_behavior': scenario['title'],
+            row = {'scenario_id': sid, 'title': scenario['title'], 'expected_behavior': EXPECTED[sid],
                    'execution_method': 'real LangGraph; deterministic fake model' if scenario['part'] != 1 else 'real deterministic LangGraph; no model',
                    'real_model_used': False, 'evidence_file': f'outputs/part1/{"improved" if sid == "S05" else "original"}/{sid}.json' if scenario['part'] == 1 else f'outputs/part{scenario["part"]}/fake/{sid}.json'}
             try:

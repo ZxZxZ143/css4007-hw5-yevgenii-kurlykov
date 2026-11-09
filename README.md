@@ -5,14 +5,20 @@
 
 ## Implementation status
 
-Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, SQLite checkpoint adapter **3.1.3**, and pytest **9.2.0**. Parts 1–3 are verified, including live OpenAI Part 2 and Part 3 scenarios. The model was `gpt-5-mini`, reported by the API as `gpt-5-mini-2025-08-07`. **200 tests pass** without requiring an API key. Part 4 and GitHub Actions remain future work. The original assignment remains below.
+Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, SQLite checkpoint adapter **3.1.3**, and pytest **9.2.0**. Parts 1–4 are implemented and verified, including live OpenAI Part 2 and Part 3 scenarios. The model was `gpt-5-mini`, reported by the API as `gpt-5-mini-2025-08-07`. **203 tests pass** without requiring an API key. Part 4 adds offline verification and GitHub Actions for Ubuntu and Windows; exact execution records are in [final verification](outputs/final/VERIFICATION.md). The original assignment remains below.
+
+Clone the repository first:
+
+```text
+git clone https://github.com/ZxZxZ143/css4007-hw5-yevgenii-kurlykov.git
+cd css4007-hw5-yevgenii-kurlykov
+```
 
 From the repository root, create a fresh environment and install the pinned dependencies and editable local package:
 
 ```powershell
 python -m venv .venv-part1
 .\.venv-part1\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
@@ -95,7 +101,7 @@ Logical requests use a serializable `helpdesk.ticket_request_id` assigned from u
 
 `prepare_ticket` returns only the saved category, summary and reported steps in `saved_fields`, plus its ID/path. The model is instructed to quote those facts without inferring guide details. Ticket confirmations shown by the CLI are rendered deterministically from that tool result: `response_source` is `saved_ticket_fields`, while `model_response` and the streamed AIMessage retain the real unmodified model output. Status-only replies remain model-generated. The same Python required-field checks supply a small readiness hint to prevent repeat requests for already supplied facts. An outage blocks only an operational-only request, not an explicit unconditional draft; optional personal/contact fields are never required.
 
-All Part 2 relative application/storage/output paths resolve against the **repository root**, independent of working directory. New in-repository paths use `/` and are repository-relative; actual external paths remain absolute. The reader supports historical relative Windows backslashes without rewriting the logs and preserves existing native filenames. A foreign absolute Windows drive path on POSIX needs an explicit local mapping and is never guessed. Run `python -m scripts.part2.verify_live` (or audit-compatible `python -m tests.verify_live_evidence`) without API calls. Existing traces, new confirmations and copied-checkout loading are verified; native Linux/macOS execution has not been performed on this Windows host.
+All Part 2 relative application/storage/output paths resolve against the **repository root**, independent of working directory. New in-repository paths use `/` and are repository-relative; actual external paths remain absolute. The reader supports historical relative Windows backslashes without rewriting the logs and preserves existing native filenames. A foreign absolute Windows drive path on POSIX needs an explicit local mapping and is never guessed. Run `python -m scripts.part2.verify_live` (or audit-compatible `python -m tests.verify_live_evidence`) without API calls. Existing traces, new confirmations and copied-checkout loading are verified; the final Ubuntu and Windows CI records are linked in [final verification](outputs/final/VERIFICATION.md); macOS has not been tested.
 
 The new accepted S07/S09/S14 live logs are under `outputs/part2/audit/`; earlier root logs and first corrective attempts under `audit/initial/` remain historical. See [VERIFICATION.md](outputs/part2/VERIFICATION.md) for the corrected results and actual usage.
 
@@ -168,9 +174,35 @@ python -m pip check
 
 Each scenario uses its own `local-storage/part3-scenarios/Sxx/`, resetting only that scenario's user/thread data before its first event. It does not touch manual-session storage, reset between events, or delete old ticket drafts. S11/S12 terminate one worker before starting a new Python process against the same database/users directory. Only the new fixture-event indices are sent to the second process; it receives no copied transcript. Logs record PIDs, checkpoint restoration, exact messages, available fact sources, memory-tool results and usage. Use `--output outputs/part3/another-run.json` to retain an additional run instead of replacing the default scenario log.
 
-The [live Part 3 evidence](outputs/part3/LIVE_STATUS.json) contains **12 model calls, 8 tool executions (3 memory saves) and 22,850 tokens** (15,668 input; 7,182 output, including reported reasoning). S11 resumed in a new process and recalled only reported Wi-Fi steps in Kazakh; S12 recalled the language in a fresh thread; S13 isolated user B. Offline evidence is clearly separated under `outputs/part3/fake/`. The 67 added tests exercise actual file-backed SQLite, process restarts, concurrent JSON updates, memory-tool authorization, same-raw-thread user isolation and ticket identity after restart, alongside all 128 original regressions. See [Part 3 verification](outputs/part3/VERIFICATION.md).
+The [live Part 3 evidence](outputs/part3/LIVE_STATUS.json) contains **12 model calls, 8 tool executions (3 memory saves) and 22,850 tokens** (15,668 input; 7,182 output, including reported reasoning). S11 resumed in a new process and recalled only reported Wi-Fi steps in Kazakh; S12 recalled the language in a fresh thread; S13 isolated user B. Offline evidence is clearly separated under `outputs/part3/fake/`. The 72 added tests exercise actual file-backed SQLite, process restarts, concurrent JSON updates, memory-tool authorization, same-raw-thread user isolation and ticket identity after restart, alongside all 128 original regressions. See [Part 3 verification](outputs/part3/VERIFICATION.md).
 
-Live conversation/scenario commands require OpenAI configuration. Offline tests/evidence, inspection and reset do not. Durable-preference authorization intentionally recognizes conservative preference wording; unsupported phrasing is rejected rather than saved. This is a local application with trusted application identity, not an authentication service. Native verification was on Windows; no database server, RAG, web app, Part 4 or GitHub Actions was added.
+Live conversation/scenario commands require OpenAI configuration. Offline tests/evidence, inspection and reset do not. Durable-preference authorization intentionally recognizes conservative preference wording; unsupported phrasing is rejected rather than saved. This is a local application with trusted application identity, not an authentication service. The final CI additionally verifies Ubuntu and Windows; no database server, RAG or web application was added.
+
+## Part 4 — Reproduce and verify the complete project
+
+The clean-install command is `python -m pip install -e .`; `pyproject.toml` installs all exact pins from [requirements.txt](requirements.txt). A fresh `.venv-part1-final` on Windows successfully installed and tested this command. CI repeats installation from a clean checkout on Python 3.13. Exact pins include LangGraph 1.2.20, langchain-core 1.7.6, langchain-openai 1.7.4, SQLite adapter 3.1.3, Pydantic 2.14.3, OpenAI 3.48.0 and pytest 9.2.0. This is a source-checkout application; fixtures, tests and scripts are intentionally accessed from the clone.
+
+On Linux/macOS, create the environment with `python3.13 -m venv .venv-part1`, activate with `source .venv-part1/bin/activate`, then run the same pip command. On Windows use the activation command above. Copy configuration with `Copy-Item .env.example .env` (PowerShell) or `cp .env.example .env` (POSIX). Set `OPENAI_API_KEY` and `MODEL_NAME=gpt-5-mini` only for new live agent runs; choose a model your account supports. Neither the following checks nor inspection/reset commands need credentials:
+
+```text
+python -m pip check
+python -m pytest -q
+python -m scripts.verify_all
+python -m scripts.verify_all --output local-storage/scenario-results.json
+python -m scripts.part2.verify_live --check
+python -m scripts.part3.verify_evidence --check
+python -m scripts.check_docs
+```
+
+`verify_all` reads all fourteen original fixtures, executes both deterministic graphs and the same agent/tool loop with explicitly labelled fake models, uses disposable storage, and launches fresh processes for S11/S12. It checks routes, status/conditional drafts, clarification, saved fields, recalled reported steps, checkpoint/message continuity and preference isolation. Every scenario prints PASS/FAIL; any failure returns a nonzero exit code. The default writes no repository artifacts. `--output` optionally saves a compact summary; full temporary transcripts are discarded. [SCENARIO_RESULTS.json](outputs/final/SCENARIO_RESULTS.json) contains the final measured replay; its links point to separately retained examples, not the discarded temporary traces.
+
+For an individual scenario, use `python -m helpdesk.cli --scenario S01`, substituting any ID through S14. S01–S05 require no model; S06–S14 require configured OpenAI credentials. S10–S13 automatically use persistence. To preserve historical evidence, supply a new `--output local-storage/new-Sxx.json`; also use `--storage-dir local-storage/new-demo` for agent runs. A Part 3 scenario resets only its own `part3-scenarios/Sxx/` data before its first event, making reruns safe for unrelated manual sessions. The separate `record_offline` scripts regenerate labelled examples and therefore intentionally write their output directories. The `--check` evidence commands validate saved genuine OpenAI logs without rewriting them or making API calls. Part 2 follows the accepted-run manifest, retaining superseded debugging logs unchanged.
+
+[GitHub Actions workflow](.github/workflows/tests.yml) runs on every push and pull request with `contents: read`, using independent Ubuntu/Windows jobs and Python 3.13. Each job installs the package, runs pip check, all 203 tests, all fourteen offline scenarios, both read-only live-evidence validators, documentation validation, and a final tracked-diff check. API/model environment variables are explicitly empty; no secrets are passed. See [workflow results](https://github.com/ZxZxZ143/css4007-hw5-yevgenii-kurlykov/actions/workflows/tests.yml) and [final verification](outputs/final/VERIFICATION.md). Configuration follows the official [GitHub Python CI guide](https://docs.github.com/en/actions/tutorials/build-and-test-code/python).
+
+Routing tests protect conditional edges and original/improved independence. Tool tests cover reference/status data, concurrent reads and protocol pairing. Ticket tests cover consent, current-turn causal status validation, missing details, immutable atomic publication, duplicate retries and accurate confirmations. Memory tests cover strict JSON, atomic writes/locks, fresh-process persistence, separate threads/users, prompt/message duplication and restart-safe ticket identity. Final-delivery tests run all fixtures with empty provider configuration, verify read-only evidence behavior and nonzero failure reporting.
+
+All service statuses and identities are fictional. Credential redaction and English intent matching are conservative heuristics, not a general secret detector or multilingual parser. The local caller supplies trusted identities; this is not an authenticated multi-user server. Hard-link draft publication requires a compatible local filesystem. SQLite history has no pruning; interrupted tool batches require explicit inspection/reset. macOS has not been tested. Live model wording can vary; saved live evidence remains separate from deterministic regression tests.
 
 ## Project layout
 
@@ -206,6 +238,9 @@ tests/
   part2/test_audit_fixes.py
   part2/fake_model.py
   part3/                   # Memory, persistence, security and scenario tests
+scripts/
+  verify_all.py          # Disposable offline S01-S14 replay
+  check_docs.py          # Read-only local links/report validation
 scripts/part2/
   record_offline.py       # Offline evidence generation
   verify_live.py          # Validate saved live evidence without API calls
@@ -217,9 +252,11 @@ outputs/
   part1/                 # Original and improved graph evidence
   part2/                 # Live/fake evidence and fictional draft files
   part3/                 # Live/fake memory evidence, no runtime databases/user files
+  final/                 # Final replay, audit and stable CI verification record
+.github/workflows/tests.yml # Ubuntu/Windows Python 3.13 CI
 ```
 
-Run each test group with `python -m pytest tests/part1 -q`, `python -m pytest tests/part2 -q` or `python -m pytest tests/part3 -q`; `python -m pytest -q` runs all three. Public CLI commands still use `python -m helpdesk.cli`. Import Part 1 builders from `helpdesk.part1.graphs`, the shared agent builder from `helpdesk.part2.agent`, and the persistence lifecycle from `helpdesk.part3.runner`. Shared fixtures, environment configuration and dependency files remain at the repository root. Historical JSON evidence retains the commands and module names used when collected; helpers are grouped by part under `scripts/`.
+Run each test group with `python -m pytest tests/part1 -q`, `python -m pytest tests/part2 -q` or `python -m pytest tests/part3 -q`; `python -m pytest -q` runs all groups plus final-delivery checks. Public CLI commands still use `python -m helpdesk.cli`. Import Part 1 builders from `helpdesk.part1.graphs`, the shared agent builder from `helpdesk.part2.agent`, and the persistence lifecycle from `helpdesk.part3.runner`. Shared fixtures, environment configuration and dependency files remain at the repository root. Historical JSON evidence retains the commands and module names used when collected; helpers are grouped by part under `scripts/`.
 
 ## Start from this repository
 

@@ -1,0 +1,299 @@
+{
+  "evidence_kind": "fresh_offline_verification",
+  "limitations": "Fake models verify application behavior, not new OpenAI behavior. Full temporary traces are discarded; evidence_file links retained independent examples.",
+  "scenarios": [
+    {
+      "scenario_id": "S01",
+      "title": "Simple Wi-Fi route",
+      "expected_behavior": "Original routes to wifi_help and retrieves GUIDE-WIFI.",
+      "execution_method": "real deterministic LangGraph; no model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part1/original/S01.json",
+      "observed_behavior": {
+        "route": [
+          "read_request",
+          "wifi_help"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S02",
+      "title": "Case-insensitive password route",
+      "expected_behavior": "Original matches PASSWORD case-insensitively and returns password_help.",
+      "execution_method": "real deterministic LangGraph; no model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part1/original/S02.json",
+      "observed_behavior": {
+        "route": [
+          "read_request",
+          "password_help"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S03",
+      "title": "Unsupported request",
+      "expected_behavior": "Original routes unsupported text to other_help.",
+      "execution_method": "real deterministic LangGraph; no model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part1/original/S03.json",
+      "observed_behavior": {
+        "route": [
+          "read_request",
+          "other_help"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S04",
+      "title": "Two topics before the graph change",
+      "expected_behavior": "Original prioritizes Wi-Fi over password.",
+      "execution_method": "real deterministic LangGraph; no model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part1/original/S04.json",
+      "observed_behavior": {
+        "route": [
+          "read_request",
+          "wifi_help"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S05",
+      "title": "Two topics after adding clarification",
+      "expected_behavior": "Main routes both topics to clarify_problem.",
+      "execution_method": "real deterministic LangGraph; no model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part1/improved/S05.json",
+      "observed_behavior": {
+        "route": [
+          "read_request",
+          "clarify_problem"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S06",
+      "title": "Instructions then local ticket",
+      "expected_behavior": "Operational current-turn Wi-Fi check precedes one local draft with reported steps.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part2/fake/S06.json",
+      "observed_behavior": {
+        "draft_count": 1,
+        "statuses": [
+          {
+            "service": "wifi",
+            "status": "operational",
+            "status_profile": "normal",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "wifi",
+            "status": "operational",
+            "status_profile": "normal",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "wifi",
+            "status": "operational",
+            "status_profile": "normal",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "wifi",
+            "status": "operational",
+            "status_profile": "normal",
+            "source": "data/service_status.json",
+            "fictional": true
+          }
+        ],
+        "turns": 2
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S07",
+      "title": "The same request during a Wi-Fi outage",
+      "expected_behavior": "Wi-Fi outage does not authorize an operational-only draft.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part2/fake/S07.json",
+      "observed_behavior": {
+        "draft_count": 0,
+        "statuses": [
+          {
+            "service": "wifi",
+            "status": "outage",
+            "status_profile": "wifi_outage",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "wifi",
+            "status": "outage",
+            "status_profile": "wifi_outage",
+            "source": "data/service_status.json",
+            "fictional": true
+          }
+        ],
+        "turns": 1
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S08",
+      "title": "Status source unavailable",
+      "expected_behavior": "Unknown Wi-Fi status does not authorize an operational-only draft.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part2/fake/S08.json",
+      "observed_behavior": {
+        "draft_count": 0,
+        "statuses": [
+          {
+            "service": "wifi",
+            "status": "unknown",
+            "status_profile": "status_unavailable",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "wifi",
+            "status": "unknown",
+            "status_profile": "status_unavailable",
+            "source": "data/service_status.json",
+            "fictional": true
+          }
+        ],
+        "turns": 1
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S09",
+      "title": "Missing ticket details",
+      "expected_behavior": "Clarify missing issue/steps, then save one unconditional draft with exact saved fields.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part2/fake/S09.json",
+      "observed_behavior": {
+        "draft_count": 1,
+        "statuses": [],
+        "turns": 2
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S10",
+      "title": "Use the current conversation",
+      "expected_behavior": "Restore the same thread and recall enabled/forgot/reconnected without invented steps.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part3/fake/S10.json",
+      "observed_behavior": {
+        "restart": false,
+        "process_ids": [
+          33244
+        ],
+        "restored": true,
+        "preferences": {}
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S11",
+      "title": "Persist and recall after restart",
+      "expected_behavior": "Fresh process restores conversation and Kazakh preference.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part3/fake/S11.json",
+      "observed_behavior": {
+        "restart": true,
+        "process_ids": [
+          26848,
+          14352
+        ],
+        "restored": true,
+        "preferences": {
+          "preferred_language": "kk"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S12",
+      "title": "Preference across threads without replay",
+      "expected_behavior": "Fresh process/new thread shares Kazakh preference without previous conversation.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part3/fake/S12.json",
+      "observed_behavior": {
+        "restart": true,
+        "process_ids": [
+          28956,
+          31420
+        ],
+        "restored": false,
+        "preferences": {
+          "preferred_language": "kk"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S13",
+      "title": "Do not share memory between users",
+      "expected_behavior": "Other user has no previous problem or saved preference.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part3/fake/S13.json",
+      "observed_behavior": {
+        "restart": false,
+        "process_ids": [
+          32260
+        ],
+        "restored": false,
+        "preferences": {}
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario_id": "S14",
+      "title": "Password recovery outage",
+      "expected_behavior": "Check account_recovery outage and create no draft.",
+      "execution_method": "real LangGraph; deterministic fake model",
+      "real_model_used": false,
+      "evidence_file": "outputs/part2/fake/S14.json",
+      "observed_behavior": {
+        "draft_count": 0,
+        "statuses": [
+          {
+            "service": "account_recovery",
+            "status": "outage",
+            "status_profile": "recovery_outage",
+            "source": "data/service_status.json",
+            "fictional": true
+          },
+          {
+            "service": "account_recovery",
+            "status": "outage",
+            "status_profile": "recovery_outage",
+            "source": "data/service_status.json",
+            "fictional": true
+          }
+        ],
+        "turns": 1
+      },
+      "status": "PASS"
+    }
+  ]
+}
