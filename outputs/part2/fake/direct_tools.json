@@ -1,0 +1,113 @@
+{
+  "evidence_kind": "direct_python_functions_no_model",
+  "command": "python -m tests.record_part2",
+  "instructions": {
+    "wifi": {
+      "topic": "wifi",
+      "title": "Connect to the practice campus network",
+      "steps": [
+        "Check that Wi-Fi is enabled and airplane mode is off.",
+        "Select the fictional Campus-Demo network.",
+        "If connection fails, forget the saved network and try connecting again.",
+        "If the problem remains, check the service status before preparing a ticket."
+      ],
+      "instruction_id": "GUIDE-WIFI",
+      "source": "data/helpdesk.json",
+      "fictional": true
+    },
+    "password": {
+      "topic": "password",
+      "title": "Recover access to the practice account",
+      "steps": [
+        "Open the practice sign-in screen and choose Forgot password.",
+        "Follow the recovery instructions shown by the practice application.",
+        "If recovery is unavailable, prepare a ticket describing the error.",
+        "Never include a password or recovery code in a ticket."
+      ],
+      "instruction_id": "GUIDE-PASSWORD",
+      "source": "data/helpdesk.json",
+      "fictional": true
+    }
+  },
+  "statuses": {
+    "normal": {
+      "wifi": {
+        "service": "wifi",
+        "status_profile": "normal",
+        "status": "operational",
+        "message": "The demo Wi-Fi service has no reported outage.",
+        "source": "data/service_status.json",
+        "fictional": true
+      },
+      "account_recovery": {
+        "service": "account_recovery",
+        "status_profile": "normal",
+        "status": "operational",
+        "message": "The demo account-recovery service is operating.",
+        "source": "data/service_status.json",
+        "fictional": true
+      }
+    },
+    "wifi_outage": {
+      "wifi": {
+        "service": "wifi",
+        "status_profile": "wifi_outage",
+        "status": "outage",
+        "message": "The demo Wi-Fi service is unavailable across campus. The fixture gives no repair time.",
+        "source": "data/service_status.json",
+        "fictional": true
+      },
+      "account_recovery": {
+        "service": "account_recovery",
+        "status_profile": "wifi_outage",
+        "status": "operational",
+        "message": "The demo account-recovery service is operating.",
+        "source": "data/service_status.json",
+        "fictional": true
+      }
+    },
+    "recovery_outage": {
+      "wifi": {
+        "service": "wifi",
+        "status_profile": "recovery_outage",
+        "status": "operational",
+        "message": "The demo Wi-Fi service has no reported outage.",
+        "source": "data/service_status.json",
+        "fictional": true
+      },
+      "account_recovery": {
+        "service": "account_recovery",
+        "status_profile": "recovery_outage",
+        "status": "outage",
+        "message": "The demo account-recovery service is unavailable. The fixture gives no repair time.",
+        "source": "data/service_status.json",
+        "fictional": true
+      }
+    },
+    "status_unavailable": {
+      "wifi": {
+        "service": "wifi",
+        "status_profile": "status_unavailable",
+        "status": "unknown",
+        "message": "The demo Wi-Fi status source is unavailable.",
+        "source": "data/service_status.json",
+        "fictional": true
+      },
+      "account_recovery": {
+        "service": "account_recovery",
+        "status_profile": "status_unavailable",
+        "status": "unknown",
+        "message": "The demo account-recovery status source is unavailable.",
+        "source": "data/service_status.json",
+        "fictional": true
+      }
+    }
+  },
+  "ticket_input": "My issue is Wi-Fi. I tried reconnecting, but it still fails. Prepare a ticket.",
+  "ticket_result": {
+    "created": true,
+    "ticket_id": "DRAFT-59564b1921715f46aed248b93111879f",
+    "path": "outputs\\part2\\fake\\drafts\\direct\\tickets\\DRAFT-59564b1921715f46aed248b93111879f.json",
+    "delivery": "local draft only"
+  }
+}

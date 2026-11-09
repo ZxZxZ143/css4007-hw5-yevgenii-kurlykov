@@ -1,0 +1,14 @@
+{
+  "ticket_id": "DRAFT-59564b1921715f46aed248b93111879f",
+  "status": "draft",
+  "user_id": "demo-user-a",
+  "thread_id": "direct-tool-demo",
+  "category": "wifi",
+  "summary": "I tried reconnecting, but it still fails.",
+  "steps_tried": [
+    "I tried reconnecting, but it still fails."
+  ],
+  "service_status": "not_checked",
+  "status_profile": "normal",
+  "reference_ids": []
+}

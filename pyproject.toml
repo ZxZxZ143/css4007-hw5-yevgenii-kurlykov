@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "hw5-helpdesk"
 version = "0.1.0"
-description = "HW5 Part 1: Original and Improved LangGraph helpdesk routing"
+description = "HW5 helpdesk: deterministic routing and a single OpenAI tool-calling agent"
 requires-python = ">=3.13"
 dynamic = ["dependencies"]
 

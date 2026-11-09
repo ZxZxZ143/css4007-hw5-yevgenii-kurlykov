@@ -79,7 +79,68 @@ LangGraph controls node scheduling, state propagation, conditional-edge traversa
 
 ## Part 2 — Model and tools
 
-TODO: draw the model/tool loop. Answer the four questions in the brief. Record the model and provider, direct calls to each tool, and one actual run that uses multiple tools. Explain the loop limit.
+### Architecture and execution status
+
+Part 2 adds one explicit LangGraph agent using `ChatOpenAI` from `langchain-openai`. There are no supervisor, classifier or delegated agents. Both deterministic Part 1 graphs remain unchanged. The provider is **OpenAI**, with the tool-capable model supplied through `MODEL_NAME`; no model identifier is assumed to be available.
+
+**Live verification is pending.** Neither `OPENAI_API_KEY` nor `MODEL_NAME` was configured. Each required live scenario command returned configuration exit code 2 before any model or tool call. [LIVE_STATUS.json](outputs/part2/LIVE_STATUS.json) records this check. Consequently, there is no verified OpenAI model identifier or measured real token usage. The examples linked below are genuine local graph/tool executions using the explicitly labelled `DemoFakeModel`; they are not OpenAI transcripts and do not complete the live demonstration requirement.
+
+```mermaid
+flowchart TD
+    START --> agent
+    agent -->|AIMessage contains tool calls| tools
+    tools -->|ToolMessages and compact evidence| agent
+    agent -->|final answer, error or budget stop| END
+```
+
+The `tools` node is the standard LangGraph `ToolNode`, not a custom concurrency framework. OpenAI tool binding enables parallel requests. Independent reads can run together; dependent ticket writes require completed evidence from an earlier tools step.
+
+### Answers to the four questions
+
+**1. How does the graph choose tools or termination?** After the `agent` node returns, a conditional edge inspects the last AIMessage's `tool_calls`. Nonempty calls select `tools`; an answer without calls selects END. The agent checks invocation budgets before another model request. Rejected oversized batches receive matching error ToolMessages and terminate without executing that batch.
+
+**2. Who requests and who executes a tool?** In production the configured OpenAI model requests a tool name, arguments and call ID. `ToolNode` invokes the corresponding local Python adapter. The model cannot execute filesystem operations itself or choose the active snapshot. Offline tests substitute a clearly labelled tool-calling fake while retaining the real graph, reducers and local tool implementations.
+
+**3. What changes after a result returns?** `messages` appends a ToolMessage with the original `tool_call_id` through `add_messages`. `tool_results` merges concise structured evidence by that same ID. Each tool wrapper returns `Command(update=...)` for these two channels, so simultaneous results are preserved. The full guide remains in the ToolMessage; evidence keeps its topic and reference ID rather than duplicating its steps. On returning to `agent`, one controlled updater replaces the complete nested `helpdesk` and `control` dictionaries, preserving their required fields explicitly. LangGraph does not automatically deep-merge those dictionaries.
+
+**4. How is this different from Part 1?** Part 1 maps keywords to a fixed help node. Part 2 lets one language model select zero, one or several tools, inspect their returned data and request further tools before answering. Python still enforces input validity, trusted identity/snapshot selection, ticket permission and execution limits. The fake tests verify these mechanisms but cannot establish the quality of real model decisions.
+
+### State, context and ticket validation
+
+The shared `HelpdeskAgentState` contains four root channels:
+
+| Channel | Contents and update rule |
+| --- | --- |
+| `messages` | System, human, AI and tool messages; `add_messages` preserves conversation order and message identity. |
+| `tool_results` | Call-ID-keyed compact tool evidence, execution outcome and user-turn number; `merge_results` combines independent calls and rejects conflicting reuse of an ID. |
+| `helpdesk` | Current category, problem description, exact user-reported troubleshooting spans, whether steps are known, ticket request/condition, draft ID and credential flag; centrally replaced. |
+| `control` | Per-turn model calls, successful tool completions, all dispatch attempts, limit flag, stop reason and diagnostics; centrally replaced. |
+
+Frozen runtime context supplies `user_id`, `thread_id`, `status_profile`, storage directory and run identity. These fields are absent from model-facing tool schemas. The model sees only relevant conversation and tool messages, not the root State or private runtime configuration. Context lasts within one process; no Part 3 checkpointer or preference store has been added.
+
+The write boundary derives permission and details from original HumanMessages rather than model arguments. The model-facing `prepare_ticket` accepts no user-controlled fields. It asks for missing descriptions or steps, rejects ambiguous conditions, clears old issue details when topics change, and includes only reported troubleshooting spans. Explicitly reporting no steps is permitted. Recognizable credentials are redacted before model input/logging and block ticket creation.
+
+For an operational-only request, the matching service must have a completed operational result in the current user turn and active snapshot. Outage, unknown, not checked, the wrong service, an earlier turn and a same-batch lookup cannot authorize a write. An unconditional ticket can instead record `not_checked`. The fixture template supplies the JSON shape; IDs are generated, application identity is used, and files are local drafts only. A stable run/call identity and exclusive file creation prevent duplicate same-call retries.
+
+### Measured offline demonstrations
+
+Run `python -m tests.record_part2` after the README setup to repeat direct calls and clearly labelled offline graph scenarios. [direct_tools.json](outputs/part2/fake/direct_tools.json) records actual direct calls to `find_instructions` for both topics, `check_service_status` for both services in all four profiles, and `prepare_ticket` with fictional user-reported details. The corresponding JSON draft exists at the returned path. Password maps to `account_recovery`; missing status data remains unknown.
+
+| Scenario | Actual fake-model graph behavior | Model calls / completed tools |
+| --- | --- | --- |
+| [S06](outputs/part2/fake/S06.json) | Turn 1 retrieves GUIDE-WIFI. Turn 2 reads instructions/status in parallel, receives operational Wi-Fi status, then creates a local draft in a later tools step. | 5 / 4 across two turns |
+| [S07](outputs/part2/fake/S07.json) | Parallel guide/status reads return the Wi-Fi outage; no ticket is created. No repair time is invented. | 2 / 2 |
+| [S08](outputs/part2/fake/S08.json) | Status is unknown; no conditional draft is created, and the response offers a next step. | 2 / 2 |
+| [S09](outputs/part2/fake/S09.json) | First turn asks for problem/steps without writing. The next turn uses the reported Wi-Fi details and saves an unconditional draft marked not_checked. | 3 / 1 across two turns |
+| [S14](outputs/part2/fake/S14.json) | Checks account_recovery in recovery_outage and reports its fictional outage. No ticket or restoration time is invented. | 2 / 2 |
+
+S06's actual node order is `agent → tools → agent` in turn 1 and `agent → tools → agent → tools → agent` in turn 2. The two independent reads share a tool batch and have distinct IDs/messages; the ticket appears in the next batch. Logs contain streamed node updates, relevant post-step state, actual tool requests/results and final replies. A separate barrier-based test verifies simultaneous execution rather than only issuing two requests. Another test requests status and ticket together: the premature write is rejected as not_checked, and a later call can succeed after the status result is committed.
+
+### Limits, errors and remaining verification
+
+Defaults allow six model invocations and five tool dispatch attempts per user turn, counting failed dispatches against the budget. Successful completions are recorded separately. The entire proposed batch is checked before execution. The recursion limit is 16 (`2 * max_model_calls + 4`), above the maximum controlled loop length. Tool exceptions become safe ToolMessages; model failures retain only an error class. Malformed protocol output is captured in diagnostics outside future model history. Budget termination resolves all admitted calls before returning a final diagnostic answer.
+
+Tests cover direct tools, real graph transitions, concurrent evidence merging, causal write guards, multi-turn scenarios, input/protocol errors, limits and Part 1 regressions. See [VERIFICATION.md](outputs/part2/VERIFICATION.md). Usage is captured from real AIMessage metadata when supplied; the offline scenario models emit no measured token usage. Remaining limitations are conservative English intent extraction, heuristic credential detection, no persistent memory, and **unverified live OpenAI behavior**. Configure credentials and run S06–S09/S14 to finish the required live evidence; offline success is not a substitute.
 
 ## Part 3 — Memory
 
@@ -109,12 +170,12 @@ TODO: explain the storage and libraries I chose, why they fit this task, and wha
 | S03 — Unsupported request | `python -m helpdesk.cli --scenario S03` | [S03.json](outputs/part1/original/S03.json) | Original: read_request → other_help; asked whether the issue concerns Wi-Fi or a password. Met expectation; prediction matched. |
 | S04 — Two topics before the graph change | `python -m helpdesk.cli --scenario S04` | [S04.json](outputs/part1/original/S04.json) | Original: read_request → wifi_help; Wi-Fi took priority. Met expectation; prediction matched. |
 | S05 — Two topics after adding clarification | `python -m helpdesk.cli --scenario S05` | [S05.json](outputs/part1/improved/S05.json) | Improved / Main: read_request → clarify_problem; asked which problem to solve first. Met expectation; prediction matched. |
-| S06 — Instructions then local ticket | | | |
-| S07 — The same request during a Wi-Fi outage | | | |
-| S08 — Status source unavailable | | | |
-| S09 — Missing ticket details | | | |
+| S06 — Instructions then local ticket | Live: `python -m helpdesk.cli --scenario S06`; offline: `python -m tests.record_part2` | [Offline S06](outputs/part2/fake/S06.json); [live pending](outputs/part2/LIVE_STATUS.json) | Offline met expectation: instructions, operational status, then a local draft using reported steps. Live behavior remains pending missing configuration. |
+| S07 — The same request during a Wi-Fi outage | Live: `python -m helpdesk.cli --scenario S07`; offline: `python -m tests.record_part2` | [Offline S07](outputs/part2/fake/S07.json); [live pending](outputs/part2/LIVE_STATUS.json) | Offline met expectation: fictional Wi-Fi outage, no conditional ticket and no invented repair time. Live pending. |
+| S08 — Status source unavailable | Live: `python -m helpdesk.cli --scenario S08`; offline: `python -m tests.record_part2` | [Offline S08](outputs/part2/fake/S08.json); [live pending](outputs/part2/LIVE_STATUS.json) | Offline met expectation: unknown status, no conditional draft, next-step offer. Live pending. |
+| S09 — Missing ticket details | Live: `python -m helpdesk.cli --scenario S09`; offline: `python -m tests.record_part2` | [Offline S09](outputs/part2/fake/S09.json); [live pending](outputs/part2/LIVE_STATUS.json) | Offline met expectation: requested missing details first, then saved an unconditional draft with supplied steps and not_checked status. Live pending. |
 | S10 — Use the current conversation | | | |
 | S11 — Persist and recall after restart | | | |
 | S12 — Preference across threads without replay | | | |
 | S13 — Do not share memory between users | | | |
-| S14 — Password recovery outage | | | |
+| S14 — Password recovery outage | Live: `python -m helpdesk.cli --scenario S14`; offline: `python -m tests.record_part2` | [Offline S14](outputs/part2/fake/S14.json); [live pending](outputs/part2/LIVE_STATUS.json) | Offline met expectation: account_recovery outage, no invented restoration time. Live pending. |

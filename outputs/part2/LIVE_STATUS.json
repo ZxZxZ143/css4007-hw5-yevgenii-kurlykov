@@ -1,0 +1,50 @@
+{
+  "evidence_kind": "configuration_check_not_a_live_execution",
+  "api_key_present": false,
+  "model_configured": false,
+  "verified_openai_model": null,
+  "real_token_usage": null,
+  "scenarios": [
+    {
+      "scenario_id": "S06",
+      "command": "python -m helpdesk.cli --scenario S06",
+      "exit_code": 2,
+      "verification_status": "pending_missing_configuration",
+      "model_calls": 0,
+      "tool_calls": 0
+    },
+    {
+      "scenario_id": "S07",
+      "command": "python -m helpdesk.cli --scenario S07",
+      "exit_code": 2,
+      "verification_status": "pending_missing_configuration",
+      "model_calls": 0,
+      "tool_calls": 0
+    },
+    {
+      "scenario_id": "S08",
+      "command": "python -m helpdesk.cli --scenario S08",
+      "exit_code": 2,
+      "verification_status": "pending_missing_configuration",
+      "model_calls": 0,
+      "tool_calls": 0
+    },
+    {
+      "scenario_id": "S09",
+      "command": "python -m helpdesk.cli --scenario S09",
+      "exit_code": 2,
+      "verification_status": "pending_missing_configuration",
+      "model_calls": 0,
+      "tool_calls": 0
+    },
+    {
+      "scenario_id": "S14",
+      "command": "python -m helpdesk.cli --scenario S14",
+      "exit_code": 2,
+      "verification_status": "pending_missing_configuration",
+      "model_calls": 0,
+      "tool_calls": 0
+    }
+  ],
+  "reason": "OPENAI_API_KEY and MODEL_NAME are not configured. Offline fake traces are stored separately."
+}

@@ -1,0 +1,384 @@
+{
+  "evidence_kind": "deterministic_fake",
+  "provider": "deterministic fake (not OpenAI)",
+  "model": "DemoFakeModel (offline; not OpenAI)",
+  "user_id": "demo-user-a",
+  "thread_id": "s14",
+  "status_profile": "recovery_outage",
+  "turns": [
+    {
+      "user_message": "My password recovery page is unavailable. Check the service status. Is there a known problem?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "dafedd1f-3509-4424-87fa-51229996af06",
+                    "tool_calls": [
+                      {
+                        "name": "find_instructions",
+                        "args": {
+                          "topic": "password"
+                        },
+                        "id": "c525d9bb84bf447e8edcd1a785e106e0",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "account_recovery"
+                        },
+                        "id": "12eae7434b61421eba03a0567633be59",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "password",
+                  "problem_description": "My password recovery page is unavailable.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "3b2cd689-bdab-4580-bc23-340f44dacf8c"
+              },
+              {
+                "type": "human",
+                "id": "fc09b84d-14b0-4176-bfd9-755400c9b953"
+              },
+              {
+                "type": "ai",
+                "id": "dafedd1f-3509-4424-87fa-51229996af06"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": [
+                {
+                  "messages": [
+                    {
+                      "content": "{\"topic\": \"password\", \"title\": \"Recover access to the practice account\", \"steps\": [\"Open the practice sign-in screen and choose Forgot password.\", \"Follow the recovery instructions shown by the practice application.\", \"If recovery is unavailable, prepare a ticket describing the error.\", \"Never include a password or recovery code in a ticket.\"], \"instruction_id\": \"GUIDE-PASSWORD\", \"source\": \"data/helpdesk.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "find_instructions",
+                      "id": "699c951f-5627-4714-804b-a22cd54f28a0",
+                      "tool_call_id": "c525d9bb84bf447e8edcd1a785e106e0",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "c525d9bb84bf447e8edcd1a785e106e0": {
+                      "tool": "find_instructions",
+                      "data": {
+                        "topic": "password",
+                        "instruction_id": "GUIDE-PASSWORD",
+                        "source": "data/helpdesk.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"service\": \"account_recovery\", \"status_profile\": \"recovery_outage\", \"status\": \"outage\", \"message\": \"The demo account-recovery service is unavailable. The fixture gives no repair time.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "check_service_status",
+                      "id": "e33b78b7-9dc9-4007-b3e1-3cf5f898566c",
+                      "tool_call_id": "12eae7434b61421eba03a0567633be59",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "12eae7434b61421eba03a0567633be59": {
+                      "tool": "check_service_status",
+                      "data": {
+                        "service": "account_recovery",
+                        "status": "outage",
+                        "status_profile": "recovery_outage",
+                        "source": "data/service_status.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "c525d9bb84bf447e8edcd1a785e106e0": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "password",
+                  "instruction_id": "GUIDE-PASSWORD",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "12eae7434b61421eba03a0567633be59": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "account_recovery",
+                  "status": "outage",
+                  "status_profile": "recovery_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "3b2cd689-bdab-4580-bc23-340f44dacf8c"
+              },
+              {
+                "type": "human",
+                "id": "fc09b84d-14b0-4176-bfd9-755400c9b953"
+              },
+              {
+                "type": "ai",
+                "id": "dafedd1f-3509-4424-87fa-51229996af06"
+              },
+              {
+                "type": "tool",
+                "id": "699c951f-5627-4714-804b-a22cd54f28a0",
+                "tool_call_id": "c525d9bb84bf447e8edcd1a785e106e0"
+              },
+              {
+                "type": "tool",
+                "id": "e33b78b7-9dc9-4007-b3e1-3cf5f898566c",
+                "tool_call_id": "12eae7434b61421eba03a0567633be59"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "FAKE: Fictional account_recovery status: outage. No draft created. No repair time is supplied. Would you like help with the next step?",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "46201966-8923-4158-b488-9601de91e550",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 2,
+                  "tool_calls": 2,
+                  "tool_attempts": 2,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "password",
+                  "problem_description": "My password recovery page is unavailable.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "c525d9bb84bf447e8edcd1a785e106e0": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "password",
+                  "instruction_id": "GUIDE-PASSWORD",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "12eae7434b61421eba03a0567633be59": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "account_recovery",
+                  "status": "outage",
+                  "status_profile": "recovery_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 2,
+              "tool_calls": 2,
+              "tool_attempts": 2,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "3b2cd689-bdab-4580-bc23-340f44dacf8c"
+              },
+              {
+                "type": "human",
+                "id": "fc09b84d-14b0-4176-bfd9-755400c9b953"
+              },
+              {
+                "type": "ai",
+                "id": "dafedd1f-3509-4424-87fa-51229996af06"
+              },
+              {
+                "type": "tool",
+                "id": "699c951f-5627-4714-804b-a22cd54f28a0",
+                "tool_call_id": "c525d9bb84bf447e8edcd1a785e106e0"
+              },
+              {
+                "type": "tool",
+                "id": "e33b78b7-9dc9-4007-b3e1-3cf5f898566c",
+                "tool_call_id": "12eae7434b61421eba03a0567633be59"
+              },
+              {
+                "type": "ai",
+                "id": "46201966-8923-4158-b488-9601de91e550"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 2,
+        "tool_calls": 2,
+        "tool_attempts": 2,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "FAKE: Fictional account_recovery status: outage. No draft created. No repair time is supplied. Would you like help with the next step?",
+      "token_usage": []
+    }
+  ],
+  "scenario_id": "S14",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m tests.record_part2"
+}

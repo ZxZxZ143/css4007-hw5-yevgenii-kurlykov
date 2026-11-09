@@ -3,9 +3,9 @@
 **CSS-4007 · Artificial Intelligence**  
 **Due:** 8 November 2026, 23:59 (UTC+5)
 
-## Implemented: Part 1 only
+## Implementation status
 
-Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, and pytest **9.2.0**. The original assignment remains below. Parts 2–4 are still future work; the setup and tests here support Part 1.
+Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, and pytest **9.2.0**. Part 1 is verified. Part 2 implementation and offline tests are verified; live OpenAI demonstrations are **pending** because neither `OPENAI_API_KEY` nor `MODEL_NAME` is configured in the current environment. Parts 3–4 remain future work. The original assignment remains below.
 
 From the repository root, create a fresh environment and install the pinned dependencies and editable local package:
 
@@ -16,7 +16,7 @@ python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
-On macOS/Linux, activate with `source .venv-part1/bin/activate`. Use Python 3.13 for the tested setup. Run the following commands from the repository root after activation. Part 1 never loads `.env`, calls a model, or requires an API key. The pinned provider, dotenv and SQLite dependencies are retained for later assignment parts.
+On macOS/Linux, activate with `source .venv-part1/bin/activate`. Use Python 3.13 for the tested setup. Run the following commands from the repository root after activation. Part 1 never loads `.env`, calls a model, or requires an API key. The pinned provider and dotenv dependencies support Part 2; SQLite is reserved for Part 3.
 
 ```powershell
 # Original / Initial Version: Wi-Fi wins when both keywords appear.
@@ -38,13 +38,54 @@ python -m helpdesk.cli --scenario S05
 python -m pytest -q
 ```
 
-Scenario replay binds S01–S04 to Original and S05 to Improved / Main, as required by the fixtures. A contradictory explicit `--graph` is rejected. The fixture name `with_clarification` maps to CLI version `main`. Other scenarios are not implemented yet.
+Scenario replay binds S01–S04 to Original and S05 to Improved / Main, as required by the fixtures. A contradictory explicit `--graph` is rejected. The fixture name `with_clarification` maps to CLI version `main`. S06–S09 and S14 use the Part 2 agent below; S10–S13 are not implemented yet.
 
 Each invocation prints JSON. Scenario commands also save traces in `outputs/part1/original/S01.json` through `S04.json` and `outputs/part1/improved/S05.json`. For a custom message, add `--output outputs/part1/custom.json` to save its trace. These files contain the command, fixture context, prediction, executed nodes, partial updates, complete states and final reply. `START` and `END` are boundary sentinels, so the executed-node list contains only real Python nodes. Traces use LangGraph's `updates` and `values` streams; they are not reconstructed by calling the node functions separately.
 
 The predictions were recorded before implementation/execution in [PREDICTIONS.md](outputs/part1/PREDICTIONS.md). The explanation and measured results are in [SUBMISSION.md](SUBMISSION.md). Instructions are read from `data/helpdesk.json` at execution time. No supplied fixture was edited. Part 1 has no persistent memory, so every invocation starts fresh.
 
-Code: `src/helpdesk/{state,nodes,graphs,trace,cli}.py`. Import `build_original_graph` or `build_main_graph` from `helpdesk.graphs` to compile either graph independently. Both use shared help nodes; only Main includes `clarify_problem` and the two-topic classification. The tests execute real graphs, compare saved evidence with fresh runs, verify fixture retrieval and preserved state, and run the default CLI with provider imports and network connections blocked. No fake model is used.
+Code: `src/helpdesk/{state,nodes,graphs,trace,cli}.py`. Import `build_original_graph` or `build_main_graph` from `helpdesk.graphs` to compile either graph independently. Both use shared help nodes; only Main includes `clarify_problem` and the two-topic classification. The tests execute real graphs, compare saved evidence with fresh runs, verify fixture retrieval and preserved state, and run the default CLI with provider imports and network connections blocked. The Part 1 tests use no fake model.
+
+## Part 2 — Single OpenAI agent
+
+Use the same installed environment. Copy `.env.example` to ignored `.env` and set `OPENAI_API_KEY` and `MODEL_NAME` to a tool-capable OpenAI model available to your account. Environment variables take precedence over `.env`. No model identifier or account availability is assumed. `ChatOpenAI` uses the Responses API with a 45-second timeout and no automatic retries. See [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling).
+
+```powershell
+python -m helpdesk.cli --graph agent --message "Show me Wi-Fi troubleshooting steps."
+python -m helpdesk.cli --graph agent --interactive --user-id demo-user-a --thread-id demo-thread --status-profile normal --output outputs/part2/session.json
+
+python -m helpdesk.cli --scenario S06
+python -m helpdesk.cli --scenario S07
+python -m helpdesk.cli --scenario S08
+python -m helpdesk.cli --scenario S09
+python -m helpdesk.cli --scenario S14
+
+python -m pytest -q
+# Explicitly offline evidence; this does NOT contact OpenAI.
+python -m tests.record_part2
+```
+
+Enter `/quit` or EOF to end interactive mode. The same process retains the current conversation, including S06/S09 follow-up details. Scenario replay reads exact fixture events and snapshot names, starts isolated state for each scenario, and writes live execution logs to `outputs/part2/Sxx.json`. The scenario fixture controls identity and snapshot; ordinary sessions use CLI options. No user preferences, checkpointer or restart recovery are implemented.
+
+The compiled `build_agent_graph()` uses one model and the loop `START → agent → tools → agent`, ending when the model answers without tool calls. `bind_tools(..., parallel_tool_calls=True)` permits multiple requests; standard `ToolNode` runs independent tools concurrently. There is no second agent. Python direct functions in `helpdesk.tools` provide:
+
+| Tool | Inputs visible to the model | Local behavior |
+| --- | --- | --- |
+| `find_instructions` | `topic`: wifi/password | Reads complete JSON guide, identifier and steps. |
+| `check_service_status` | `service`: wifi/account_recovery | Uses the trusted active snapshot; password maps to account_recovery. Missing data is unknown. |
+| `prepare_ticket` | None | Validates user-derived context and completed tool evidence, then saves a local JSON draft using the supplied template. |
+
+The root `HelpdeskAgentState` has `messages` (`add_messages`), `tool_results` (merge by call ID), `helpdesk` (current issue, exact reported steps, request/condition and draft ID), and `control` (per-turn model calls, completed tools, dispatch attempts, limits and errors). Only the agent updates the complete nested helpdesk/control values. ToolNode wrappers return `Command` updates for messages and compact evidence, including errors; parallel results merge without overwriting one another. Full tool content stays in `ToolMessage` and is sent back to the model. Traces record actual updates, relevant state snapshots, message indexes and usage metadata without repeating complete histories in every snapshot.
+
+Frozen runtime context holds the application-selected user/thread IDs, snapshot and storage path. These are absent from the model's tool schemas and are not included in its prompt. The model receives only the system instructions and conversation/tool messages.
+
+Ticket validation uses original user statements. It accepts conservative English descriptions and exact reported troubleshooting spans; unsupported/ambiguous intent requests clarification. Merely mentioning a ticket is not permission. Conditional requests require a completed operational check for the correct service in the **current user turn**. Outage, unknown, not checked, an earlier turn, or a concurrent lookup cannot authorize that write. Explicitly unconditional requests may record `not_checked`. Same-call retries use the same draft ID and exclusive creation. Recognizable credential disclosures are redacted before model input and logging and block draft creation; do not enter real credentials. Unrecognized language or phrasing may require clarification. Switching topics clears earlier issue details and ticket permission.
+
+Default budgets are six model calls and five tool dispatch attempts per user turn. Successful tool completions and total dispatch attempts are counted separately. An oversized batch is rejected as a whole, with one error ToolMessage per requested call. Limits are checked before another model call; pending calls are resolved before final termination. The LangGraph recursion limit is 16 by default (`2 * max_model_calls + 4`). API errors report an error class rather than credential-bearing exception text; tool errors return a safe result. Malformed protocol IDs are kept in diagnostics outside future model history.
+
+Drafts default to ignored `local-storage/tickets/`; change with `HELPDESK_STORAGE_DIR` or `--storage-dir`. JSON traces default to `outputs/part2/Sxx.json` for live scenarios. Offline traces and explicitly fictional drafts are in [outputs/part2/fake](outputs/part2/fake); [LIVE_STATUS.json](outputs/part2/LIVE_STATUS.json) records the missing live configuration. Direct tool evidence is [direct_tools.json](outputs/part2/fake/direct_tools.json). Regenerating offline evidence creates new draft IDs; it never substitutes for live verification. Tests write temporary drafts under pytest's temporary directory.
+
+Offline verification covers real LangGraph transitions with a labelled fake model, direct tools, true concurrent reads using a thread barrier, sequential write guards, malformed input/protocol, budgets, redaction, multi-turn sessions and all Part 1 regressions. No additional dependencies were required beyond the existing pinned environment. See [Part 2 verification](outputs/part2/VERIFICATION.md). Live model choice, real token usage and real scenario behavior remain unverified until credentials are configured and the five live commands succeed.
 
 ## Start from this repository
 
