@@ -8,11 +8,12 @@ from helpdesk.part2.runner import PART2_SCENARIOS, run_scenario
 from helpdesk.part2.state import SessionContext
 from helpdesk.part2.ticket_policy import derive_helpdesk
 from helpdesk.part2.tools import check_service_status, find_instructions, prepare_ticket
+from helpdesk.paths import ROOT
 from tests.part2.fake_model import DemoFakeModel
 
 
 def main():
-    directory = Path("outputs/part2/fake")
+    directory = ROOT / "outputs/part2/fake"
     directory.mkdir(parents=True, exist_ok=True)
     for scenario in PART2_SCENARIOS:
         log = run_scenario(scenario, model=DemoFakeModel(), model_name="DemoFakeModel (offline; not OpenAI)",

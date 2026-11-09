@@ -1,0 +1,410 @@
+{
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "model": "gpt-5-mini",
+  "user_id": "demo-user-a",
+  "thread_id": "s07",
+  "status_profile": "wifi_outage",
+  "path_base": "repository_root",
+  "turns": [
+    {
+      "user_message": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect. Check whether Wi-Fi is down. If it is operating, prepare a ticket about this problem.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"service\":\"wifi\"}",
+                        "call_id": "call_0YLysjdn3lYhXc6Fp778pYbC",
+                        "name": "check_service_status",
+                        "type": "function_call",
+                        "id": "fc_0d432f9c9b26b980006af242bcea7c87d287b6b76d4116a879",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0d432f9c9b26b980006af242b80bf087d2b733e0d9ff2e0783",
+                      "created_at": 1794261688.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0d432f9c9b26b980006af242b80bf087d2b733e0d9ff2e0783",
+                    "tool_calls": [
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "wifi"
+                        },
+                        "id": "call_0YLysjdn3lYhXc6Fp778pYbC",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 643,
+                      "output_tokens": 290,
+                      "total_tokens": 933,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 256
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect.",
+                  "steps_tried": [
+                    "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "operational",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect.",
+              "steps_tried": [
+                "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c6e29407-3244-4699-8b12-7991cfadcbd7"
+              },
+              {
+                "type": "human",
+                "id": "720a13e7-f091-4761-b6f8-ff3300781e29"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0d432f9c9b26b980006af242b80bf087d2b733e0d9ff2e0783"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": {
+                "messages": [
+                  {
+                    "content": "{\"service\": \"wifi\", \"status_profile\": \"wifi_outage\", \"status\": \"outage\", \"message\": \"The demo Wi-Fi service is unavailable across campus. The fixture gives no repair time.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "tool",
+                    "name": "check_service_status",
+                    "id": "8c08fe97-39f3-4b55-8b53-5e7250c5ff65",
+                    "tool_call_id": "call_0YLysjdn3lYhXc6Fp778pYbC",
+                    "artifact": null,
+                    "status": "success"
+                  }
+                ],
+                "tool_results": {
+                  "call_0YLysjdn3lYhXc6Fp778pYbC": {
+                    "tool": "check_service_status",
+                    "data": {
+                      "service": "wifi",
+                      "status": "outage",
+                      "status_profile": "wifi_outage",
+                      "source": "data/service_status.json",
+                      "fictional": true
+                    },
+                    "turn": 1,
+                    "executed": true
+                  }
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_0YLysjdn3lYhXc6Fp778pYbC": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "outage",
+                  "status_profile": "wifi_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect.",
+              "steps_tried": [
+                "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c6e29407-3244-4699-8b12-7991cfadcbd7"
+              },
+              {
+                "type": "human",
+                "id": "720a13e7-f091-4761-b6f8-ff3300781e29"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0d432f9c9b26b980006af242b80bf087d2b733e0d9ff2e0783"
+              },
+              {
+                "type": "tool",
+                "id": "8c08fe97-39f3-4b55-8b53-5e7250c5ff65",
+                "tool_call_id": "call_0YLysjdn3lYhXc6Fp778pYbC"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Status: demo Wi‑Fi outage — the fixture reports the campus Wi‑Fi is unavailable and gives no repair time. (This is a fictional service-status fixture, not a real university status.)\n\nTHIS USER'S operational-only condition was not satisfied, so I did not prepare a ticket. If you want, I can still create an unconditional local draft about the connection problem now — say “please prepare the draft” and include the problem description and the steps you tried (or say “none”).",
+                        "annotations": [],
+                        "id": "msg_0d432f9c9b26b980006af242c20f5487d2a6731e414374d988"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0d432f9c9b26b980006af242bdf1fc87d28ba7c7c35b18abae",
+                      "created_at": 1794261694.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0d432f9c9b26b980006af242bdf1fc87d28ba7c7c35b18abae",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1003,
+                      "output_tokens": 381,
+                      "total_tokens": 1384,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 256
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 2,
+                  "tool_calls": 1,
+                  "tool_attempts": 1,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect.",
+                  "steps_tried": [
+                    "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "operational",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_0YLysjdn3lYhXc6Fp778pYbC": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "outage",
+                  "status_profile": "wifi_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect.",
+              "steps_tried": [
+                "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 2,
+              "tool_calls": 1,
+              "tool_attempts": 1,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c6e29407-3244-4699-8b12-7991cfadcbd7"
+              },
+              {
+                "type": "human",
+                "id": "720a13e7-f091-4761-b6f8-ff3300781e29"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0d432f9c9b26b980006af242b80bf087d2b733e0d9ff2e0783"
+              },
+              {
+                "type": "tool",
+                "id": "8c08fe97-39f3-4b55-8b53-5e7250c5ff65",
+                "tool_call_id": "call_0YLysjdn3lYhXc6Fp778pYbC"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0d432f9c9b26b980006af242bdf1fc87d28ba7c7c35b18abae"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 2,
+        "tool_calls": 1,
+        "tool_attempts": 1,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Status: demo Wi‑Fi outage — the fixture reports the campus Wi‑Fi is unavailable and gives no repair time. (This is a fictional service-status fixture, not a real university status.)\n\nTHIS USER'S operational-only condition was not satisfied, so I did not prepare a ticket. If you want, I can still create an unconditional local draft about the connection problem now — say “please prepare the draft” and include the problem description and the steps you tried (or say “none”).",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 643,
+          "output_tokens": 290,
+          "total_tokens": 933,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 256
+          }
+        },
+        {
+          "input_tokens": 1003,
+          "output_tokens": 381,
+          "total_tokens": 1384,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 256
+          }
+        }
+      ]
+    }
+  ],
+  "scenario_id": "S07",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m helpdesk.cli --scenario S07 --storage-dir outputs/part2/audit/drafts/S07 --output outputs/part2/audit/S07.json"
+}

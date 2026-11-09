@@ -1,14 +1,16 @@
 """Three direct local functions plus thin model-callable adapters."""
 import json
+import os
 from pathlib import Path
+import tempfile
 from uuid import NAMESPACE_URL, uuid5
 
 from langchain_core.tools import tool
 from langgraph.prebuilt import ToolRuntime
 
 from .state import HelpdeskAgentState, HelpdeskContext, SessionContext, ToolResultsState
-from ..paths import ROOT
-from .ticket_policy import redact
+from ..paths import ROOT, portable_path
+from .ticket_policy import missing_ticket_details, redact
 
 
 def read_fixture(name: str) -> dict:
@@ -44,11 +46,27 @@ def prepare_ticket(context: SessionContext, helpdesk: HelpdeskContext,
         return {"created": False, "reason": "Remove credentials and describe the problem without secrets."}
     if not helpdesk.get("ticket_requested"):
         return {"created": False, "reason": "Ask the user whether a local ticket draft is wanted."}
+    request_id = helpdesk.get("ticket_request_id")
+    if not request_id:
+        return {"created": False, "reason": "An application-owned logical ticket request is required."}
+    key = json.dumps([context.run_id, context.user_id, context.thread_id, request_id])
+    ticket_id = "DRAFT-" + uuid5(NAMESPACE_URL, key).hex
+    path = context.storage_dir / "tickets" / f"{ticket_id}.json"
+
+    def saved_result() -> dict:
+        saved = json.loads(path.read_text(encoding="utf-8"))
+        if (saved["ticket_id"], saved["user_id"], saved["thread_id"]) != (ticket_id, context.user_id, context.thread_id):
+            raise ValueError("Existing draft identity does not match this logical request")
+        return {"created": True, "ticket_id": ticket_id, "path": portable_path(path),
+                "ticket_request_id": request_id, "delivery": "local draft only",
+                "saved_fields": {key: saved[key] for key in ("category", "summary", "steps_tried")}}
+
+    # Returning an already published draft is a read, not a new conditional write.
+    if path.is_file():
+        return saved_result()
     if helpdesk.get("ticket_condition") == "unclear":
         return {"created": False, "reason": "Clarify the user's ticket condition before creating a draft."}
-    if (helpdesk.get("category") not in ("wifi", "password")
-            or len(helpdesk.get("problem_description", "").strip()) < 10
-            or not helpdesk.get("steps_known")):
+    if missing_ticket_details(helpdesk):
         return {"created": False, "reason": "Ask for the issue (Wi-Fi or password), a problem description, and steps already tried (or none)."}
     service = read_fixture("helpdesk.json")["topic_services"][helpdesk["category"]]
     statuses = [entry["data"] for entry in evidence.values()
@@ -63,25 +81,32 @@ def prepare_ticket(context: SessionContext, helpdesk: HelpdeskContext,
     refs = sorted({entry["data"]["instruction_id"] for entry in evidence.values()
                    if entry["tool"] == "find_instructions" and entry["data"].get("topic") == helpdesk["category"]
                    and "instruction_id" in entry["data"]})
-    key = json.dumps([context.run_id, context.user_id, context.thread_id, tool_call_id])
-    ticket_id = "DRAFT-" + uuid5(NAMESPACE_URL, key).hex
     ticket = read_fixture("ticket_template.json")["ticket"]
     ticket.update(ticket_id=ticket_id, user_id=context.user_id, thread_id=context.thread_id,
                   category=helpdesk["category"], summary=helpdesk["problem_description"],
                   steps_tried=helpdesk["steps_tried"], service_status=known,
                   status_profile=context.status_profile, reference_ids=refs)
-    directory = Path(context.storage_dir) / "tickets"
+    directory = path.parent
     directory.mkdir(parents=True, exist_ok=True)
-    path = directory / f"{ticket_id}.json"
-    # Exclusive creation and stable call identity make same-call retries idempotent.
+    # Write privately, then publish a fully written file with atomic no-overwrite
+    # linking. Competing calls/processes see one complete winner, never an empty file.
+    temporary = None
     try:
-        with path.open("x", encoding="utf-8") as file:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=directory,
+                                         prefix=f".{ticket_id}-", suffix=".tmp", delete=False) as file:
+            temporary = Path(file.name)
             json.dump(ticket, file, indent=2, ensure_ascii=False)
             file.write("\n")
-    except FileExistsError:
-        if json.loads(path.read_text(encoding="utf-8")) != ticket:
-            return {"created": False, "reason": "An existing draft conflicts with this retry."}
-    return {"created": True, "ticket_id": ticket_id, "path": str(path), "delivery": "local draft only"}
+            file.flush()
+            os.fsync(file.fileno())
+        try:
+            os.link(temporary, path)
+        except FileExistsError:
+            pass  # A competing call published this same logical request first.
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return saved_result()
 
 
 def agent_tools():

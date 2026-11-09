@@ -1,0 +1,570 @@
+{
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "model": "gpt-5-mini",
+  "user_id": "demo-user-a",
+  "thread_id": "s09",
+  "status_profile": "normal",
+  "path_base": "repository_root",
+  "turns": [
+    {
+      "user_message": "Prepare a support ticket.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "I can do that. I need three things before I create the draft:\n\n1) Supported problem category — pick one: \"wifi\" or \"account_recovery\" (password).  \n2) A brief, meaningful description of the problem.  \n3) Steps you already tried, or explicitly say \"none.\"\n\n(You don’t need to provide contact, device, location, or time.)",
+                        "annotations": [],
+                        "id": "msg_0e9ceaf5164b8dd3006af24390210087d2a672383a40da347f"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89",
+                      "created_at": 1794261898.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 750,
+                      "output_tokens": 508,
+                      "total_tokens": 1258,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 384
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "",
+                  "problem_description": "",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": true,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "",
+              "problem_description": "",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "8e980676-444d-42f5-a83b-8600e71c1eaa"
+              },
+              {
+                "type": "human",
+                "id": "843a78d4-e2b1-40f7-8b6f-08293904e1ef"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "I can do that. I need three things before I create the draft:\n\n1) Supported problem category — pick one: \"wifi\" or \"account_recovery\" (password).  \n2) A brief, meaningful description of the problem.  \n3) Steps you already tried, or explicitly say \"none.\"\n\n(You don’t need to provide contact, device, location, or time.)",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 750,
+          "output_tokens": 508,
+          "total_tokens": 1258,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 384
+          }
+        }
+      ]
+    },
+    {
+      "user_message": "The issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{}",
+                        "call_id": "call_4Bzcg3rNYiH4DRfweIRmIluT",
+                        "name": "prepare_ticket",
+                        "type": "function_call",
+                        "id": "fc_0e9ceaf5164b8dd3006af243975dac87d2b91ece965eb02602",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0e9ceaf5164b8dd3006af24392506087d2afe60fa7323883f9",
+                      "created_at": 1794261906.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0e9ceaf5164b8dd3006af24392506087d2afe60fa7323883f9",
+                    "tool_calls": [
+                      {
+                        "name": "prepare_ticket",
+                        "args": {},
+                        "id": "call_4Bzcg3rNYiH4DRfweIRmIluT",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 835,
+                      "output_tokens": 361,
+                      "total_tokens": 1196,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 320
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "8e980676-444d-42f5-a83b-8600e71c1eaa"
+              },
+              {
+                "type": "human",
+                "id": "843a78d4-e2b1-40f7-8b6f-08293904e1ef"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89"
+              },
+              {
+                "type": "human",
+                "id": "6c1a6699-fe2c-451d-828e-92580116008d"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af24392506087d2afe60fa7323883f9"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": {
+                "messages": [
+                  {
+                    "content": "{\"created\": true, \"ticket_id\": \"DRAFT-acf5bb02e3f1576eb8718c548d5c4a55\", \"path\": \"outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json\", \"ticket_request_id\": \"request-1\", \"delivery\": \"local draft only\", \"saved_fields\": {\"category\": \"wifi\", \"summary\": \"I enabled it and tried reconnecting, but it still fails.\", \"steps_tried\": [\"I enabled it and tried reconnecting, but it still fails.\"]}}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "tool",
+                    "name": "prepare_ticket",
+                    "id": "3b48c2d0-cd8a-4e61-a439-ec77977a4a6b",
+                    "tool_call_id": "call_4Bzcg3rNYiH4DRfweIRmIluT",
+                    "artifact": null,
+                    "status": "success"
+                  }
+                ],
+                "tool_results": {
+                  "call_4Bzcg3rNYiH4DRfweIRmIluT": {
+                    "tool": "prepare_ticket",
+                    "data": {
+                      "created": true,
+                      "ticket_id": "DRAFT-acf5bb02e3f1576eb8718c548d5c4a55",
+                      "ticket_request_id": "request-1",
+                      "path": "outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json"
+                    },
+                    "turn": 2,
+                    "executed": true
+                  }
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_4Bzcg3rNYiH4DRfweIRmIluT": {
+                "tool": "prepare_ticket",
+                "data": {
+                  "created": true,
+                  "ticket_id": "DRAFT-acf5bb02e3f1576eb8718c548d5c4a55",
+                  "ticket_request_id": "request-1",
+                  "path": "outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json"
+                },
+                "turn": 2,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "8e980676-444d-42f5-a83b-8600e71c1eaa"
+              },
+              {
+                "type": "human",
+                "id": "843a78d4-e2b1-40f7-8b6f-08293904e1ef"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89"
+              },
+              {
+                "type": "human",
+                "id": "6c1a6699-fe2c-451d-828e-92580116008d"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af24392506087d2afe60fa7323883f9"
+              },
+              {
+                "type": "tool",
+                "id": "3b48c2d0-cd8a-4e61-a439-ec77977a4a6b",
+                "tool_call_id": "call_4Bzcg3rNYiH4DRfweIRmIluT"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Draft created (local draft only).\n\nTicket ID: DRAFT-acf5bb02e3f1576eb8718c548d5c4a55  \nPath: outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json\n\nSaved fields:\n{\"category\": \"wifi\", \"summary\": \"I enabled it and tried reconnecting, but it still fails.\", \"steps_tried\": [\"I enabled it and tried reconnecting, but it still fails.\"]}\n\nNote: these statuses and records describe fictional demo fixtures, not real university services.",
+                        "annotations": [],
+                        "id": "msg_0e9ceaf5164b8dd3006af2439cb3cc87d2b5fb7058b9e1452c"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0e9ceaf5164b8dd3006af243982c4487d295e77f2897720aa0",
+                      "created_at": 1794261912.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0e9ceaf5164b8dd3006af243982c4487d295e77f2897720aa0",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1348,
+                      "output_tokens": 526,
+                      "total_tokens": 1874,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 1152
+                      },
+                      "output_token_details": {
+                        "reasoning": 384
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "model_calls": 2,
+                  "tool_calls": 1,
+                  "tool_attempts": 1,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": "DRAFT-acf5bb02e3f1576eb8718c548d5c4a55",
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_4Bzcg3rNYiH4DRfweIRmIluT": {
+                "tool": "prepare_ticket",
+                "data": {
+                  "created": true,
+                  "ticket_id": "DRAFT-acf5bb02e3f1576eb8718c548d5c4a55",
+                  "ticket_request_id": "request-1",
+                  "path": "outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json"
+                },
+                "turn": 2,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": "DRAFT-acf5bb02e3f1576eb8718c548d5c4a55",
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "model_calls": 2,
+              "tool_calls": 1,
+              "tool_attempts": 1,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "8e980676-444d-42f5-a83b-8600e71c1eaa"
+              },
+              {
+                "type": "human",
+                "id": "843a78d4-e2b1-40f7-8b6f-08293904e1ef"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af2438a402087d2bb19fb45b246cb89"
+              },
+              {
+                "type": "human",
+                "id": "6c1a6699-fe2c-451d-828e-92580116008d"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af24392506087d2afe60fa7323883f9"
+              },
+              {
+                "type": "tool",
+                "id": "3b48c2d0-cd8a-4e61-a439-ec77977a4a6b",
+                "tool_call_id": "call_4Bzcg3rNYiH4DRfweIRmIluT"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0e9ceaf5164b8dd3006af243982c4487d295e77f2897720aa0"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 2,
+        "model_calls": 2,
+        "tool_calls": 1,
+        "tool_attempts": 1,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Local draft available (saved or reused); nothing submitted.\n{\n  \"ticket_id\": \"DRAFT-acf5bb02e3f1576eb8718c548d5c4a55\",\n  \"path\": \"outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json\",\n  \"category\": \"wifi\",\n  \"summary\": \"I enabled it and tried reconnecting, but it still fails.\",\n  \"steps_tried\": [\n    \"I enabled it and tried reconnecting, but it still fails.\"\n  ]\n}",
+      "response_source": "saved_ticket_fields",
+      "model_response": "Draft created (local draft only).\n\nTicket ID: DRAFT-acf5bb02e3f1576eb8718c548d5c4a55  \nPath: outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json\n\nSaved fields:\n{\"category\": \"wifi\", \"summary\": \"I enabled it and tried reconnecting, but it still fails.\", \"steps_tried\": [\"I enabled it and tried reconnecting, but it still fails.\"]}\n\nNote: these statuses and records describe fictional demo fixtures, not real university services.",
+      "token_usage": [
+        {
+          "input_tokens": 835,
+          "output_tokens": 361,
+          "total_tokens": 1196,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 320
+          }
+        },
+        {
+          "input_tokens": 1348,
+          "output_tokens": 526,
+          "total_tokens": 1874,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 1152
+          },
+          "output_token_details": {
+            "reasoning": 384
+          }
+        }
+      ]
+    }
+  ],
+  "scenario_id": "S09",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/audit/drafts/S09 --output outputs/part2/audit/S09.json"
+}

@@ -1,0 +1,307 @@
+{
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "model": "gpt-5-mini",
+  "user_id": "demo-user-a",
+  "thread_id": "s09",
+  "status_profile": "normal",
+  "path_base": "repository_root",
+  "turns": [
+    {
+      "user_message": "Prepare a support ticket.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "I can prepare a local draft. I need three things from you before I save it:\n\n1) Problem category (e.g., Wi‑Fi, account recovery/password, or Other)  \n2) A brief description of the issue (one or two sentences)  \n3) Steps you’ve already tried, or write “none” if you tried nothing\n\nOptional: do you want this draft saved only if a university service is currently operational (a conditional request)? If so, say which service (Wi‑Fi or account_recovery). If not, I will save unconditionally once you provide the three required items.",
+                        "annotations": [],
+                        "id": "msg_0ec32a6ca20d2536006af242ce3e6c87d29c4064ff35eb2cb2"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0ec32a6ca20d2536006af242c4722087d2ad28f93ea1c7adde",
+                      "created_at": 1794261700.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0ec32a6ca20d2536006af242c4722087d2ad28f93ea1c7adde",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 610,
+                      "output_tokens": 761,
+                      "total_tokens": 1371,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 576
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "",
+                  "problem_description": "",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": true,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "",
+              "problem_description": "",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "e011b6e6-f1ad-4c9e-b925-80b4f61b5874"
+              },
+              {
+                "type": "human",
+                "id": "8504f5ac-09d6-420a-9b62-1ec4b6e0c196"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0ec32a6ca20d2536006af242c4722087d2ad28f93ea1c7adde"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "I can prepare a local draft. I need three things from you before I save it:\n\n1) Problem category (e.g., Wi‑Fi, account recovery/password, or Other)  \n2) A brief description of the issue (one or two sentences)  \n3) Steps you’ve already tried, or write “none” if you tried nothing\n\nOptional: do you want this draft saved only if a university service is currently operational (a conditional request)? If so, say which service (Wi‑Fi or account_recovery). If not, I will save unconditionally once you provide the three required items.",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 610,
+          "output_tokens": 761,
+          "total_tokens": 1371,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 576
+          }
+        }
+      ]
+    },
+    {
+      "user_message": "The issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Thanks — I have the category (Wi‑Fi) and the steps tried (enabled Wi‑Fi and attempted to reconnect). Please provide a brief description of the issue (1–2 sentences). \n\nIf you want this draft saved only if a university service is currently operational, say that now and specify which service (Wi‑Fi or account_recovery); otherwise I’ll save unconditionally after you give the description.",
+                        "annotations": [],
+                        "id": "msg_0ec32a6ca20d2536006af242d5e9c487d298899d1cc524f615"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0ec32a6ca20d2536006af242d0c27c87d2ae24a59d6eb9983e",
+                      "created_at": 1794261712.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0ec32a6ca20d2536006af242d0c27c87d2ae24a59d6eb9983e",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 762,
+                      "output_tokens": 429,
+                      "total_tokens": 1191,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 320
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": "request-1",
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": "request-1",
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "e011b6e6-f1ad-4c9e-b925-80b4f61b5874"
+              },
+              {
+                "type": "human",
+                "id": "8504f5ac-09d6-420a-9b62-1ec4b6e0c196"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0ec32a6ca20d2536006af242c4722087d2ad28f93ea1c7adde"
+              },
+              {
+                "type": "human",
+                "id": "f920a420-47bc-4e64-b143-0ba2b5d7cfd5"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0ec32a6ca20d2536006af242d0c27c87d2ae24a59d6eb9983e"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 2,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Thanks — I have the category (Wi‑Fi) and the steps tried (enabled Wi‑Fi and attempted to reconnect). Please provide a brief description of the issue (1–2 sentences). \n\nIf you want this draft saved only if a university service is currently operational, say that now and specify which service (Wi‑Fi or account_recovery); otherwise I’ll save unconditionally after you give the description.",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 762,
+          "output_tokens": 429,
+          "total_tokens": 1191,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 320
+          }
+        }
+      ]
+    }
+  ],
+  "scenario_id": "S09",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/audit/drafts/S09 --output outputs/part2/audit/S09.json"
+}

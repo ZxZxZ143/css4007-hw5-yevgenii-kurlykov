@@ -9,10 +9,10 @@
     {
       "scenario_id": "S06",
       "verification_status": "passed_live_openai",
-      "log": "outputs\\part2\\S06.json",
+      "log": "outputs/part2/S06.json",
       "command": "python -m helpdesk.cli --scenario S06 --storage-dir outputs/part2/live_drafts/S06",
       "ticket_paths": [
-        "outputs\\part2\\live_drafts\\S06\\tickets\\DRAFT-11f2bb0b607d5a4b8a39b0312bdf0f84.json"
+        "outputs/part2/live_drafts/S06/tickets/DRAFT-11f2bb0b607d5a4b8a39b0312bdf0f84.json"
       ],
       "model_calls": 5,
       "tool_calls": 3,
@@ -36,29 +36,26 @@
     {
       "scenario_id": "S07",
       "verification_status": "passed_live_openai",
-      "log": "outputs\\part2\\S07.json",
-      "command": "python -m helpdesk.cli --scenario S07 --storage-dir outputs/part2/live_drafts/S07",
+      "log": "outputs/part2/audit/S07.json",
+      "command": "python -m helpdesk.cli --scenario S07 --storage-dir outputs/part2/audit/drafts/S07 --output outputs/part2/audit/S07.json",
       "ticket_paths": [],
-      "model_calls": 3,
-      "tool_calls": 2,
+      "model_calls": 2,
+      "tool_calls": 1,
       "token_usage": {
-        "input_tokens": 2576,
-        "output_tokens": 1659,
-        "total_tokens": 4235
+        "input_tokens": 1931,
+        "output_tokens": 1531,
+        "total_tokens": 3462
       },
       "tool_batches": [
         [
           "check_service_status"
-        ],
-        [
-          "find_instructions"
         ]
       ]
     },
     {
       "scenario_id": "S08",
       "verification_status": "passed_live_openai",
-      "log": "outputs\\part2\\S08.json",
+      "log": "outputs/part2/S08.json",
       "command": "python -m helpdesk.cli --scenario S08 --storage-dir outputs/part2/live_drafts/S08",
       "ticket_paths": [],
       "model_calls": 2,
@@ -78,23 +75,19 @@
     {
       "scenario_id": "S09",
       "verification_status": "passed_live_openai",
-      "log": "outputs\\part2\\S09.json",
-      "command": "python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/live_drafts/S09",
+      "log": "outputs/part2/audit/S09.json",
+      "command": "python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/audit/drafts/S09 --output outputs/part2/audit/S09.json",
       "ticket_paths": [
-        "outputs\\part2\\live_drafts\\S09\\tickets\\DRAFT-29ded462d18a5a31a7fa5e8bbcc850d0.json"
+        "outputs/part2/audit/drafts/S09/tickets/DRAFT-acf5bb02e3f1576eb8718c548d5c4a55.json"
       ],
-      "model_calls": 4,
-      "tool_calls": 3,
+      "model_calls": 3,
+      "tool_calls": 1,
       "token_usage": {
-        "input_tokens": 3662,
-        "output_tokens": 1389,
-        "total_tokens": 5051
+        "input_tokens": 2933,
+        "output_tokens": 1395,
+        "total_tokens": 4328
       },
       "tool_batches": [
-        [
-          "find_instructions",
-          "check_service_status"
-        ],
         [
           "prepare_ticket"
         ]
@@ -103,15 +96,15 @@
     {
       "scenario_id": "S14",
       "verification_status": "passed_live_openai",
-      "log": "outputs\\part2\\S14.json",
-      "command": "python -m helpdesk.cli --scenario S14 --storage-dir outputs/part2/live_drafts/S14",
+      "log": "outputs/part2/audit/S14.json",
+      "command": "python -m helpdesk.cli --scenario S14 --storage-dir outputs/part2/audit/drafts/S14 --output outputs/part2/audit/S14.json",
       "ticket_paths": [],
       "model_calls": 2,
       "tool_calls": 1,
       "token_usage": {
-        "input_tokens": 864,
-        "output_tokens": 1196,
-        "total_tokens": 2060
+        "input_tokens": 1709,
+        "output_tokens": 679,
+        "total_tokens": 2388
       },
       "tool_batches": [
         [
@@ -121,13 +114,13 @@
     }
   ],
   "totals": {
-    "model_calls": 16,
-    "tool_calls": 11
+    "model_calls": 14,
+    "tool_calls": 8
   },
   "token_usage": {
-    "input_tokens": 12384,
-    "output_tokens": 6832,
-    "total_tokens": 19216
+    "input_tokens": 11855,
+    "output_tokens": 6193,
+    "total_tokens": 18048
   },
-  "note": "Totals cover the five final accepted traces. Initial S08/S09 runs are retained separately and excluded."
+  "note": "Totals cover the five selected accepted traces. Historical and initial runs are retained unchanged and excluded when superseded."
 }

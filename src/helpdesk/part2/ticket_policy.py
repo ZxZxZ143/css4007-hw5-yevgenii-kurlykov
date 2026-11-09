@@ -17,13 +17,25 @@ def redact(text: str) -> str:
     return text
 
 
+def missing_ticket_details(helpdesk: HelpdeskContext) -> list[str]:
+    missing = []
+    if helpdesk.get("category") not in ("wifi", "password"):
+        missing.append("supported problem category")
+    if len(helpdesk.get("problem_description", "").strip()) < 10:
+        missing.append("meaningful problem description")
+    if not helpdesk.get("steps_known"):
+        missing.append("steps already tried, or an explicit statement of none")
+    return missing
+
+
 def derive_helpdesk(messages, previous: HelpdeskContext | None = None) -> HelpdeskContext:
     """Retain exact reported spans; unfamiliar phrasing requires clarification."""
     result: HelpdeskContext = {
         "category": "", "problem_description": "", "steps_tried": [], "steps_known": False,
         "ticket_requested": False, "ticket_condition": "unconditional", "ticket_id": None,
-        "secret_detected": False,
+        "ticket_request_id": None, "secret_detected": False,
     }
+    request_number = 0
     for message in messages:
         if not isinstance(message, HumanMessage) or not isinstance(message.content, str):
             continue
@@ -38,13 +50,29 @@ def derive_helpdesk(messages, previous: HelpdeskContext | None = None) -> Helpde
             category = "ambiguous" if wifi and password else "wifi" if wifi else "password"
             if result["category"] and result["category"] != category:
                 result.update(problem_description="", steps_tried=[], steps_known=False,
-                              ticket_requested=False, ticket_condition="unconditional", ticket_id=None)
+                              ticket_requested=False, ticket_condition="unconditional", ticket_id=None,
+                              ticket_request_id=None)
             result["category"] = category
         requests_ticket = re.search(r"\b(?:prepare|create|draft|open|make|save)\b.{0,80}\b(?:ticket|draft)\b", lower)
+        if re.search(r"\b(?:should|can|could|would|do|did)\s+(?:i|we)\b", lower):
+            requests_ticket = None  # A question about what the user should do is not ticket consent.
         continues_condition = result["ticket_requested"] and re.match(r"\s*(?:only|if|unless|provided|when)\b", lower)
         if requests_ticket or continues_condition:
             # Negative or conditional wording we cannot establish is never permission.
             was_requested = result["ticket_requested"]
+            new_issue = requests_ticket and re.search(
+                r"\b(?:new|another|different|separate|second)\s+(?:(?:wi-?fi|password)\s+)?(?:issue|problem)\b", lower)
+            explicitly_new = requests_ticket and (new_issue or re.search(
+                r"\b(?:new|another|additional|separate|second)\s+(?:support\s+)?(?:ticket|draft)\b", lower))
+            if new_issue:
+                result.update(problem_description="", steps_tried=[], steps_known=False)
+            if requests_ticket and (not was_requested or explicitly_new):
+                request_number += 1
+                result["ticket_request_id"] = f"request-{request_number}"
+                result["ticket_id"] = None
+                if explicitly_new:
+                    result["ticket_condition"] = "unconditional"
+                    was_requested = False
             result["ticket_requested"] = True
             ticket_text = " ".join(s for s in re.split(r"(?<=[.!?])\s+", lower)
                                    if re.search(r"\b(ticket|draft)\b", s))
@@ -56,7 +84,7 @@ def derive_helpdesk(messages, previous: HelpdeskContext | None = None) -> Helpde
                 if re.search(r"\b(unless|only|provided|when)\b", lower) or re.search(r"\b(not|don't|never)\b", ticket_text):
                     condition = "unclear"
             # Do not silently erase an earlier condition on a vague follow-up.
-            if condition != "unconditional" or not was_requested or re.search(r"\b(unconditionally|regardless)\b", lower):
+            if condition != "unconditional" or not was_requested or re.search(r"\b(unconditional|unconditionally|regardless)\b", lower):
                 result["ticket_condition"] = condition
         for sentence in re.split(r"(?<=[.!?])\s+", text):
             reports_issue = re.search(r"(?i)\b(cannot|can't|unable|issue|problem|fails?|failed|will not|does not|broken|unavailable|no success)\b", sentence)
@@ -70,5 +98,6 @@ def derive_helpdesk(messages, previous: HelpdeskContext | None = None) -> Helpde
                 result["steps_known"] = True
             if re.search(r"(?i)\b(?:no steps (?:tried|yet)|I (?:have )?(?:tried|done) nothing|I have not tried anything)\b", sentence):
                 result["steps_known"] = True
-    result["ticket_id"] = (previous or {}).get("ticket_id")
+    if result["ticket_request_id"] == (previous or {}).get("ticket_request_id"):
+        result["ticket_id"] = (previous or {}).get("ticket_id")
     return result

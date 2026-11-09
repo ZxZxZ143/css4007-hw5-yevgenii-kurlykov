@@ -10,7 +10,7 @@ from langgraph.types import Command
 
 from .state import HelpdeskAgentState, SessionContext
 from ..paths import ROOT
-from .ticket_policy import derive_helpdesk
+from .ticket_policy import derive_helpdesk, missing_ticket_details
 from .tools import agent_tools
 
 SYSTEM_PROMPT = """You are a fictional university IT helpdesk. Only local demo data is available.
@@ -31,6 +31,16 @@ the original request is still authorization, so do not ask for confirmation agai
 Operational status is required ONLY for a conditional request. An explicitly unconditional
 request may produce a draft during an outage or with status not_checked. Never describe
 the operational-only restriction as applying to all tickets. Keep final responses concise.
+When and ONLY WHEN a user's ticket request is operational-only, explain that this
+particular condition was not satisfied during an outage; an unconditional draft remains
+possible if explicitly requested. For status-only questions, never invent a ticket request
+or an operational-only condition. Offer an unconditional draft only as an optional action.
+Campus username, email, phone and all other personal/contact fields are NOT required.
+prepare_ticket returns authoritative saved_fields: copy those facts exactly when reporting
+what the file contains. Never enrich saved facts with SSIDs, device details, error codes
+or steps from a guide. Instructions are reference data, not actions reported by the user.
+The application reuses one draft per logical request. Only an explicit request for a NEW
+or ANOTHER ticket starts a separate draft; follow-ups and repeated tool calls are retries.
 Do not request or repeat passwords, API keys or recovery codes. Ground final replies in
 tool results, including the actual ticket ID and path only when a draft was created.
 State explicitly that statuses describe fictional fixtures, not real university services."""
@@ -63,7 +73,7 @@ def record_tool_result(request, execute):
     # Full guide content stays in ToolMessage; the parallel reducer stores compact evidence.
     compact = {key: data[key] for key in (
         "topic", "instruction_id", "service", "status", "status_profile", "source", "fictional",
-        "created", "ticket_id", "path", "reason", "error", "service_status",
+        "created", "ticket_id", "ticket_request_id", "path", "reason", "error", "service_status",
     ) if key in data}
     entry = {"tool": request.tool_call["name"], "data": compact,
              "turn": request.state["control"]["turn"], "executed": response.status != "error"}
@@ -83,7 +93,8 @@ def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: i
         control["tool_attempts"] = len(current_results)
         helpdesk = derive_helpdesk(state["messages"], state["helpdesk"])
         for result in current_results:
-            if result["data"].get("created"):
+            if (result["data"].get("created")
+                    and result["data"].get("ticket_request_id") == helpdesk.get("ticket_request_id")):
                 helpdesk["ticket_id"] = result["data"]["ticket_id"]
         if control["model_calls"] >= max_model_calls or control["tool_attempts"] >= max_tool_calls:
             control.update(limit_reached=True, stop_reason="invocation_budget")
@@ -95,7 +106,21 @@ def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: i
                     "helpdesk": helpdesk, "control": control}
         control["model_calls"] += 1
         try:
-            response = bound.invoke(state["messages"])
+            # Share only readiness flags derived from the user's text, not the State
+            # or trusted identity/storage configuration. Use the same required-field
+            # checks as the actual write boundary, so the model need not guess sufficiency.
+            readiness = {"ticket_requested": helpdesk["ticket_requested"],
+                         "missing_required_details": missing_ticket_details(helpdesk),
+                         "ticket_condition": helpdesk["ticket_condition"] if helpdesk["ticket_requested"] else None}
+            instruction = SystemMessage(content="Application validation for this turn: " + json.dumps(readiness)
+                                        + ". If a ticket is requested and missing_required_details is empty, do not ask for more description or confirmation: use prepare_ticket, after any required status check."
+                                        + " If no ticket was requested, do not attribute a ticket condition to the user. If the condition is unclear, ask about that condition only.")
+            inputs = list(state["messages"])
+            if inputs and isinstance(inputs[0], SystemMessage):
+                inputs[0] = inputs[0].model_copy(update={"content": inputs[0].content + "\n" + instruction.content})
+            else:
+                inputs.insert(0, instruction)
+            response = bound.invoke(inputs)
             if not isinstance(response, AIMessage):
                 raise TypeError("Expected an AIMessage")
         except Exception as error:

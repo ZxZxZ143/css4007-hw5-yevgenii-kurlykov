@@ -6,11 +6,11 @@ from pathlib import Path
 import re
 import shlex
 
-from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_core.messages import BaseMessage, HumanMessage, ToolMessage
 
 from .agent import build_agent_graph, initial_agent_state
 from .state import SessionContext
-from ..paths import ROOT
+from ..paths import ROOT, repository_path
 from .ticket_policy import derive_helpdesk, redact
 
 PART2_SCENARIOS = ("S06", "S07", "S08", "S09", "S14")
@@ -37,13 +37,19 @@ def response_text(content) -> str:
                      if isinstance(block, dict) and block.get("type") == "text")
 
 
+def render_ticket_confirmation(result: dict) -> str:
+    """Display only authoritative saved values; do not reconstruct facts with an LLM."""
+    fields = {"ticket_id": result["ticket_id"], "path": result["path"], **result["saved_fields"]}
+    return "Local draft available (saved or reused); nothing submitted.\n" + json.dumps(fields, indent=2, ensure_ascii=False)
+
+
 class AgentSession:
     def __init__(self, graph, context: SessionContext, *, model_name: str, evidence_kind="live_openai"):
         self.graph, self.context = graph, context
         self.state = initial_agent_state()
         self.log = {"evidence_kind": evidence_kind, "provider": "OpenAI" if evidence_kind == "live_openai" else "deterministic fake (not OpenAI)",
                     "model": model_name, "user_id": context.user_id, "thread_id": context.thread_id,
-                    "status_profile": context.status_profile, "turns": []}
+                    "status_profile": context.status_profile, "path_base": "repository_root", "turns": []}
 
     def turn(self, message: str) -> dict:
         # Secrets are removed before sending to a provider or capturing any state/log.
@@ -71,6 +77,17 @@ class AgentSession:
         trace["control"] = dict(self.state["control"])
         last = self.state["messages"][-1]
         trace["final_response"] = redact(response_text(last.content))
+        trace["response_source"] = "model"
+        confirmed = {key for key, entry in self.state["tool_results"].items()
+                     if entry["turn"] == self.state["control"]["turn"]
+                     and entry["tool"] == "prepare_ticket" and entry["data"].get("created")
+                     and entry["data"].get("ticket_request_id") == self.state["helpdesk"].get("ticket_request_id")}
+        if confirmed and self.state["control"]["stop_reason"] == "final_response":
+            result_message = next(m for m in reversed(self.state["messages"])
+                                  if isinstance(m, ToolMessage) and m.tool_call_id in confirmed)
+            trace["model_response"] = trace["final_response"]  # Actual model output remains unchanged in the trace/history.
+            trace["final_response"] = render_ticket_confirmation(json.loads(result_message.content))
+            trace["response_source"] = "saved_ticket_fields"
         # Usage is read from actual AIMessage metadata, never estimated for fake models.
         trace["token_usage"] = [item.get("usage_metadata") for step in trace["steps"]
                                 for update in step["node_updates"] if update["node"] == "agent"
@@ -79,6 +96,7 @@ class AgentSession:
         return trace
 
     def save(self, path: Path):
+        path = repository_path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(serializable(self.log), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -96,9 +114,9 @@ def run_scenario(scenario_id: str, *, model=None, model_name=None, output=None,
     session = AgentSession(graph, context, model_name=model_name or os.getenv("MODEL_NAME", "unconfigured"), evidence_kind=evidence_kind)
     command = ["python", "-m", "helpdesk.cli", "--scenario", scenario_id]
     if storage_dir is not None:
-        command.extend(["--storage-dir", str(storage_dir)])
+        command.extend(["--storage-dir", Path(storage_dir).as_posix()])
     if output is not None:
-        command.extend(["--output", str(output)])
+        command.extend(["--output", Path(output).as_posix()])
     session.log.update(scenario_id=scenario_id, reset_before=scenario["reset_before"],
                        reset_note="New isolated in-process state; no persistent conversation or user store.",
                        command=shlex.join(command))

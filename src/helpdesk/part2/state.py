@@ -7,6 +7,8 @@ from uuid import uuid4
 from langchain_core.messages import AnyMessage
 from langgraph.graph.message import add_messages
 
+from ..paths import repository_path
+
 
 class HelpdeskContext(TypedDict, total=False):
     category: str
@@ -16,6 +18,7 @@ class HelpdeskContext(TypedDict, total=False):
     ticket_requested: bool
     ticket_condition: str
     ticket_id: str | None
+    ticket_request_id: str | None
     secret_detected: bool
 
 
@@ -65,6 +68,7 @@ class SessionContext:
     run_id: str = field(default_factory=lambda: uuid4().hex)
 
     def __post_init__(self):
+        object.__setattr__(self, "storage_dir", repository_path(self.storage_dir))
         if self.status_profile not in ("normal", "wifi_outage", "recovery_outage", "status_unavailable"):
             raise ValueError("Unsupported status profile")
         if not self.user_id.strip() or not self.thread_id.strip():
