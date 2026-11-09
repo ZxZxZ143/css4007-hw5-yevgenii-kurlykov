@@ -5,14 +5,14 @@ from threading import Barrier
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 import pytest
 
-from helpdesk.agent import ConfigurationError, build_agent_graph, openai_model
-from helpdesk.agent_runner import AgentSession, PART2_SCENARIOS, run_scenario
-from helpdesk.agent_state import SessionContext, merge_results
+from helpdesk.part2.agent import ConfigurationError, build_agent_graph, openai_model
+from helpdesk.part2.runner import AgentSession, PART2_SCENARIOS, run_scenario
+from helpdesk.part2.state import SessionContext, merge_results
 from helpdesk.cli import main
-from helpdesk.nodes import ROOT
-from helpdesk.ticket_policy import derive_helpdesk, redact
-from helpdesk.tools import agent_tools, check_service_status, find_instructions, prepare_ticket, read_fixture
-from tests.fake_model import DemoFakeModel, ScriptedModel, call
+from helpdesk.paths import ROOT
+from helpdesk.part2.ticket_policy import derive_helpdesk, redact
+from helpdesk.part2.tools import agent_tools, check_service_status, find_instructions, prepare_ticket, read_fixture
+from tests.part2.fake_model import DemoFakeModel, ScriptedModel, call
 
 CONDITIONAL = "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect. Check whether Wi-Fi is down. If it is operating, prepare a ticket about this problem."
 UNCONDITIONAL = "My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails. Prepare a ticket."
@@ -128,7 +128,7 @@ def test_secrets_not_written_or_sent(tmp_path, secret):
 
 
 def test_parallel_tools_really_overlap_and_reach_model(tmp_path, monkeypatch):
-    import helpdesk.tools as module
+    import helpdesk.part2.tools as module
     barrier = Barrier(2)
     instructions, status = module.find_instructions, module.check_service_status
     def first(topic):
@@ -183,7 +183,7 @@ def test_tool_errors_close_protocol(tmp_path, bad_call):
 
 
 def test_tool_exception_is_safe(tmp_path, monkeypatch):
-    import helpdesk.tools as module
+    import helpdesk.part2.tools as module
     def fail(topic):
         raise OSError("sensitive internal detail")
     monkeypatch.setattr(module, "find_instructions", fail)
@@ -346,7 +346,7 @@ def test_unconditional_outage_ticket_is_allowed(tmp_path):
 
 
 def test_missing_snapshot_record_stays_unknown(monkeypatch):
-    import helpdesk.tools as module
+    import helpdesk.part2.tools as module
     read = module.read_fixture
     def missing(name):
         data = read(name)
@@ -378,7 +378,7 @@ def test_usage_metadata_is_actual_message_usage(tmp_path):
 
 
 def test_cli_part2_interactive_and_scenario_dispatch(monkeypatch, tmp_path, capsys):
-    import helpdesk.agent as module
+    import helpdesk.part2.agent as module
     monkeypatch.setattr(module, "openai_model", DemoFakeModel)
     messages = iter(["Prepare a support ticket.", "The issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.", "/quit"])
     monkeypatch.setattr("builtins.input", lambda _: next(messages))

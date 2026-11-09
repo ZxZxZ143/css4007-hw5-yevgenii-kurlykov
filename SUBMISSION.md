@@ -4,7 +4,7 @@
 
 ### My graph and state
 
-The **Original / Initial Version** is compiled by `build_original_graph()` in `src/helpdesk/graphs.py`:
+The **Original / Initial Version** is compiled by `build_original_graph()` in `src/helpdesk/part1/graphs.py`:
 
 ```mermaid
 flowchart TD
@@ -134,13 +134,13 @@ The live runs use the same `run_scenario` function as the CLI; the logs identify
 | [S09](outputs/part2/S09.json) | First asked for the issue and steps with no tool/write. After the supplied clarification, read guide/status in parallel, then created the draft. Its recorded status is operational. | 4 / 3 | 5,051 |
 | [S14](outputs/part2/S14.json) | Checked account_recovery in recovery_outage, reported outage and no supplied repair time. No Wi-Fi lookup or ticket was performed. | 2 / 1 | 2,060 |
 
-`python -m tests.verify_live_evidence` verifies the saved tool-call/response IDs, successful termination, usage counts, actual draft files, template fields, reported steps and causal ordering. S06's ticket is created only after the operational status result has been committed in an earlier tools step. S08/S09 demonstrate actual multiple-tool responses, complementing the offline concurrency-barrier test.
+`python -m scripts.part2.verify_live` verifies the saved tool-call/response IDs, successful termination, usage counts, actual draft files, template fields, reported steps and causal ordering. S06's ticket is created only after the operational status result has been committed in an earlier tools step. S08/S09 demonstrate actual multiple-tool responses, complementing the offline concurrency-barrier test.
 
 The [initial S09 run](outputs/part2/initial/S09.json) failed the expected second-turn draft behavior: the model incorrectly required contact/device/location details that the template does not need. The prompt was corrected to specify the exact required information and preserve the earlier ticket request without another confirmation. The [initial S08 run](outputs/part2/initial/S08.json) honored the condition but described the operational requirement too broadly; the prompt now explicitly permits unconditional drafts without operational status. Both scenarios were rerun successfully, with their accepted traces linked above. These initial attempts are retained as genuine debugging evidence rather than presented as passing results.
 
 ### Measured offline demonstrations
 
-Run `python -m tests.record_part2` after the README setup to repeat direct calls and clearly labelled offline graph scenarios. [direct_tools.json](outputs/part2/fake/direct_tools.json) records actual direct calls to `find_instructions` for both topics, `check_service_status` for both services in all four profiles, and `prepare_ticket` with fictional user-reported details. The corresponding JSON draft exists at the returned path. Password maps to `account_recovery`; missing status data remains unknown.
+Run `python -m scripts.part2.record_offline` after the README setup to repeat direct calls and clearly labelled offline graph scenarios. [direct_tools.json](outputs/part2/fake/direct_tools.json) records actual direct calls to `find_instructions` for both topics, `check_service_status` for both services in all four profiles, and `prepare_ticket` with fictional user-reported details. The corresponding JSON draft exists at the returned path. Password maps to `account_recovery`; missing status data remains unknown.
 
 | Scenario | Actual fake-model graph behavior | Model calls / completed tools |
 | --- | --- | --- |

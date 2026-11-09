@@ -1,9 +1,9 @@
-"""Verify saved live artifacts without making API calls: python -m tests.verify_live_evidence."""
+"""Verify saved live artifacts without making API calls: python -m scripts.part2.verify_live."""
 import json
 from pathlib import Path
 
-from helpdesk.agent_runner import PART2_SCENARIOS
-from helpdesk.tools import read_fixture
+from helpdesk.part2.runner import PART2_SCENARIOS
+from helpdesk.part2.tools import read_fixture
 
 
 def main():

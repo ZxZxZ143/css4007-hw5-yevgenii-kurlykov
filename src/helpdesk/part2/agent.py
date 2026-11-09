@@ -8,8 +8,8 @@ from langgraph.prebuilt import ToolNode
 from langgraph.runtime import Runtime
 from langgraph.types import Command
 
-from .agent_state import HelpdeskAgentState, SessionContext
-from .nodes import ROOT
+from .state import HelpdeskAgentState, SessionContext
+from ..paths import ROOT
 from .ticket_policy import derive_helpdesk
 from .tools import agent_tools
 

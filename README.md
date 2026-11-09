@@ -44,7 +44,7 @@ Each invocation prints JSON. Scenario commands also save traces in `outputs/part
 
 The predictions were recorded before implementation/execution in [PREDICTIONS.md](outputs/part1/PREDICTIONS.md). The explanation and measured results are in [SUBMISSION.md](SUBMISSION.md). Instructions are read from `data/helpdesk.json` at execution time. No supplied fixture was edited. Part 1 has no persistent memory, so every invocation starts fresh.
 
-Code: `src/helpdesk/{state,nodes,graphs,trace,cli}.py`. Import `build_original_graph` or `build_main_graph` from `helpdesk.graphs` to compile either graph independently. Both use shared help nodes; only Main includes `clarify_problem` and the two-topic classification. The tests execute real graphs, compare saved evidence with fresh runs, verify fixture retrieval and preserved state, and run the default CLI with provider imports and network connections blocked. The Part 1 tests use no fake model.
+Code: `src/helpdesk/part1/{state,nodes,graphs,trace,cli}.py`. Import `build_original_graph` or `build_main_graph` from `helpdesk.part1.graphs` to compile either graph independently. Both use shared help nodes; only Main includes `clarify_problem` and the two-topic classification. The tests execute real graphs, compare saved evidence with fresh runs, verify fixture retrieval and preserved state, and run the default CLI with provider imports and network connections blocked. The Part 1 tests use no fake model.
 
 ## Part 2 — Single OpenAI agent
 
@@ -62,12 +62,12 @@ python -m helpdesk.cli --scenario S14
 
 python -m pytest -q
 # Explicitly offline evidence; this does NOT contact OpenAI.
-python -m tests.record_part2
+python -m scripts.part2.record_offline
 ```
 
 Enter `/quit` or EOF to end interactive mode. The same process retains the current conversation, including S06/S09 follow-up details. Scenario replay reads exact fixture events and snapshot names, starts isolated state for each scenario, and writes live execution logs to `outputs/part2/Sxx.json`. The scenario fixture controls identity and snapshot; ordinary sessions use CLI options. No user preferences, checkpointer or restart recovery are implemented.
 
-The compiled `build_agent_graph()` uses one model and the loop `START → agent → tools → agent`, ending when the model answers without tool calls. `bind_tools(..., parallel_tool_calls=True)` permits multiple requests; standard `ToolNode` runs independent tools concurrently. There is no second agent. Python direct functions in `helpdesk.tools` provide:
+The compiled `build_agent_graph()` uses one model and the loop `START → agent → tools → agent`, ending when the model answers without tool calls. `bind_tools(..., parallel_tool_calls=True)` permits multiple requests; standard `ToolNode` runs independent tools concurrently. There is no second agent. Python direct functions in `helpdesk.part2.tools` provide:
 
 | Tool | Inputs visible to the model | Local behavior |
 | --- | --- | --- |
@@ -85,9 +85,43 @@ Default budgets are six model calls and five tool dispatch attempts per user tur
 
 Drafts default to ignored `local-storage/tickets/`; change with `HELPDESK_STORAGE_DIR` or `--storage-dir`. JSON traces default to `outputs/part2/Sxx.json` for live scenarios. The verified live examples use `outputs/part2/live_drafts/S06/` and `S09/`; their exact replay commands are recorded in [LIVE_STATUS.json](outputs/part2/LIVE_STATUS.json). Offline traces and explicitly fictional drafts remain separate in [outputs/part2/fake](outputs/part2/fake). Direct tool evidence is [direct_tools.json](outputs/part2/fake/direct_tools.json). Regenerating offline evidence creates new draft IDs; it never substitutes for live verification. Tests write temporary drafts under pytest's temporary directory. `.env` is ignored and must remain untracked.
 
-Offline verification covers real LangGraph transitions with a labelled fake model, direct tools, true concurrent reads using a thread barrier, sequential write guards, malformed input/protocol, budgets, redaction, multi-turn sessions and all Part 1 regressions. No additional dependencies were required beyond the existing pinned environment. The five final accepted live traces contain **16 model calls, 11 tool executions and 19,216 tokens** (12,384 input; 6,832 output, including reported reasoning tokens). S08 and S09 include actual parallel guide/status requests; S06 and S09 save real local draft files. Run `python -m tests.verify_live_evidence` to verify the saved protocol, counts and draft contents without API calls. See [Part 2 verification](outputs/part2/VERIFICATION.md).
+Offline verification covers real LangGraph transitions with a labelled fake model, direct tools, true concurrent reads using a thread barrier, sequential write guards, malformed input/protocol, budgets, redaction, multi-turn sessions and all Part 1 regressions. No additional dependencies were required beyond the existing pinned environment. The five final accepted live traces contain **16 model calls, 11 tool executions and 19,216 tokens** (12,384 input; 6,832 output, including reported reasoning tokens). S08 and S09 include actual parallel guide/status requests; S06 and S09 save real local draft files. Run `python -m scripts.part2.verify_live` to verify the saved protocol, counts and draft contents without API calls. See [Part 2 verification](outputs/part2/VERIFICATION.md).
 
 The initial S09 live response requested unnecessary contact/device details and did not create the draft after the required clarification. The system instructions were corrected to require only the fixture's problem/steps and to preserve the original request. S08 was rerun after clarifying that an explicit unconditional ticket does not require operational status. The initial traces are retained under `outputs/part2/initial/`; the final accepted traces are at the Part 2 root. Responses API protocol blocks remain in in-process message history but are omitted from display/logs; CLI output uses UTF-8 for Windows Unicode replies. Live behavior remains probabilistic, and conservative English intent extraction may request clarification for unfamiliar wording.
+
+## Project layout
+
+```text
+src/helpdesk/
+  cli.py                 # Shared CLI dispatcher; existing run commands stay the same
+  paths.py               # Shared repository/fixture paths
+  part1/
+    cli.py               # Predictions and deterministic scenario execution
+    state.py
+    nodes.py
+    graphs.py            # Original and Improved / Main graphs
+    trace.py
+  part2/
+    cli.py               # Agent and interactive sessions
+    state.py
+    agent.py             # OpenAI / ToolNode graph
+    runner.py            # In-process sessions and execution traces
+    tools.py
+    ticket_policy.py
+tests/
+  part1/test_routing.py
+  part2/test_agent.py
+  part2/fake_model.py
+scripts/part2/
+  record_offline.py       # Offline evidence generation
+  verify_live.py          # Validate saved live evidence without API calls
+data/                    # Original shared fixtures
+outputs/
+  part1/                 # Original and improved graph evidence
+  part2/                 # Live/fake evidence and fictional draft files
+```
+
+Run each test group with `python -m pytest tests/part1 -q` or `python -m pytest tests/part2 -q`; `python -m pytest -q` runs both. Public CLI commands still use `python -m helpdesk.cli`. Import Part 1 builders from `helpdesk.part1.graphs` and the agent builder from `helpdesk.part2.agent`. Shared fixtures, environment configuration and dependency files remain at the repository root. Historical JSON evidence retains the commands and module names used when collected; current helper commands are `python -m scripts.part2.record_offline` and `python -m scripts.part2.verify_live`.
 
 ## Start from this repository
 

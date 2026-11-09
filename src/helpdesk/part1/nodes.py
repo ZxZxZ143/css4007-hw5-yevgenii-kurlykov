@@ -1,10 +1,8 @@
 import json
 from pathlib import Path
 
+from ..paths import GUIDE_PATH
 from .state import HelpdeskState
-
-ROOT = Path(__file__).resolve().parents[2]
-GUIDE_PATH = ROOT / "data" / "helpdesk.json"
 
 
 def classify(message: str, *, clarify_both: bool) -> str:

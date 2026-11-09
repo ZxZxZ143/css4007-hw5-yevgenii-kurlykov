@@ -9,8 +9,8 @@ import shlex
 from langchain_core.messages import BaseMessage, HumanMessage
 
 from .agent import build_agent_graph, initial_agent_state
-from .agent_state import SessionContext
-from .nodes import ROOT
+from .state import SessionContext
+from ..paths import ROOT
 from .ticket_policy import derive_helpdesk, redact
 
 PART2_SCENARIOS = ("S06", "S07", "S08", "S09", "S14")

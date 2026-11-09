@@ -6,8 +6,8 @@ from uuid import NAMESPACE_URL, uuid5
 from langchain_core.tools import tool
 from langgraph.prebuilt import ToolRuntime
 
-from .agent_state import HelpdeskAgentState, HelpdeskContext, SessionContext, ToolResultsState
-from .nodes import ROOT
+from .state import HelpdeskAgentState, HelpdeskContext, SessionContext, ToolResultsState
+from ..paths import ROOT
 from .ticket_policy import redact
 
 

@@ -3,7 +3,7 @@ import re
 
 from langchain_core.messages import HumanMessage
 
-from .agent_state import HelpdeskContext
+from .state import HelpdeskContext
 
 SECRET_PATTERNS = (
     r"\bsk-[A-Za-z0-9_-]{8,}",

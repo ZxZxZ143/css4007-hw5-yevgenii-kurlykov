@@ -1,5 +1,7 @@
 # Save your own results here
 
+Historical JSON evidence preserves the commands and module paths used at collection time. After the source reorganization, use `python -m scripts.part2.record_offline` to regenerate offline examples and `python -m scripts.part2.verify_live` to validate saved live evidence. The common application entry point remains `python -m helpdesk.cli`.
+
 Commit small text or JSON logs for the supplied scenarios. Start each log with its scenario identifier and record the command, snapshot, user and thread. Include your actual node/tool trace and final reply. Keep local ticket drafts here if they contain only invented demo data. Store live memory under the ignored local-storage directory.
 
 This starter contains no completed runs. Do not present the illustrative conversations from SCENARIOS.md as results from your code.
@@ -14,6 +16,6 @@ Each JSON log contains the command, fixture context, selected graph version, exa
 
 ## Part 2 evidence status
 
-[part2/S06.json](part2/S06.json), S07.json, S08.json, S09.json and S14.json now contain verified **live OpenAI** executions using gpt-5-mini (API identifier gpt-5-mini-2025-08-07). [part2/LIVE_STATUS.json](part2/LIVE_STATUS.json) records actual outcomes, calls, usage and local draft paths. Run `python -m tests.verify_live_evidence` to validate those saved artifacts without API calls. Initial S08/S09 attempts are retained in `part2/initial/` and described in the submission; final accepted traces are at the Part 2 root.
+[part2/S06.json](part2/S06.json), S07.json, S08.json, S09.json and S14.json now contain verified **live OpenAI** executions using gpt-5-mini (API identifier gpt-5-mini-2025-08-07). [part2/LIVE_STATUS.json](part2/LIVE_STATUS.json) records actual outcomes, calls, usage and local draft paths. Run `python -m scripts.part2.verify_live` to validate those saved artifacts without API calls. Initial S08/S09 attempts are retained in `part2/initial/` and described in the submission; final accepted traces are at the Part 2 root.
 
-[part2/fake](part2/fake) remains separate: these are real local graph/tool executions driven by an explicitly labelled deterministic fake model, plus fictional example drafts and direct tool results. Regenerate with `python -m tests.record_part2`. Fake traces are **not OpenAI demonstrations**. See [part2/VERIFICATION.md](part2/VERIFICATION.md). Part 3 evidence is not supplied yet.
+[part2/fake](part2/fake) remains separate: these are real local graph/tool executions driven by an explicitly labelled deterministic fake model, plus fictional example drafts and direct tool results. Regenerate with `python -m scripts.part2.record_offline`. Fake traces are **not OpenAI demonstrations**. See [part2/VERIFICATION.md](part2/VERIFICATION.md). Part 3 evidence is not supplied yet.

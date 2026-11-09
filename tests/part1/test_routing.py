@@ -6,9 +6,9 @@ import sys
 import pytest
 
 from helpdesk.cli import main
-from helpdesk.graphs import build_main_graph, build_original_graph, choose_route
-from helpdesk.nodes import GUIDE_PATH, ROOT
-from helpdesk.trace import execute
+from helpdesk.part1.graphs import build_main_graph, build_original_graph, choose_route
+from helpdesk.paths import GUIDE_PATH, ROOT
+from helpdesk.part1.trace import execute
 
 
 @pytest.mark.parametrize("builder,version", [(build_original_graph, "original"), (build_main_graph, "main")])

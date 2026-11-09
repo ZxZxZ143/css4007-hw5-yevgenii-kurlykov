@@ -15,7 +15,7 @@ Verified directly and through real graph execution:
 - Multi-turn state, isolated sessions, interactive CLI, token-metadata capture and unchanged Part 1 defaults/evidence.
 - Responses API final text excludes encrypted/protocol blocks; those blocks remain available only in the running model history. UTF-8 CLI output handles Unicode outside the Windows legacy code page.
 
-`python -m tests.record_part2` generated [direct tool evidence](fake/direct_tools.json) and the five **deterministic fake-model** scenario traces under `fake/`. These are actual local graph/tool executions, not OpenAI results. S06 and S09 created fictional local example drafts; S07/S08/S14 created no draft. Paths and draft identifiers are recorded in the actual tool results.
+`python -m scripts.part2.record_offline` generated [direct tool evidence](fake/direct_tools.json) and the five **deterministic fake-model** scenario traces under `fake/`. These are actual local graph/tool executions, not OpenAI results. S06 and S09 created fictional local example drafts; S07/S08/S14 created no draft. Paths and draft identifiers are recorded in the actual tool results.
 
 ## Live OpenAI evidence
 
@@ -31,7 +31,7 @@ The model was configured as `gpt-5-mini`; all actual AIMessage metadata identifi
 
 Final accepted totals: **16 model calls, 11 tool executions, 12,384 input tokens, 6,832 output tokens, 19,216 total tokens**. Output totals include reported reasoning-token usage. S08/S09 contain actual parallel instruction/status requests; S06/S09 create draft files only after prerequisite tool results. The two committed live example drafts are under `live_drafts/S06/tickets/` and `live_drafts/S09/tickets/`.
 
-`python -m tests.verify_live_evidence` checked actual tool-call/response pairing, normal completion, usage counts, expected statuses/services, draft existence/template fields, exact reported steps and earlier-step authorization for the conditional write. [LIVE_STATUS.json](LIVE_STATUS.json) is generated from these saved traces; verification makes no API calls.
+`python -m scripts.part2.verify_live` checked actual tool-call/response pairing, normal completion, usage counts, expected statuses/services, draft existence/template fields, exact reported steps and earlier-step authorization for the conditional write. [LIVE_STATUS.json](LIVE_STATUS.json) is generated from these saved traces; verification makes no API calls.
 
 The [initial S09 attempt](initial/S09.json) did not create the requested second-turn draft because the model required irrelevant contact/device information. The system prompt now specifies the actual template requirements and instructs it to honor the earlier request when clarification is supplied. The [initial S08 attempt](initial/S08.json) respected the condition but described the restriction too broadly; the prompt now distinguishes unconditional requests explicitly. Both were rerun and passed. Initial attempts are retained separately and excluded from the final totals above.
 
