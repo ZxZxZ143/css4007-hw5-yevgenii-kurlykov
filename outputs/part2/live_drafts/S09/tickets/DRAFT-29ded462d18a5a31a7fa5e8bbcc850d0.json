@@ -1,0 +1,16 @@
+{
+  "ticket_id": "DRAFT-29ded462d18a5a31a7fa5e8bbcc850d0",
+  "status": "draft",
+  "user_id": "demo-user-a",
+  "thread_id": "s09",
+  "category": "wifi",
+  "summary": "I enabled it and tried reconnecting, but it still fails.",
+  "steps_tried": [
+    "I enabled it and tried reconnecting, but it still fails."
+  ],
+  "service_status": "operational",
+  "status_profile": "normal",
+  "reference_ids": [
+    "GUIDE-WIFI"
+  ]
+}

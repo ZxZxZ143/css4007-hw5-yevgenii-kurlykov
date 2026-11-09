@@ -437,3 +437,26 @@ def test_status_from_earlier_user_turn_cannot_authorize_ticket(tmp_path):
     assert not list(tmp_path.rglob("DRAFT-*.json"))
     assert any(e["data"].get("service_status") == "not_checked" for e in run.state["tool_results"].values())
     assert_protocol(run.state["messages"])
+
+
+def test_responses_blocks_are_not_displayed_or_saved_as_final_text(tmp_path):
+    model = ScriptedModel([AIMessage(content=[
+        {"type": "reasoning", "id": "rs_test", "encrypted_content": "opaque-provider-protocol"},
+        {"type": "text", "text": "Visible reply only."},
+    ])])
+    run = session(tmp_path, model)
+    trace = run.turn("hello")
+    run.save(tmp_path / "trace.json")
+    assert trace["final_response"] == "Visible reply only."
+    assert "opaque-provider-protocol" not in (tmp_path / "trace.json").read_text()
+    assert run.state["messages"][-1].content[0]["encrypted_content"] == "opaque-provider-protocol"
+
+
+def test_cli_unicode_output_on_legacy_windows_encoding():
+    import os
+    import subprocess
+    import sys
+    env = {**os.environ, "PYTHONIOENCODING": "ascii"}
+    result = subprocess.run([sys.executable, "-m", "helpdesk.cli", "--message", "Wi-Fi \u2011 test"],
+                            env=env, capture_output=True, check=True)
+    assert json.loads(result.stdout.decode("utf-8"))["message"] == "Wi-Fi \u2011 test"

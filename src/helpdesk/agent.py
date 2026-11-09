@@ -23,6 +23,14 @@ if a ticket is conditional on an operational service, first complete the status 
 inspect its result, then request prepare_ticket in a later batch. Outage, unknown, and
 not checked do not satisfy that condition. Read rejection results and ask for clarification.
 After clarification in a later user turn, complete the previously requested draft if safe.
+The draft requires only the problem category, a meaningful description and reported
+steps tried (or an explicit statement that none were tried). Do not require contact
+details, device/OS, location, time or urgency: those are not fields in this draft template.
+Once the user supplies the missing issue and steps, call prepare_ticket in that turn;
+the original request is still authorization, so do not ask for confirmation again.
+Operational status is required ONLY for a conditional request. An explicitly unconditional
+request may produce a draft during an outage or with status not_checked. Never describe
+the operational-only restriction as applying to all tickets. Keep final responses concise.
 Do not request or repeat passwords, API keys or recovery codes. Ground final replies in
 tool results, including the actual ticket ID and path only when a draft was created.
 State explicitly that statuses describe fictional fixtures, not real university services."""

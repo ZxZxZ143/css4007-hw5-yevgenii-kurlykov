@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 
 from langchain_core.messages import BaseMessage, HumanMessage
 
@@ -20,12 +21,20 @@ def serializable(value):
         return serializable(value.model_dump(mode="json"))
     if isinstance(value, dict):
         return {k: "[REDACTED SECRET]" if re.fullmatch(r"(?i)(?:.*api[_-]?key|password|recovery[_-]?code)", k)
-                else serializable(v) for k, v in value.items()}
+                else serializable(v) for k, v in value.items() if k != "encrypted_content"}
     if isinstance(value, (list, tuple)):
-        return [serializable(v) for v in value]
+        return [serializable(v) for v in value if not (isinstance(v, dict) and v.get("type") == "reasoning")]
     if isinstance(value, str):
         return redact(value)
     return value
+
+
+def response_text(content) -> str:
+    """Responses API content may include non-display protocol blocks."""
+    if isinstance(content, str):
+        return content
+    return "\n".join(block["text"] for block in content
+                     if isinstance(block, dict) and block.get("type") == "text")
 
 
 class AgentSession:
@@ -61,7 +70,7 @@ class AgentSession:
         trace["nodes_executed"] = [item["node"] for step in trace["steps"] for item in step["node_updates"]]
         trace["control"] = dict(self.state["control"])
         last = self.state["messages"][-1]
-        trace["final_response"] = serializable(last.content)
+        trace["final_response"] = redact(response_text(last.content))
         # Usage is read from actual AIMessage metadata, never estimated for fake models.
         trace["token_usage"] = [item.get("usage_metadata") for step in trace["steps"]
                                 for update in step["node_updates"] if update["node"] == "agent"
@@ -85,9 +94,14 @@ def run_scenario(scenario_id: str, *, model=None, model_name=None, output=None,
     context = SessionContext(first["user_id"], first["thread_id"], scenario["status_profile"],
                              Path(storage_dir or os.getenv("HELPDESK_STORAGE_DIR", ROOT / "local-storage")))
     session = AgentSession(graph, context, model_name=model_name or os.getenv("MODEL_NAME", "unconfigured"), evidence_kind=evidence_kind)
+    command = ["python", "-m", "helpdesk.cli", "--scenario", scenario_id]
+    if storage_dir is not None:
+        command.extend(["--storage-dir", str(storage_dir)])
+    if output is not None:
+        command.extend(["--output", str(output)])
     session.log.update(scenario_id=scenario_id, reset_before=scenario["reset_before"],
                        reset_note="New isolated in-process state; no persistent conversation or user store.",
-                       command=f"python -m helpdesk.cli --scenario {scenario_id}")
+                       command=shlex.join(command))
     for event in scenario["events"]:
         if event["action"] != "message":
             raise ValueError("Process restart scenarios belong to Part 3")

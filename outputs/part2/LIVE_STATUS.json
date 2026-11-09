@@ -1,50 +1,133 @@
 {
-  "evidence_kind": "configuration_check_not_a_live_execution",
-  "api_key_present": false,
-  "model_configured": false,
-  "verified_openai_model": null,
-  "real_token_usage": null,
+  "evidence_kind": "verified_saved_live_openai_executions",
+  "provider": "OpenAI",
+  "requested_model": "gpt-5-mini",
+  "verified_openai_models": [
+    "gpt-5-mini-2025-08-07"
+  ],
   "scenarios": [
     {
       "scenario_id": "S06",
-      "command": "python -m helpdesk.cli --scenario S06",
-      "exit_code": 2,
-      "verification_status": "pending_missing_configuration",
-      "model_calls": 0,
-      "tool_calls": 0
+      "verification_status": "passed_live_openai",
+      "log": "outputs\\part2\\S06.json",
+      "command": "python -m helpdesk.cli --scenario S06 --storage-dir outputs/part2/live_drafts/S06",
+      "ticket_paths": [
+        "outputs\\part2\\live_drafts\\S06\\tickets\\DRAFT-11f2bb0b607d5a4b8a39b0312bdf0f84.json"
+      ],
+      "model_calls": 5,
+      "tool_calls": 3,
+      "token_usage": {
+        "input_tokens": 3785,
+        "output_tokens": 1257,
+        "total_tokens": 5042
+      },
+      "tool_batches": [
+        [
+          "find_instructions"
+        ],
+        [
+          "check_service_status"
+        ],
+        [
+          "prepare_ticket"
+        ]
+      ]
     },
     {
       "scenario_id": "S07",
-      "command": "python -m helpdesk.cli --scenario S07",
-      "exit_code": 2,
-      "verification_status": "pending_missing_configuration",
-      "model_calls": 0,
-      "tool_calls": 0
+      "verification_status": "passed_live_openai",
+      "log": "outputs\\part2\\S07.json",
+      "command": "python -m helpdesk.cli --scenario S07 --storage-dir outputs/part2/live_drafts/S07",
+      "ticket_paths": [],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "token_usage": {
+        "input_tokens": 2576,
+        "output_tokens": 1659,
+        "total_tokens": 4235
+      },
+      "tool_batches": [
+        [
+          "check_service_status"
+        ],
+        [
+          "find_instructions"
+        ]
+      ]
     },
     {
       "scenario_id": "S08",
-      "command": "python -m helpdesk.cli --scenario S08",
-      "exit_code": 2,
-      "verification_status": "pending_missing_configuration",
-      "model_calls": 0,
-      "tool_calls": 0
+      "verification_status": "passed_live_openai",
+      "log": "outputs\\part2\\S08.json",
+      "command": "python -m helpdesk.cli --scenario S08 --storage-dir outputs/part2/live_drafts/S08",
+      "ticket_paths": [],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "token_usage": {
+        "input_tokens": 1497,
+        "output_tokens": 1331,
+        "total_tokens": 2828
+      },
+      "tool_batches": [
+        [
+          "find_instructions",
+          "check_service_status"
+        ]
+      ]
     },
     {
       "scenario_id": "S09",
-      "command": "python -m helpdesk.cli --scenario S09",
-      "exit_code": 2,
-      "verification_status": "pending_missing_configuration",
-      "model_calls": 0,
-      "tool_calls": 0
+      "verification_status": "passed_live_openai",
+      "log": "outputs\\part2\\S09.json",
+      "command": "python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/live_drafts/S09",
+      "ticket_paths": [
+        "outputs\\part2\\live_drafts\\S09\\tickets\\DRAFT-29ded462d18a5a31a7fa5e8bbcc850d0.json"
+      ],
+      "model_calls": 4,
+      "tool_calls": 3,
+      "token_usage": {
+        "input_tokens": 3662,
+        "output_tokens": 1389,
+        "total_tokens": 5051
+      },
+      "tool_batches": [
+        [
+          "find_instructions",
+          "check_service_status"
+        ],
+        [
+          "prepare_ticket"
+        ]
+      ]
     },
     {
       "scenario_id": "S14",
-      "command": "python -m helpdesk.cli --scenario S14",
-      "exit_code": 2,
-      "verification_status": "pending_missing_configuration",
-      "model_calls": 0,
-      "tool_calls": 0
+      "verification_status": "passed_live_openai",
+      "log": "outputs\\part2\\S14.json",
+      "command": "python -m helpdesk.cli --scenario S14 --storage-dir outputs/part2/live_drafts/S14",
+      "ticket_paths": [],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "token_usage": {
+        "input_tokens": 864,
+        "output_tokens": 1196,
+        "total_tokens": 2060
+      },
+      "tool_batches": [
+        [
+          "check_service_status"
+        ]
+      ]
     }
   ],
-  "reason": "OPENAI_API_KEY and MODEL_NAME are not configured. Offline fake traces are stored separately."
+  "totals": {
+    "model_calls": 16,
+    "tool_calls": 11
+  },
+  "token_usage": {
+    "input_tokens": 12384,
+    "output_tokens": 6832,
+    "total_tokens": 19216
+  },
+  "note": "Totals cover the five final accepted traces. Initial S08/S09 runs are retained separately and excluded."
 }

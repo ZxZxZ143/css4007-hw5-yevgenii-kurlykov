@@ -1,0 +1,486 @@
+{
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "model": "gpt-5-mini",
+  "user_id": "demo-user-a",
+  "thread_id": "s08",
+  "status_profile": "status_unavailable",
+  "turns": [
+    {
+      "user_message": "Check whether Wi-Fi is down. If it is operating, prepare a ticket. I already enabled Wi-Fi and reconnected, with no success.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"topic\":\"wifi\"}",
+                        "call_id": "call_aW1HULHXLNEwlwz7IGgQdnzI",
+                        "name": "find_instructions",
+                        "type": "function_call",
+                        "id": "fc_0bec5db0db147975006af23c92999887d2990a956a35953a25",
+                        "status": "completed"
+                      },
+                      {
+                        "arguments": "{\"service\":\"wifi\"}",
+                        "call_id": "call_8CPCcNzTQGTkMjyTMXD1Zt5R",
+                        "name": "check_service_status",
+                        "type": "function_call",
+                        "id": "fc_0bec5db0db147975006af23c9299a887d2966d7e9099f2173a",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0bec5db0db147975006af23c8db69887d2a2080adbd0aa9527",
+                      "created_at": 1794260109.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0bec5db0db147975006af23c8db69887d2a2080adbd0aa9527",
+                    "tool_calls": [
+                      {
+                        "name": "find_instructions",
+                        "args": {
+                          "topic": "wifi"
+                        },
+                        "id": "call_aW1HULHXLNEwlwz7IGgQdnzI",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "wifi"
+                        },
+                        "id": "call_8CPCcNzTQGTkMjyTMXD1Zt5R",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 500,
+                      "output_tokens": 345,
+                      "total_tokens": 845,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 256
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I already enabled Wi-Fi and reconnected, with no success.",
+                  "steps_tried": [
+                    "I already enabled Wi-Fi and reconnected, with no success."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "operational",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I already enabled Wi-Fi and reconnected, with no success.",
+              "steps_tried": [
+                "I already enabled Wi-Fi and reconnected, with no success."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "593b829d-f763-40a6-b7d9-028814751724"
+              },
+              {
+                "type": "human",
+                "id": "2d6b550f-f30d-4947-b546-7613b1ebbd73"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0bec5db0db147975006af23c8db69887d2a2080adbd0aa9527"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": [
+                {
+                  "messages": [
+                    {
+                      "content": "{\"topic\": \"wifi\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\", \"source\": \"data/helpdesk.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "find_instructions",
+                      "id": "7c53efc5-74be-472e-9e21-badf3c168e71",
+                      "tool_call_id": "call_aW1HULHXLNEwlwz7IGgQdnzI",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_aW1HULHXLNEwlwz7IGgQdnzI": {
+                      "tool": "find_instructions",
+                      "data": {
+                        "topic": "wifi",
+                        "instruction_id": "GUIDE-WIFI",
+                        "source": "data/helpdesk.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"service\": \"wifi\", \"status_profile\": \"status_unavailable\", \"status\": \"unknown\", \"message\": \"The demo Wi-Fi status source is unavailable.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "check_service_status",
+                      "id": "53b209bc-d51e-491d-bdc6-889081a316a1",
+                      "tool_call_id": "call_8CPCcNzTQGTkMjyTMXD1Zt5R",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_8CPCcNzTQGTkMjyTMXD1Zt5R": {
+                      "tool": "check_service_status",
+                      "data": {
+                        "service": "wifi",
+                        "status": "unknown",
+                        "status_profile": "status_unavailable",
+                        "source": "data/service_status.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_aW1HULHXLNEwlwz7IGgQdnzI": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_8CPCcNzTQGTkMjyTMXD1Zt5R": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "unknown",
+                  "status_profile": "status_unavailable",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I already enabled Wi-Fi and reconnected, with no success.",
+              "steps_tried": [
+                "I already enabled Wi-Fi and reconnected, with no success."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "593b829d-f763-40a6-b7d9-028814751724"
+              },
+              {
+                "type": "human",
+                "id": "2d6b550f-f30d-4947-b546-7613b1ebbd73"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0bec5db0db147975006af23c8db69887d2a2080adbd0aa9527"
+              },
+              {
+                "type": "tool",
+                "id": "7c53efc5-74be-472e-9e21-badf3c168e71",
+                "tool_call_id": "call_aW1HULHXLNEwlwz7IGgQdnzI"
+              },
+              {
+                "type": "tool",
+                "id": "53b209bc-d51e-491d-bdc6-889081a316a1",
+                "tool_call_id": "call_8CPCcNzTQGTkMjyTMXD1Zt5R"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "I checked the demo Wi‑Fi status and retrieved the local Wi‑Fi guide.\n\nStatus (fictional demo): unknown — \"The demo Wi‑Fi status source is unavailable.\"\nNote: these statuses are fictional fixtures for this demo, not real university services.\n\nBecause the status is unknown, I cannot assume the Wi‑Fi is operating and therefore I will not prepare a ticket automatically (your request was conditional on the service being operating). You said you already enabled Wi‑Fi and reconnected — thanks, that matches the steps you tried.\n\nLocal Wi‑Fi guide (from the demo):\n- Check that Wi‑Fi is enabled and airplane mode is off.\n- Select the fictional Campus‑Demo network.\n- If connection fails, forget the saved network and try connecting again.\n- If the problem remains, check the service status before preparing a ticket.\n\nWhat would you like me to do next?\n- Retry the status check now, or\n- Prepare a ticket anyway (unconditional draft), or\n- Walk you through the “forget network / reconnect” step from the guide.",
+                        "annotations": [],
+                        "id": "msg_0bec5db0db147975006af23c9d79cc87d2b6549b34db290fb1"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0bec5db0db147975006af23c93888c87d28b062f43f5c7197a",
+                      "created_at": 1794260115.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0bec5db0db147975006af23c93888c87d28b062f43f5c7197a",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 997,
+                      "output_tokens": 986,
+                      "total_tokens": 1983,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 704
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 2,
+                  "tool_calls": 2,
+                  "tool_attempts": 2,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I already enabled Wi-Fi and reconnected, with no success.",
+                  "steps_tried": [
+                    "I already enabled Wi-Fi and reconnected, with no success."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": true,
+                  "ticket_condition": "operational",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_aW1HULHXLNEwlwz7IGgQdnzI": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_8CPCcNzTQGTkMjyTMXD1Zt5R": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "unknown",
+                  "status_profile": "status_unavailable",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I already enabled Wi-Fi and reconnected, with no success.",
+              "steps_tried": [
+                "I already enabled Wi-Fi and reconnected, with no success."
+              ],
+              "steps_known": true,
+              "ticket_requested": true,
+              "ticket_condition": "operational",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 2,
+              "tool_calls": 2,
+              "tool_attempts": 2,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "593b829d-f763-40a6-b7d9-028814751724"
+              },
+              {
+                "type": "human",
+                "id": "2d6b550f-f30d-4947-b546-7613b1ebbd73"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0bec5db0db147975006af23c8db69887d2a2080adbd0aa9527"
+              },
+              {
+                "type": "tool",
+                "id": "7c53efc5-74be-472e-9e21-badf3c168e71",
+                "tool_call_id": "call_aW1HULHXLNEwlwz7IGgQdnzI"
+              },
+              {
+                "type": "tool",
+                "id": "53b209bc-d51e-491d-bdc6-889081a316a1",
+                "tool_call_id": "call_8CPCcNzTQGTkMjyTMXD1Zt5R"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0bec5db0db147975006af23c93888c87d28b062f43f5c7197a"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 2,
+        "tool_calls": 2,
+        "tool_attempts": 2,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "I checked the demo Wi‑Fi status and retrieved the local Wi‑Fi guide.\n\nStatus (fictional demo): unknown — \"The demo Wi‑Fi status source is unavailable.\"\nNote: these statuses are fictional fixtures for this demo, not real university services.\n\nBecause the status is unknown, I cannot assume the Wi‑Fi is operating and therefore I will not prepare a ticket automatically (your request was conditional on the service being operating). You said you already enabled Wi‑Fi and reconnected — thanks, that matches the steps you tried.\n\nLocal Wi‑Fi guide (from the demo):\n- Check that Wi‑Fi is enabled and airplane mode is off.\n- Select the fictional Campus‑Demo network.\n- If connection fails, forget the saved network and try connecting again.\n- If the problem remains, check the service status before preparing a ticket.\n\nWhat would you like me to do next?\n- Retry the status check now, or\n- Prepare a ticket anyway (unconditional draft), or\n- Walk you through the “forget network / reconnect” step from the guide.",
+      "token_usage": [
+        {
+          "input_tokens": 500,
+          "output_tokens": 345,
+          "total_tokens": 845,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 256
+          }
+        },
+        {
+          "input_tokens": 997,
+          "output_tokens": 986,
+          "total_tokens": 1983,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 704
+          }
+        }
+      ]
+    }
+  ],
+  "scenario_id": "S08",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m helpdesk.cli --scenario S08 --storage-dir outputs/part2/live_drafts/S08",
+  "execution_method": "Direct Python call to helpdesk.agent_runner.run_scenario; command records the equivalent CLI replay."
+}

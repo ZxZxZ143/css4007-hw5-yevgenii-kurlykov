@@ -1,0 +1,394 @@
+{
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "model": "gpt-5-mini",
+  "user_id": "demo-user-a",
+  "thread_id": "s14",
+  "status_profile": "recovery_outage",
+  "turns": [
+    {
+      "user_message": "My password recovery page is unavailable. Check the service status. Is there a known problem?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"service\":\"account_recovery\"}",
+                        "call_id": "call_AqYPevSxjdPqIDjZRj2Yo8Xr",
+                        "name": "check_service_status",
+                        "type": "function_call",
+                        "id": "fc_007737505a97934a006af23c65093087d2b3c6303e2bd62762",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_007737505a97934a006af23c64045487d294a0a86338c677e3",
+                      "created_at": 1794260068.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_007737505a97934a006af23c64045487d294a0a86338c677e3",
+                    "tool_calls": [
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "account_recovery"
+                        },
+                        "id": "call_AqYPevSxjdPqIDjZRj2Yo8Xr",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 359,
+                      "output_tokens": 74,
+                      "total_tokens": 433,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 0
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "password",
+                  "problem_description": "My password recovery page is unavailable.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "f747b164-1ab3-4931-950b-87e02f8ad4b6"
+              },
+              {
+                "type": "human",
+                "id": "a35fa3aa-07a1-4d87-82cd-b5fc26372aea"
+              },
+              {
+                "type": "ai",
+                "id": "resp_007737505a97934a006af23c64045487d294a0a86338c677e3"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": {
+                "messages": [
+                  {
+                    "content": "{\"service\": \"account_recovery\", \"status_profile\": \"recovery_outage\", \"status\": \"outage\", \"message\": \"The demo account-recovery service is unavailable. The fixture gives no repair time.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "tool",
+                    "name": "check_service_status",
+                    "id": "60b05723-4b21-4776-b19a-eef4f1df20a1",
+                    "tool_call_id": "call_AqYPevSxjdPqIDjZRj2Yo8Xr",
+                    "artifact": null,
+                    "status": "success"
+                  }
+                ],
+                "tool_results": {
+                  "call_AqYPevSxjdPqIDjZRj2Yo8Xr": {
+                    "tool": "check_service_status",
+                    "data": {
+                      "service": "account_recovery",
+                      "status": "outage",
+                      "status_profile": "recovery_outage",
+                      "source": "data/service_status.json",
+                      "fictional": true
+                    },
+                    "turn": 1,
+                    "executed": true
+                  }
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AqYPevSxjdPqIDjZRj2Yo8Xr": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "account_recovery",
+                  "status": "outage",
+                  "status_profile": "recovery_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "f747b164-1ab3-4931-950b-87e02f8ad4b6"
+              },
+              {
+                "type": "human",
+                "id": "a35fa3aa-07a1-4d87-82cd-b5fc26372aea"
+              },
+              {
+                "type": "ai",
+                "id": "resp_007737505a97934a006af23c64045487d294a0a86338c677e3"
+              },
+              {
+                "type": "tool",
+                "id": "60b05723-4b21-4776-b19a-eef4f1df20a1",
+                "tool_call_id": "call_AqYPevSxjdPqIDjZRj2Yo8Xr"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "I checked the account-recovery service in the demo fixture: it reports an outage.\n\n- Service: account_recovery\n- Status: outage\n- Message: \"The demo account-recovery service is unavailable. The fixture gives no repair time.\"\n- Note: this status is from a fictional demo fixture, not a real university service.\n\nWhat you can do now\n- Retry later — the demo fixture gives no repair ETA.\n- If you need immediate help, contact your campus IT helpdesk by phone or visit a walk‑in support location (I can’t provide real phone numbers in this demo).\n- If you want, I can prepare a local draft ticket (saved only to the demo system) so all your details are ready when the service is restored or for staff to pick up. I will not ask you for or record any passwords, recovery codes, or similar secrets.\n\nIf you’d like a draft ticket, tell me:\n1) A short description of the problem (e.g., \"password reset page shows error X\").  \n2) Steps you’ve already tried (or say “none”).  \n3) Your campus username and best contact method (email or phone).  \n\nWould you like me to prepare that draft?",
+                        "annotations": [],
+                        "id": "msg_007737505a97934a006af23c6e940087d2a776602b1d244c5f"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_007737505a97934a006af23c663d2487d297698f5ffe5178e2",
+                      "created_at": 1794260070.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_007737505a97934a006af23c663d2487d297698f5ffe5178e2",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 505,
+                      "output_tokens": 1122,
+                      "total_tokens": 1627,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 832
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "model_calls": 2,
+                  "tool_calls": 1,
+                  "tool_attempts": 1,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "password",
+                  "problem_description": "My password recovery page is unavailable.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AqYPevSxjdPqIDjZRj2Yo8Xr": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "account_recovery",
+                  "status": "outage",
+                  "status_profile": "recovery_outage",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "password",
+              "problem_description": "My password recovery page is unavailable.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "model_calls": 2,
+              "tool_calls": 1,
+              "tool_attempts": 1,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "f747b164-1ab3-4931-950b-87e02f8ad4b6"
+              },
+              {
+                "type": "human",
+                "id": "a35fa3aa-07a1-4d87-82cd-b5fc26372aea"
+              },
+              {
+                "type": "ai",
+                "id": "resp_007737505a97934a006af23c64045487d294a0a86338c677e3"
+              },
+              {
+                "type": "tool",
+                "id": "60b05723-4b21-4776-b19a-eef4f1df20a1",
+                "tool_call_id": "call_AqYPevSxjdPqIDjZRj2Yo8Xr"
+              },
+              {
+                "type": "ai",
+                "id": "resp_007737505a97934a006af23c663d2487d297698f5ffe5178e2"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "model_calls": 2,
+        "tool_calls": 1,
+        "tool_attempts": 1,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "I checked the account-recovery service in the demo fixture: it reports an outage.\n\n- Service: account_recovery\n- Status: outage\n- Message: \"The demo account-recovery service is unavailable. The fixture gives no repair time.\"\n- Note: this status is from a fictional demo fixture, not a real university service.\n\nWhat you can do now\n- Retry later — the demo fixture gives no repair ETA.\n- If you need immediate help, contact your campus IT helpdesk by phone or visit a walk‑in support location (I can’t provide real phone numbers in this demo).\n- If you want, I can prepare a local draft ticket (saved only to the demo system) so all your details are ready when the service is restored or for staff to pick up. I will not ask you for or record any passwords, recovery codes, or similar secrets.\n\nIf you’d like a draft ticket, tell me:\n1) A short description of the problem (e.g., \"password reset page shows error X\").  \n2) Steps you’ve already tried (or say “none”).  \n3) Your campus username and best contact method (email or phone).  \n\nWould you like me to prepare that draft?",
+      "token_usage": [
+        {
+          "input_tokens": 359,
+          "output_tokens": 74,
+          "total_tokens": 433,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        {
+          "input_tokens": 505,
+          "output_tokens": 1122,
+          "total_tokens": 1627,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 832
+          }
+        }
+      ]
+    }
+  ],
+  "scenario_id": "S14",
+  "reset_before": true,
+  "reset_note": "New isolated in-process state; no persistent conversation or user store.",
+  "command": "python -m helpdesk.cli --scenario S14 --storage-dir outputs/part2/live_drafts/S14",
+  "execution_method": "Direct Python call to helpdesk.agent_runner.run_scenario; command records the equivalent CLI replay."
+}
