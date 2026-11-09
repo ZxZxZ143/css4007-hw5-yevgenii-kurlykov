@@ -1,0 +1,781 @@
+{
+  "scenario_id": "S10",
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "command": "python -m helpdesk.cli --scenario S10",
+  "reset_before": true,
+  "scenario_storage": "local-storage/part3-scenarios/S10",
+  "restart_occurred": false,
+  "processes": [
+    {
+      "pid": 29896,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        0,
+        1
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    }
+  ],
+  "events": [
+    {
+      "fixture_event_index": 0,
+      "user_id": "demo-user-a",
+      "thread_id": "s10",
+      "process_id": 29896,
+      "status_profile": "normal",
+      "user_message": "I cannot connect to Wi-Fi. I enabled it and forgot the saved network, but reconnecting failed.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"topic\":\"wifi\"}",
+                        "call_id": "call_AORWIrKsUzq1um0AEcK8f8qe",
+                        "name": "find_instructions",
+                        "type": "function_call",
+                        "id": "fc_0220fe4936d395da006af24ca5b92087d290703234dd0adbff",
+                        "status": "completed"
+                      },
+                      {
+                        "arguments": "{\"service\":\"wifi\"}",
+                        "call_id": "call_gL9AW9E786Ibv633KzDgutKN",
+                        "name": "check_service_status",
+                        "type": "function_call",
+                        "id": "fc_0220fe4936d395da006af24ca5b93487d28ddfc3da0176ea6e",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1",
+                      "created_at": 1794264226.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1",
+                    "tool_calls": [
+                      {
+                        "name": "find_instructions",
+                        "args": {
+                          "topic": "wifi"
+                        },
+                        "id": "call_AORWIrKsUzq1um0AEcK8f8qe",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "wifi"
+                        },
+                        "id": "call_gL9AW9E786Ibv633KzDgutKN",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1015,
+                      "output_tokens": 174,
+                      "total_tokens": 1189,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 64
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "944aab1800004f79b49bee07ce121641",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+                  "steps_tried": [
+                    "I enabled it and forgot the saved network, but reconnecting failed."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+              "steps_tried": [
+                "I enabled it and forgot the saved network, but reconnecting failed."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "944aab1800004f79b49bee07ce121641",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "2985d53d-7881-43c2-a811-52373fa65765"
+              },
+              {
+                "type": "human",
+                "id": "051b8d8e8dcf4abb97f11b0065f61277"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": [
+                {
+                  "messages": [
+                    {
+                      "content": "{\"topic\": \"wifi\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\", \"source\": \"data/helpdesk.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "find_instructions",
+                      "id": "096f0dfc-57b1-40bb-8912-51af6632bb44",
+                      "tool_call_id": "call_AORWIrKsUzq1um0AEcK8f8qe",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_AORWIrKsUzq1um0AEcK8f8qe": {
+                      "tool": "find_instructions",
+                      "data": {
+                        "topic": "wifi",
+                        "instruction_id": "GUIDE-WIFI",
+                        "source": "data/helpdesk.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"service\": \"wifi\", \"status_profile\": \"normal\", \"status\": \"operational\", \"message\": \"The demo Wi-Fi service has no reported outage.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "check_service_status",
+                      "id": "a150675e-1701-4047-a1e5-8aad9352e667",
+                      "tool_call_id": "call_gL9AW9E786Ibv633KzDgutKN",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_gL9AW9E786Ibv633KzDgutKN": {
+                      "tool": "check_service_status",
+                      "data": {
+                        "service": "wifi",
+                        "status": "operational",
+                        "status_profile": "normal",
+                        "source": "data/service_status.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AORWIrKsUzq1um0AEcK8f8qe": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_gL9AW9E786Ibv633KzDgutKN": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+              "steps_tried": [
+                "I enabled it and forgot the saved network, but reconnecting failed."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "944aab1800004f79b49bee07ce121641",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "2985d53d-7881-43c2-a811-52373fa65765"
+              },
+              {
+                "type": "human",
+                "id": "051b8d8e8dcf4abb97f11b0065f61277"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1"
+              },
+              {
+                "type": "tool",
+                "id": "096f0dfc-57b1-40bb-8912-51af6632bb44",
+                "tool_call_id": "call_AORWIrKsUzq1um0AEcK8f8qe"
+              },
+              {
+                "type": "tool",
+                "id": "a150675e-1701-4047-a1e5-8aad9352e667",
+                "tool_call_id": "call_gL9AW9E786Ibv633KzDgutKN"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Thanks — I see you enabled Wi‑Fi and forgot the saved network but reconnecting still failed.\n\nWhat I checked for you:\n- Retrieved the local Wi‑Fi guide (GUIDE-WIFI). It lists: ensure Wi‑Fi is enabled/airplane mode off; select the Campus-Demo network; if connection fails, forget the saved network and try again; if the problem remains, check service status before preparing a ticket.\n- Checked the demo Wi‑Fi service status: operational (no reported outage). This status is for a fictional demo fixture, not a real university service.\n\nNext steps you can try (from the guide): select the Campus‑Demo network and attempt to connect again (you already did forget/reconnect). The guide’s next action is to prepare a support ticket if the problem persists.\n\nWould you like me to prepare a support-ticket draft now (I can save a draft containing the problem category, a brief description, and the steps you’ve already tried)?",
+                        "annotations": [],
+                        "id": "msg_0220fe4936d395da006af24cb24e7c87d298336c0171a695fb"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0220fe4936d395da006af24ca7cf5487d2850835a3733e9560",
+                      "created_at": 1794264231.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0220fe4936d395da006af24ca7cf5487d2850835a3733e9560",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1341,
+                      "output_tokens": 975,
+                      "total_tokens": 2316,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 768
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "944aab1800004f79b49bee07ce121641",
+                  "model_calls": 2,
+                  "tool_calls": 2,
+                  "tool_attempts": 2,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+                  "steps_tried": [
+                    "I enabled it and forgot the saved network, but reconnecting failed."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AORWIrKsUzq1um0AEcK8f8qe": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_gL9AW9E786Ibv633KzDgutKN": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+              "steps_tried": [
+                "I enabled it and forgot the saved network, but reconnecting failed."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "944aab1800004f79b49bee07ce121641",
+              "model_calls": 2,
+              "tool_calls": 2,
+              "tool_attempts": 2,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "2985d53d-7881-43c2-a811-52373fa65765"
+              },
+              {
+                "type": "human",
+                "id": "051b8d8e8dcf4abb97f11b0065f61277"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1"
+              },
+              {
+                "type": "tool",
+                "id": "096f0dfc-57b1-40bb-8912-51af6632bb44",
+                "tool_call_id": "call_AORWIrKsUzq1um0AEcK8f8qe"
+              },
+              {
+                "type": "tool",
+                "id": "a150675e-1701-4047-a1e5-8aad9352e667",
+                "tool_call_id": "call_gL9AW9E786Ibv633KzDgutKN"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca7cf5487d2850835a3733e9560"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "944aab1800004f79b49bee07ce121641",
+        "model_calls": 2,
+        "tool_calls": 2,
+        "tool_attempts": 2,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Thanks — I see you enabled Wi‑Fi and forgot the saved network but reconnecting still failed.\n\nWhat I checked for you:\n- Retrieved the local Wi‑Fi guide (GUIDE-WIFI). It lists: ensure Wi‑Fi is enabled/airplane mode off; select the Campus-Demo network; if connection fails, forget the saved network and try again; if the problem remains, check service status before preparing a ticket.\n- Checked the demo Wi‑Fi service status: operational (no reported outage). This status is for a fictional demo fixture, not a real university service.\n\nNext steps you can try (from the guide): select the Campus‑Demo network and attempt to connect again (you already did forget/reconnect). The guide’s next action is to prepare a support ticket if the problem persists.\n\nWould you like me to prepare a support-ticket draft now (I can save a draft containing the problem category, a brief description, and the steps you’ve already tried)?",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1015,
+          "output_tokens": 174,
+          "total_tokens": 1189,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 64
+          }
+        },
+        {
+          "input_tokens": 1341,
+          "output_tokens": 975,
+          "total_tokens": 2316,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 768
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "f1317e285eb8d792e5df839c70d6dbad244b34b2522a3344c8658dd85dfe7af7",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": [
+            "GUIDE-WIFI"
+          ]
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          },
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          }
+        ],
+        "user_preferences_after": {},
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 2,
+          "tool": 2
+        }
+      }
+    },
+    {
+      "fixture_event_index": 1,
+      "user_id": "demo-user-a",
+      "thread_id": "s10",
+      "process_id": 29896,
+      "status_profile": "normal",
+      "user_message": "Which steps did I already try?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "From this conversation you reported these steps:\n- Enabled Wi‑Fi.\n- Forgot the saved network.\n- Tried reconnecting to the network, but the connection failed.",
+                        "annotations": [],
+                        "id": "msg_0220fe4936d395da006af24cba1d4087d288f18d24ca88700b"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0220fe4936d395da006af24cb59cdc87d28b8da970be09ceff",
+                      "created_at": 1794264245.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0220fe4936d395da006af24cb59cdc87d28b8da970be09ceff",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1431,
+                      "output_tokens": 409,
+                      "total_tokens": 1840,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 320
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "conversation_id": "944aab1800004f79b49bee07ce121641",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+                  "steps_tried": [
+                    "I enabled it and forgot the saved network, but reconnecting failed."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AORWIrKsUzq1um0AEcK8f8qe": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_gL9AW9E786Ibv633KzDgutKN": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+              "steps_tried": [
+                "I enabled it and forgot the saved network, but reconnecting failed."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "conversation_id": "944aab1800004f79b49bee07ce121641",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "2985d53d-7881-43c2-a811-52373fa65765"
+              },
+              {
+                "type": "human",
+                "id": "051b8d8e8dcf4abb97f11b0065f61277"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca29d9887d2953124ec6ab783a1"
+              },
+              {
+                "type": "tool",
+                "id": "096f0dfc-57b1-40bb-8912-51af6632bb44",
+                "tool_call_id": "call_AORWIrKsUzq1um0AEcK8f8qe"
+              },
+              {
+                "type": "tool",
+                "id": "a150675e-1701-4047-a1e5-8aad9352e667",
+                "tool_call_id": "call_gL9AW9E786Ibv633KzDgutKN"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24ca7cf5487d2850835a3733e9560"
+              },
+              {
+                "type": "human",
+                "id": "ae0a2330cbb2447daeab9298e6caedac"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0220fe4936d395da006af24cb59cdc87d28b8da970be09ceff"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 2,
+        "conversation_id": "944aab1800004f79b49bee07ce121641",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "From this conversation you reported these steps:\n- Enabled Wi‑Fi.\n- Forgot the saved network.\n- Tried reconnecting to the network, but the connection failed.",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1431,
+          "output_tokens": 409,
+          "total_tokens": 1840,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 320
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "f1317e285eb8d792e5df839c70d6dbad244b34b2522a3344c8658dd85dfe7af7",
+        "checkpoint_restored": true,
+        "checkpoint_messages_before": 6,
+        "checkpoint_human_messages_before": 1,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {
+            "category": "wifi",
+            "problem_description": "I enabled it and forgot the saved network, but reconnecting failed.",
+            "steps_tried": [
+              "I enabled it and forgot the saved network, but reconnecting failed."
+            ],
+            "steps_known": true,
+            "ticket_requested": false,
+            "ticket_condition": "unconditional",
+            "ticket_id": null,
+            "ticket_request_id": null,
+            "secret_detected": false
+          },
+          "user_json_memory": {},
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          }
+        ],
+        "user_preferences_after": {},
+        "message_counts_after": {
+          "system": 1,
+          "human": 2,
+          "ai": 3,
+          "tool": 2
+        }
+      }
+    }
+  ],
+  "model": "gpt-5-mini"
+}

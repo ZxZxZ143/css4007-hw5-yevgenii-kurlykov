@@ -170,14 +170,67 @@ All **128 tests pass**, including the 27 Part 1 tests. They cover direct tools, 
 
 ## Part 3 — Memory
 
-TODO: explain conversation state, thread_id, user identifier, user preference storage, and retrieval from helpdesk.json.
+### Conversation checkpoints and invocation lifecycle
+
+The persistent mode extends the existing single-agent graph with `SqliteSaver`; it does not create another agent. The root State still contains `messages` with `add_messages`, compact `tool_results` with its merging reducer, `helpdesk`, and `control`. SQLite checkpoints preserve these channels, message identities and graph progress. A Python list of messages alone would disappear when its process exits; the file-backed checkpointer provides actual restart continuity. The implementation follows the official [LangGraph persistence API](https://docs.langchain.com/oss/python/langgraph/persistence).
+
+```mermaid
+flowchart TD
+    input[Trusted application user_id and thread_id] --> checkpoint[Namespaced SQLite conversation checkpoint]
+    input --> preferences[Per-user validated JSON preferences]
+    checkpoint --> agent[Existing single OpenAI agent]
+    preferences -->|Dynamic model context| agent
+    agent -->|Tool requests| tools[Existing tools and save_user_memory]
+    tools --> agent
+    tools -->|Authorized preference update| preferences
+    agent --> checkpoint
+    agent --> answer[Final answer]
+```
+
+The external conversation identity is the pair `(user_id, thread_id)`. The application validates both identifiers and hashes their unambiguous JSON encoding into the internal checkpoint key. Consequently, users sharing a raw thread name do not share a checkpoint. The model cannot choose this key or another user's file. These are trusted local application identities, not a replacement for an authentication system.
+
+`PersistentSession` owns the SQLite connection in a context manager for the compiled graph's full lifetime. Before each turn it reads the current checkpoint under a scoped conversation lock. A new conversation supplies one base SystemMessage and the first HumanMessage. Later invocations submit only the new HumanMessage and a complete per-turn control update; the checkpoint supplies the other existing channels. Counters reset while history, earlier tool evidence and the issue remain intact. Memory questions are not interpreted as new problem statements. Tests verify one SystemMessage, exactly one new HumanMessage per turn, and preserved tool-call/response pairing.
+
+The runtime database defaults to `local-storage/conversations.sqlite`. A UUID in checkpointed `control.conversation_id` becomes the trusted runtime namespace used by the existing logical ticket identity. It survives process restarts, unlike the earlier process-local run identifier. A retry with a different model call ID therefore returns the same draft; an explicit new request obtains a distinct logical request ID. Resetting a checkpoint creates a new conversation UUID, preventing accidental reuse of unrelated old drafts. Actual subprocess tests verified one draft after restart/retry and a second draft only after an explicit new request. Atomic publication and conditional status guards remain unchanged.
+
+### Independent structured user memory
+
+Long-term preferences are stored separately in `local-storage/users/<sha256-user-id>.json`, using the minimal schema `{"schema_version": 1, "preferences": {...}}`. Allowed preferences are `preferred_language` (`en`, `ru`, `kk`) and optional `response_style` (`concise`, `detailed`). Language aliases are normalized at write time; no problem history, credentials, arbitrary personal data or raw tool results can fit the validated schema. `demo_users.json` is not a preference source.
+
+The existing OpenAI model may call exactly one additional memory tool, `save_user_memory(key, value)`. Trusted runtime context supplies its user identity and storage. Python verifies a matching durable preference in the current user's message, allowed keys/values, string length and schema. Extra identity/path/operation arguments are rejected. The model proposes the save; application code does not automatically save every user statement. Tool results report only the changed key/value and success, not the user's entire memory document.
+
+User JSON is read automatically before each turn and again before every model invocation. The model receives only a short preference instruction, dynamically composed with the existing system context. It is not permanently appended to checkpointed messages. A successful save is visible on the next model invocation within the same turn: the actual S11/S12/S13 first replies already use Kazakh. A new thread for the same user sees these preferences but starts with no prior conversation messages.
+
+Each preference update locks the safe user file across threads/processes, reads and validates the existing document, writes and flushes a private temporary file, then atomically replaces the JSON. Concurrent language/style updates preserve both fields; repeated identical saves do not rewrite the file. Missing files mean no preference. Corrupted or unsupported JSON is reported and preserved until an explicit scoped reset. Identifier validation and hashed filenames prevent user/path injection.
+
+### Memory versus reference retrieval
+
+- `conversation_checkpoint`: the earlier user-reported issue and troubleshooting steps in the same user/thread. S10 and the restarted S11 recall these facts without resubmitting the earlier message.
+- `user_json_memory`: a durable preference explicitly learned through `save_user_memory`. S12 loads Kazakh in a new thread, without importing the first thread's Wi-Fi discussion.
+- `helpdesk_reference`: instructions retrieved from `data/helpdesk.json`, such as GUIDE-WIFI. Suggested guide steps are not evidence that the user performed them.
+
+Each turn logs the available fact sources, checkpoint-restoration flag, loaded preference keys, memory-tool results and model-context reads. These are small sanitized provenance summaries, not copies of the SQLite database or all users' JSON files. The source labels identify data made available to the model; the saved final replies show the actual observed recall.
+
+### Actual demonstrations
+
+The scenario runner uses exact fixture events and isolates each scenario's storage under `local-storage/part3-scenarios/Sxx/`. `reset_before` clears only the relevant user/thread checkpoints and user preferences in that scenario's directory, once before the first event. It does not reset between messages or touch manual-session data. S11/S12 execute each process segment in a fresh Python subprocess; the previous process exits before the next starts. The worker receives only its new fixture-event indices, never a copied old transcript.
 
 | Situation | Command used | Log file | What happened |
 | --- | --- | --- | --- |
-| Refer to an earlier message | | | |
-| Close, restart and resume | | | |
-| Same user, new conversation | | | |
-| Different user | | | |
+| Refer to an earlier message | `python -m helpdesk.cli --scenario S10` | [S10](outputs/part3/S10.json) | In PID 29896, turn 2 restored the checkpoint and recalled enabling Wi-Fi, forgetting the saved network and reconnecting unsuccessfully. No guide-only step was attributed to the user. |
+| Close, restart and resume | `python -m helpdesk.cli --scenario S11` | [S11](outputs/part3/S11.json) | PID 4524 saved the preference/checkpoint and terminated. PID 8616 restored the same conversation UUID and recalled enabling/reconnecting in Kazakh. |
+| Same user, new conversation | `python -m helpdesk.cli --scenario S12` | [S12](outputs/part3/S12.json) | PID 27604 saved Kazakh in preference-a1 and exited. PID 2336 opened preference-a2: no conversation checkpoint/history, but the same user's JSON preference was available. The reply identified Kazakh and described support scope without claiming an old problem in the new thread. |
+| Different user | `python -m helpdesk.cli --scenario S13` | [S13](outputs/part3/S13.json) | In PID 23508, user A saved Kazakh. User B's separate checkpoint and JSON lookup were empty, and the assistant reported no preference or prior problem. A separate subprocess regression also tests two users using the identical raw thread name. |
+
+### Verification and limitations
+
+Live provider: OpenAI; requested model: `gpt-5-mini`; reported identifier: `gpt-5-mini-2025-08-07`. All four live scenarios passed. Actual totals are **12 model calls, 8 tool executions, including 3 save_user_memory calls; 15,668 input tokens and 7,182 output tokens (22,850 total)**. Output usage includes reported reasoning tokens. Per-scenario totals are S10 5,345, S11 6,473, S12 6,090 and S13 4,942 tokens. [LIVE_STATUS.json](outputs/part3/LIVE_STATUS.json) is generated from the actual logs by `python -m scripts.part3.verify_evidence`; it checks fixture fidelity, call pairing, process boundaries, checkpoint restoration, preference writes/reads and usage.
+
+The full suite has **200 passed, 0 failed, 0 skipped**: all 128 existing tests plus 72 Part 3 cases. Tests use explicitly labelled fake models with real SQLite, JSON files, OS locks and subprocess restarts; they do not require an API key. They cover immutable/reused tickets after restart, separate new tickets, conditional guards, parallel tools, corruption, invalid memory proposals, user/thread isolation and CLI commands. Offline scenario evidence is separately labelled under `outputs/part3/fake/`. `python -m pip check` passes. Tested versions are CPython 3.13.12, LangGraph 1.2.20, langgraph-checkpoint-sqlite 3.1.3 and pytest 9.2.0 on Windows; no new dependency was needed.
+
+Use the same `--graph agent --persistent --user-id ... --thread-id ...` command after closing to resume. `--inspect-thread` reports the selected checkpoint without a model call. `--reset-thread` and `--reset-user-memory` are separate scoped operations; a thread reset preserves preferences/drafts, while a preference reset preserves conversation history. The README provides exact commands and paths. Runtime databases, JSON preferences, locks and draft files remain under ignored local storage, outside Git.
+
+Limitations are conservative preference-intent recognition, a strict small preference schema, local trusted application identity, bounded lock waits, and no automatic recovery of unfinished tool batches or checkpoint pruning. Native execution was verified on Windows. Completed turns and genuine restarts are supported; an unfinished invocation is reported for inspection/reset rather than silently replayed. Part 4 and GitHub Actions are not implemented.
 
 ## Part 4 — Running and checking my work
 
@@ -200,8 +253,8 @@ TODO: explain the storage and libraries I chose, why they fit this task, and wha
 | S07 — The same request during a Wi-Fi outage | `python -m helpdesk.cli --scenario S07 --storage-dir outputs/part2/audit/drafts/S07 --output outputs/part2/audit/S07.json` | [Accepted audit S07](outputs/part2/audit/S07.json) | Met expectation after audit correction: this operational-only condition failed during the outage; unconditional drafting remains possible. No draft created. |
 | S08 — Status source unavailable | `python -m helpdesk.cli --scenario S08 --storage-dir outputs/part2/live_drafts/S08` | [Live S08](outputs/part2/S08.json) | Met expectation after prompt clarification: unknown status, no conditional draft, appropriate next-step offer. Initial trace retained separately. |
 | S09 — Missing ticket details | `python -m helpdesk.cli --scenario S09 --storage-dir outputs/part2/audit/drafts/S09 --output outputs/part2/audit/S09.json` | [Accepted audit S09](outputs/part2/audit/S09.json) | Met expectation after audit correction: clarification first, then one unconditional draft marked not_checked; displayed category, summary and steps exactly match the file. |
-| S10 — Use the current conversation | | | |
-| S11 — Persist and recall after restart | | | |
-| S12 — Preference across threads without replay | | | |
-| S13 — Do not share memory between users | | | |
+| S10 — Use the current conversation | `python -m helpdesk.cli --scenario S10` | [S10.json](outputs/part3/S10.json) | Met expectation: checkpoint-backed turn 2 recalled exactly the reported steps; one SystemMessage and two HumanMessages, no guide-step invention. |
+| S11 — Persist and recall after restart | `python -m helpdesk.cli --scenario S11` | [S11.json](outputs/part3/S11.json) | Met expectation: process 4524 exited, process 8616 restored the same checkpoint/UUID and the JSON Kazakh preference; problem/steps recalled in Kazakh. |
+| S12 — Preference across threads without replay | `python -m helpdesk.cli --scenario S12` | [S12.json](outputs/part3/S12.json) | Met expectation: processes 27604 → 2336; new thread had no prior conversation but loaded the same user's saved Kazakh preference. |
+| S13 — Do not share memory between users | `python -m helpdesk.cli --scenario S13` | [S13.json](outputs/part3/S13.json) | Met expectation: user B had no preference or prior problem; separate hashed checkpoint/user-file identities prevented leakage. |
 | S14 — Password recovery outage | `python -m helpdesk.cli --scenario S14 --storage-dir outputs/part2/audit/drafts/S14 --output outputs/part2/audit/S14.json` | [Accepted audit S14](outputs/part2/audit/S14.json) | Met expectation after audit correction: account_recovery outage; no invented ticket condition or mandatory personal/contact fields. |

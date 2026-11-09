@@ -50,6 +50,7 @@ class ExecutionControl(TypedDict, total=False):
     stop_reason: str | None
     errors: list[str]
     rejected_model_output: dict
+    conversation_id: str
 
 
 class HelpdeskAgentState(TypedDict):

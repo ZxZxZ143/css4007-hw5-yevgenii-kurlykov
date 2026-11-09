@@ -89,7 +89,8 @@ def derive_helpdesk(messages, previous: HelpdeskContext | None = None) -> Helpde
         for sentence in re.split(r"(?<=[.!?])\s+", text):
             reports_issue = re.search(r"(?i)\b(cannot|can't|unable|issue|problem|fails?|failed|will not|does not|broken|unavailable|no success)\b", sentence)
             names_issue = re.search(r"(?i)\b(wi-?fi|password|I|my|we)\b", sentence)
-            if reports_issue and names_issue and not re.search(r"(?i)\b(?:if|prepare|create|draft|ticket)\b", sentence):
+            if (reports_issue and names_issue and not sentence.rstrip().endswith("?")
+                    and not re.search(r"(?i)\b(?:if|prepare|create|draft|ticket)\b", sentence)):
                 result["problem_description"] = sentence
             if (re.search(r"(?i)\b(?:I|we)\s+(?:already\s+)?(?:enabled|forgot|tried|reconnected|restarted|followed|checked|reset|opened|disabled)\b", sentence)
                     and not re.search(r"(?i)\b(?:if|hypothetically|would)\b", sentence)):

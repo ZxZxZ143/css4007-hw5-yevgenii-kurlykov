@@ -1,0 +1,580 @@
+{
+  "scenario_id": "S11",
+  "evidence_kind": "deterministic_fake",
+  "provider": "deterministic fake (not OpenAI)",
+  "command": "python -m scripts.part3.record_offline",
+  "reset_before": true,
+  "scenario_storage": "local-storage/part3-offline/part3-scenarios/S11",
+  "restart_occurred": true,
+  "processes": [
+    {
+      "pid": 19792,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        0
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    },
+    {
+      "pid": 8428,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        2
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    }
+  ],
+  "events": [
+    {
+      "fixture_event_index": 0,
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "process_id": 19792,
+      "status_profile": "normal",
+      "user_message": "Please remember that I prefer replies in Kazakh. My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "36f2ec02-8d9f-414e-86c0-64cf680cdceb",
+                    "tool_calls": [
+                      {
+                        "name": "save_user_memory",
+                        "args": {
+                          "key": "preferred_language",
+                          "value": "kk"
+                        },
+                        "id": "8bb1e5e2aeb544a683c91d5369653e81",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "9a960631-a92c-44d6-8d57-c711d650aa0b"
+              },
+              {
+                "type": "human",
+                "id": "92915e7ce76f4b4c8db3d70bbcffad13"
+              },
+              {
+                "type": "ai",
+                "id": "36f2ec02-8d9f-414e-86c0-64cf680cdceb"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": {
+                "messages": [
+                  {
+                    "content": "{\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "tool",
+                    "name": "save_user_memory",
+                    "id": "0c092d29-9d86-4d4b-a5be-5db107e537d8",
+                    "tool_call_id": "8bb1e5e2aeb544a683c91d5369653e81",
+                    "artifact": null,
+                    "status": "success"
+                  }
+                ],
+                "tool_results": {
+                  "8bb1e5e2aeb544a683c91d5369653e81": {
+                    "tool": "save_user_memory",
+                    "data": {
+                      "source": "user_json_memory",
+                      "success": true,
+                      "key": "preferred_language",
+                      "value": "kk",
+                      "changed": true
+                    },
+                    "turn": 1,
+                    "executed": true
+                  }
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "8bb1e5e2aeb544a683c91d5369653e81": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "9a960631-a92c-44d6-8d57-c711d650aa0b"
+              },
+              {
+                "type": "human",
+                "id": "92915e7ce76f4b4c8db3d70bbcffad13"
+              },
+              {
+                "type": "ai",
+                "id": "36f2ec02-8d9f-414e-86c0-64cf680cdceb"
+              },
+              {
+                "type": "tool",
+                "id": "0c092d29-9d86-4d4b-a5be-5db107e537d8",
+                "tool_call_id": "8bb1e5e2aeb544a683c91d5369653e81"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "FAKE kk (Kazakh): {\"save_user_memory\": {\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "29b1d06f-1c6e-4799-8255-22c499c3c4e4",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+                  "model_calls": 2,
+                  "tool_calls": 1,
+                  "tool_attempts": 1,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "8bb1e5e2aeb544a683c91d5369653e81": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+              "model_calls": 2,
+              "tool_calls": 1,
+              "tool_attempts": 1,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "9a960631-a92c-44d6-8d57-c711d650aa0b"
+              },
+              {
+                "type": "human",
+                "id": "92915e7ce76f4b4c8db3d70bbcffad13"
+              },
+              {
+                "type": "ai",
+                "id": "36f2ec02-8d9f-414e-86c0-64cf680cdceb"
+              },
+              {
+                "type": "tool",
+                "id": "0c092d29-9d86-4d4b-a5be-5db107e537d8",
+                "tool_call_id": "8bb1e5e2aeb544a683c91d5369653e81"
+              },
+              {
+                "type": "ai",
+                "id": "29b1d06f-1c6e-4799-8255-22c499c3c4e4"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+        "model_calls": 2,
+        "tool_calls": 1,
+        "tool_attempts": 1,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "FAKE kk (Kazakh): {\"save_user_memory\": {\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}}",
+      "response_source": "model",
+      "token_usage": [],
+      "memory": {
+        "checkpoint_key": "a00ee9471e479b88698a76261f039c10bd0262c955d021df6d28bbba01ed5269",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          },
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 2,
+          "tool": 1
+        }
+      }
+    },
+    {
+      "fixture_event_index": 2,
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "process_id": 8428,
+      "status_profile": "normal",
+      "user_message": "Which problem and steps did we discuss?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "FAKE kk (Kazakh): {\"category\": \"wifi\", \"reported_steps\": [\"I enabled it and tried reconnecting, but it still fails.\"]}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "093f43aa-ca14-4d94-b9a6-1cef3eaf94db",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "8bb1e5e2aeb544a683c91d5369653e81": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "9a960631-a92c-44d6-8d57-c711d650aa0b"
+              },
+              {
+                "type": "human",
+                "id": "92915e7ce76f4b4c8db3d70bbcffad13"
+              },
+              {
+                "type": "ai",
+                "id": "36f2ec02-8d9f-414e-86c0-64cf680cdceb"
+              },
+              {
+                "type": "tool",
+                "id": "0c092d29-9d86-4d4b-a5be-5db107e537d8",
+                "tool_call_id": "8bb1e5e2aeb544a683c91d5369653e81"
+              },
+              {
+                "type": "ai",
+                "id": "29b1d06f-1c6e-4799-8255-22c499c3c4e4"
+              },
+              {
+                "type": "human",
+                "id": "f1c1086b4c9d4641a052e7258bede97d"
+              },
+              {
+                "type": "ai",
+                "id": "093f43aa-ca14-4d94-b9a6-1cef3eaf94db"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 2,
+        "conversation_id": "845e9f1da6b942f7b818cce5fef5f55a",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "FAKE kk (Kazakh): {\"category\": \"wifi\", \"reported_steps\": [\"I enabled it and tried reconnecting, but it still fails.\"]}",
+      "response_source": "model",
+      "token_usage": [],
+      "memory": {
+        "checkpoint_key": "a00ee9471e479b88698a76261f039c10bd0262c955d021df6d28bbba01ed5269",
+        "checkpoint_restored": true,
+        "checkpoint_messages_before": 5,
+        "checkpoint_human_messages_before": 1,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {
+            "category": "wifi",
+            "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+            "steps_tried": [
+              "I enabled it and tried reconnecting, but it still fails."
+            ],
+            "steps_known": true,
+            "ticket_requested": false,
+            "ticket_condition": "unconditional",
+            "ticket_id": null,
+            "ticket_request_id": null,
+            "secret_detected": false
+          },
+          "user_json_memory": {
+            "preferred_language": "kk"
+          },
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 2,
+          "ai": 3,
+          "tool": 1
+        }
+      }
+    }
+  ],
+  "model": "FakeMemoryModel (offline; not OpenAI)"
+}

@@ -1,0 +1,88 @@
+{
+  "evidence_kind": "live_openai",
+  "verified_models": [
+    "gpt-5-mini-2025-08-07"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "S10",
+      "log": "outputs/part3/S10.json",
+      "verification_status": "passed",
+      "process_ids": [
+        29896
+      ],
+      "restart_occurred": false,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "memory_tool_calls": 0,
+      "token_usage": {
+        "input_tokens": 3787,
+        "output_tokens": 1558,
+        "total_tokens": 5345
+      }
+    },
+    {
+      "scenario_id": "S11",
+      "log": "outputs/part3/S11.json",
+      "verification_status": "passed",
+      "process_ids": [
+        4524,
+        8616
+      ],
+      "restart_occurred": true,
+      "model_calls": 3,
+      "tool_calls": 3,
+      "memory_tool_calls": 1,
+      "token_usage": {
+        "input_tokens": 4270,
+        "output_tokens": 2203,
+        "total_tokens": 6473
+      }
+    },
+    {
+      "scenario_id": "S12",
+      "log": "outputs/part3/S12.json",
+      "verification_status": "passed",
+      "process_ids": [
+        27604,
+        2336
+      ],
+      "restart_occurred": true,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "memory_tool_calls": 1,
+      "token_usage": {
+        "input_tokens": 3939,
+        "output_tokens": 2151,
+        "total_tokens": 6090
+      }
+    },
+    {
+      "scenario_id": "S13",
+      "log": "outputs/part3/S13.json",
+      "verification_status": "passed",
+      "process_ids": [
+        23508
+      ],
+      "restart_occurred": false,
+      "model_calls": 3,
+      "tool_calls": 1,
+      "memory_tool_calls": 1,
+      "token_usage": {
+        "input_tokens": 3672,
+        "output_tokens": 1270,
+        "total_tokens": 4942
+      }
+    }
+  ],
+  "totals": {
+    "model_calls": 12,
+    "tool_calls": 8,
+    "memory_tool_calls": 3
+  },
+  "token_usage": {
+    "input_tokens": 15668,
+    "output_tokens": 7182,
+    "total_tokens": 22850
+  }
+}

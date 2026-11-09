@@ -5,7 +5,7 @@
 
 ## Implementation status
 
-Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, and pytest **9.2.0**. Parts 1 and 2 are verified, including all five live OpenAI Part 2 scenarios. The live model was `gpt-5-mini`, reported by the API as `gpt-5-mini-2025-08-07`. **128 tests pass** without requiring an API key. Parts 3–4 remain future work. The original assignment remains below.
+Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, SQLite checkpoint adapter **3.1.3**, and pytest **9.2.0**. Parts 1–3 are verified, including live OpenAI Part 2 and Part 3 scenarios. The model was `gpt-5-mini`, reported by the API as `gpt-5-mini-2025-08-07`. **200 tests pass** without requiring an API key. Part 4 and GitHub Actions remain future work. The original assignment remains below.
 
 From the repository root, create a fresh environment and install the pinned dependencies and editable local package:
 
@@ -16,7 +16,7 @@ python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
-On macOS/Linux, activate with `source .venv-part1/bin/activate`. Use Python 3.13 for the tested setup. Run the following commands from the repository root after activation. Part 1 never loads `.env`, calls a model, or requires an API key. The pinned provider and dotenv dependencies support Part 2; SQLite is reserved for Part 3.
+On macOS/Linux, activate with `source .venv-part1/bin/activate`. Use Python 3.13 for the tested setup. Run the following commands from the repository root after activation. Part 1 never loads `.env`, calls a model, or requires an API key. The pinned provider and dotenv dependencies support Parts 2–3; the already pinned SQLite adapter supplies Part 3 checkpoints. No new dependency was required.
 
 ```powershell
 # Original / Initial Version: Wi-Fi wins when both keywords appear.
@@ -38,7 +38,7 @@ python -m helpdesk.cli --scenario S05
 python -m pytest -q
 ```
 
-Scenario replay binds S01–S04 to Original and S05 to Improved / Main, as required by the fixtures. A contradictory explicit `--graph` is rejected. The fixture name `with_clarification` maps to CLI version `main`. S06–S09 and S14 use the Part 2 agent below; S10–S13 are not implemented yet.
+Scenario replay binds S01–S04 to Original and S05 to Improved / Main, as required by the fixtures. A contradictory explicit `--graph` is rejected. The fixture name `with_clarification` maps to CLI version `main`. S06–S09/S14 use the nonpersistent Part 2 agent; S10–S13 automatically select persistent Part 3 mode.
 
 Each invocation prints JSON. Scenario commands also save traces in `outputs/part1/original/S01.json` through `S04.json` and `outputs/part1/improved/S05.json`. For a custom message, add `--output outputs/part1/custom.json` to save its trace. These files contain the command, fixture context, prediction, executed nodes, partial updates, complete states and final reply. `START` and `END` are boundary sentinels, so the executed-node list contains only real Python nodes. Traces use LangGraph's `updates` and `values` streams; they are not reconstructed by calling the node functions separately.
 
@@ -65,7 +65,7 @@ python -m pytest -q
 python -m scripts.part2.record_offline
 ```
 
-Enter `/quit` or EOF to end interactive mode. The same process retains the current conversation, including S06/S09 follow-up details. Scenario replay reads exact fixture events and snapshot names, starts isolated state for each scenario, and writes live execution logs to `outputs/part2/Sxx.json`. The scenario fixture controls identity and snapshot; ordinary sessions use CLI options. No user preferences, checkpointer or restart recovery are implemented.
+Enter `/quit` or EOF to end interactive mode. The same process retains the current conversation, including S06/S09 follow-up details. Scenario replay reads exact fixture events and snapshot names, starts isolated state for each scenario, and writes live execution logs to `outputs/part2/Sxx.json`. The scenario fixture controls identity and snapshot; ordinary sessions use CLI options. This nonpersistent Part 2 mode deliberately has no user preference tool, checkpointer or restart recovery; add explicit `--persistent` for Part 3.
 
 The compiled `build_agent_graph()` uses one model and the loop `START → agent → tools → agent`, ending when the model answers without tool calls. `bind_tools(..., parallel_tool_calls=True)` permits multiple requests; standard `ToolNode` runs independent tools concurrently. There is no second agent. Python direct functions in `helpdesk.part2.tools` provide:
 
@@ -99,6 +99,79 @@ All Part 2 relative application/storage/output paths resolve against the **repos
 
 The new accepted S07/S09/S14 live logs are under `outputs/part2/audit/`; earlier root logs and first corrective attempts under `audit/initial/` remain historical. See [VERIFICATION.md](outputs/part2/VERIFICATION.md) for the corrected results and actual usage.
 
+## Part 3 — Persistent conversation and user memory
+
+Part 3 reuses the same single model, `HelpdeskAgentState`, reducers, graph loop and three tools. An optional SQLite checkpointer and one additional tool, `save_user_memory`, enable persistence. The root still has exactly `messages`, `tool_results`, `helpdesk` and `control`. A restored turn submits only its new HumanMessage and a reset per-turn control update; it never resubmits the accumulated history. One base SystemMessage is checkpointed. Preferences are dynamically composed into model input and are never appended as repeated SystemMessages.
+
+After the existing setup and OpenAI configuration, start a persistent conversation with this one-line Windows command:
+
+```powershell
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --thread-id conversation-1 --interactive
+```
+
+Enter `/quit`, close the process, and run **the identical command** to resume. Separate one-message launches work too:
+
+```powershell
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --thread-id conversation-1 --message "Please remember that I prefer replies in Kazakh. My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails."
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --thread-id conversation-1 --message "Which problem and steps did we discuss?"
+```
+
+Runtime files default to ignored `local-storage/` (override with `--storage-dir` or `HELPDESK_STORAGE_DIR`):
+
+```text
+local-storage/
+  conversations.sqlite       # Genuine SqliteSaver checkpoints for all user/thread pairs
+  users/<sha256-user>.json   # Separate minimal durable preferences per user
+  users/<sha256-user>.lock   # OS-backed synchronization, not user data
+  locks/<thread-key>.lock    # Serialize concurrent turns/resets of the same conversation
+  tickets/                  # Existing atomic local ticket drafts
+```
+
+User/thread IDs are trusted application inputs, validated as 1–128 ASCII letters/digits/dot/underscore/hyphen, starting with a letter or digit. The internal checkpoint key hashes the unambiguous `(user_id, thread_id)` pair, so different users may safely use the same raw thread name. The checkpointer connection stays open inside `with PersistentSession(...)` for the graph's complete lifetime. A UUID in checkpointed `control.conversation_id` supplies the stable runtime namespace for the existing logical ticket identity. It survives process restart; resetting a thread creates a fresh UUID and cannot accidentally reuse an old draft.
+
+The user document contains only normalized allowed preferences, for example:
+
+```json
+{"schema_version": 1, "preferences": {"preferred_language": "kk", "response_style": "concise"}}
+```
+
+Supported languages are `en`, `ru`, `kk` (English/Russian/Kazakh); style is optional `concise` or `detailed`. The model-facing memory schema has only `key` and `value`. Python validates a matching durable preference in the current user's message, allowed keys/values, length and trusted identity before writing. It rejects arbitrary facts, secrets, other-user/path/operation arguments and unsupported JSON values. JSON updates use an OS-backed lock plus a flushed temporary file and atomic replacement; simultaneous changes do not overwrite one another, and identical saves do not rewrite the file. Corrupted JSON is reported and preserved until explicitly reset. No preference is loaded from `demo_users.json`.
+
+Preferences are read automatically before each turn and again before each model invocation, so a successful memory-tool save affects the next invocation in the same turn. Source summaries distinguish `conversation_checkpoint`, `user_json_memory` and `helpdesk_reference`. A new thread receives only user preferences, not another thread's problem history. Recognizable credential disclosures are redacted before checkpoint input, and the preference schema cannot store credentials or conversations.
+
+Inspect or reset only the selected memory, without needing an API key:
+
+```powershell
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --thread-id conversation-1 --inspect-thread
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --thread-id conversation-1 --reset-thread
+python -m helpdesk.cli --graph agent --persistent --user-id demo-user-a --reset-user-memory
+python -c "from pathlib import Path; from helpdesk.part3.memory_store import UserMemoryStore; print(UserMemoryStore(Path('local-storage')).load('demo-user-a'))"
+```
+
+Resetting a thread preserves preferences and existing draft files; resetting preferences preserves conversation checkpoints. That conversation may still contain the user's earlier language statement, so reset both or use a fresh thread/storage directory for a completely clean manual demonstration. Busy conversations are protected by a scoped OS lock; retries fail safely with a timeout rather than overwriting another turn. Unfinished graph invocations are rejected for new input until inspected/reset; automatic crash recovery of an interrupted tool batch is outside this implementation.
+
+Run the exact supplied demonstrations and verifiers:
+
+```powershell
+python -m helpdesk.cli --scenario S10
+python -m helpdesk.cli --scenario S11
+python -m helpdesk.cli --scenario S12
+python -m helpdesk.cli --scenario S13
+python -m scripts.part3.verify_evidence
+
+# No private API key or network needed:
+python -m scripts.part3.record_offline
+python -m pytest tests/part3 -q
+python -m pytest -q
+python -m pip check
+```
+
+Each scenario uses its own `local-storage/part3-scenarios/Sxx/`, resetting only that scenario's user/thread data before its first event. It does not touch manual-session storage, reset between events, or delete old ticket drafts. S11/S12 terminate one worker before starting a new Python process against the same database/users directory. Only the new fixture-event indices are sent to the second process; it receives no copied transcript. Logs record PIDs, checkpoint restoration, exact messages, available fact sources, memory-tool results and usage. Use `--output outputs/part3/another-run.json` to retain an additional run instead of replacing the default scenario log.
+
+The [live Part 3 evidence](outputs/part3/LIVE_STATUS.json) contains **12 model calls, 8 tool executions (3 memory saves) and 22,850 tokens** (15,668 input; 7,182 output, including reported reasoning). S11 resumed in a new process and recalled only reported Wi-Fi steps in Kazakh; S12 recalled the language in a fresh thread; S13 isolated user B. Offline evidence is clearly separated under `outputs/part3/fake/`. The 67 added tests exercise actual file-backed SQLite, process restarts, concurrent JSON updates, memory-tool authorization, same-raw-thread user isolation and ticket identity after restart, alongside all 128 original regressions. See [Part 3 verification](outputs/part3/VERIFICATION.md).
+
+Live conversation/scenario commands require OpenAI configuration. Offline tests/evidence, inspection and reset do not. Durable-preference authorization intentionally recognizes conservative preference wording; unsupported phrasing is rejected rather than saved. This is a local application with trusted application identity, not an authentication service. Native verification was on Windows; no database server, RAG, web app, Part 4 or GitHub Actions was added.
+
 ## Project layout
 
 ```text
@@ -118,21 +191,35 @@ src/helpdesk/
     runner.py            # In-process sessions and execution traces
     tools.py
     ticket_policy.py
+  part3/
+    locking.py             # Local cross-process synchronization
+    memory_store.py        # Validated per-user JSON documents
+    memory_tool.py         # The one additional preference tool
+    persistence.py         # Trusted checkpoint identities and scoped inspect/reset
+    runner.py              # Persistent lifecycle around the same agent graph
+    scenarios.py           # Reset and real-process restart orchestration
+    worker.py              # A fresh Python interpreter per process segment
+    cli.py
 tests/
   part1/test_routing.py
   part2/test_agent.py
   part2/test_audit_fixes.py
   part2/fake_model.py
+  part3/                   # Memory, persistence, security and scenario tests
 scripts/part2/
   record_offline.py       # Offline evidence generation
   verify_live.py          # Validate saved live evidence without API calls
+scripts/part3/
+  record_offline.py
+  verify_evidence.py
 data/                    # Original shared fixtures
 outputs/
   part1/                 # Original and improved graph evidence
   part2/                 # Live/fake evidence and fictional draft files
+  part3/                 # Live/fake memory evidence, no runtime databases/user files
 ```
 
-Run each test group with `python -m pytest tests/part1 -q` or `python -m pytest tests/part2 -q`; `python -m pytest -q` runs both. Public CLI commands still use `python -m helpdesk.cli`. Import Part 1 builders from `helpdesk.part1.graphs` and the agent builder from `helpdesk.part2.agent`. Shared fixtures, environment configuration and dependency files remain at the repository root. Historical JSON evidence retains the commands and module names used when collected; current helper commands are `python -m scripts.part2.record_offline` and `python -m scripts.part2.verify_live`.
+Run each test group with `python -m pytest tests/part1 -q`, `python -m pytest tests/part2 -q` or `python -m pytest tests/part3 -q`; `python -m pytest -q` runs all three. Public CLI commands still use `python -m helpdesk.cli`. Import Part 1 builders from `helpdesk.part1.graphs`, the shared agent builder from `helpdesk.part2.agent`, and the persistence lifecycle from `helpdesk.part3.runner`. Shared fixtures, environment configuration and dependency files remain at the repository root. Historical JSON evidence retains the commands and module names used when collected; helpers are grouped by part under `scripts/`.
 
 ## Start from this repository
 

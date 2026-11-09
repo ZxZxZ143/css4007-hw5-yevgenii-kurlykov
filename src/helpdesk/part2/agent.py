@@ -74,16 +74,18 @@ def record_tool_result(request, execute):
     compact = {key: data[key] for key in (
         "topic", "instruction_id", "service", "status", "status_profile", "source", "fictional",
         "created", "ticket_id", "ticket_request_id", "path", "reason", "error", "service_status",
+        "success", "key", "value", "changed",
     ) if key in data}
     entry = {"tool": request.tool_call["name"], "data": compact,
              "turn": request.state["control"]["turn"], "executed": response.status != "error"}
     return Command(update={"messages": [response], "tool_results": {request.tool_call["id"]: entry}})
 
 
-def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: int = 5):
+def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: int = 5,
+                      checkpointer=None, extra_tools=(), model_context=None):
     if max_model_calls < 1 or max_tool_calls < 1:
         raise ValueError("Invocation budgets must be positive")
-    tools = agent_tools()
+    tools = [*agent_tools(), *extra_tools]
     bound = (model if model is not None else openai_model()).bind_tools(tools, parallel_tool_calls=True)
 
     def agent(state: HelpdeskAgentState, runtime: Runtime[SessionContext]):
@@ -104,7 +106,6 @@ def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: i
                 suffix = f' Local draft: {created[-1]["ticket_id"]}, {created[-1]["path"]}.'
             return {"messages": [AIMessage(content="Execution limit reached; no further operations were attempted." + suffix)],
                     "helpdesk": helpdesk, "control": control}
-        control["model_calls"] += 1
         try:
             # Share only readiness flags derived from the user's text, not the State
             # or trusted identity/storage configuration. Use the same required-field
@@ -120,6 +121,10 @@ def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: i
                 inputs[0] = inputs[0].model_copy(update={"content": inputs[0].content + "\n" + instruction.content})
             else:
                 inputs.insert(0, instruction)
+            if model_context is not None:
+                extra_context = model_context(state, runtime.context)
+                inputs[0] = inputs[0].model_copy(update={"content": inputs[0].content + "\n" + extra_context})
+            control["model_calls"] += 1
             response = bound.invoke(inputs)
             if not isinstance(response, AIMessage):
                 raise TypeError("Expected an AIMessage")
@@ -164,7 +169,7 @@ def build_agent_graph(model=None, *, max_model_calls: int = 6, max_tool_calls: i
     graph.add_edge(START, "agent")
     graph.add_conditional_edges("agent", route, {"tools": "tools", END: END})
     graph.add_edge("tools", "agent")
-    return graph.compile().with_config(recursion_limit=2 * max_model_calls + 4)
+    return graph.compile(checkpointer=checkpointer).with_config(recursion_limit=2 * max_model_calls + 4)
 
 
 def initial_agent_state() -> HelpdeskAgentState:

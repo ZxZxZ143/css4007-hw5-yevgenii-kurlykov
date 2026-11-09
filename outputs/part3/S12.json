@@ -1,0 +1,732 @@
+{
+  "scenario_id": "S12",
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "command": "python -m helpdesk.cli --scenario S12",
+  "reset_before": true,
+  "scenario_storage": "local-storage/part3-scenarios/S12",
+  "restart_occurred": true,
+  "processes": [
+    {
+      "pid": 27604,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        0
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    },
+    {
+      "pid": 2336,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        2
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    }
+  ],
+  "events": [
+    {
+      "fixture_event_index": 0,
+      "user_id": "demo-user-a",
+      "thread_id": "preference-a1",
+      "process_id": 27604,
+      "status_profile": "normal",
+      "user_message": "Please remember that I prefer replies in Kazakh. I have a Wi-Fi problem.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"key\":\"preferred_language\",\"value\":\"kk\"}",
+                        "call_id": "call_ESV3xvhEJjX4dKQKFO58bYuj",
+                        "name": "save_user_memory",
+                        "type": "function_call",
+                        "id": "fc_09ce4956cb168b47006af24cec143087d29ad55c831952582e",
+                        "status": "completed"
+                      },
+                      {
+                        "arguments": "{\"topic\":\"wifi\"}",
+                        "call_id": "call_AQAtTLl5uJGn7GhdATY0e37P",
+                        "name": "find_instructions",
+                        "type": "function_call",
+                        "id": "fc_09ce4956cb168b47006af24cec144087d28a5f817fa9a32bdc",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_09ce4956cb168b47006af24ce27ad887d29b08fa90e3be7ba8",
+                      "created_at": 1794264290.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_09ce4956cb168b47006af24ce27ad887d29b08fa90e3be7ba8",
+                    "tool_calls": [
+                      {
+                        "name": "save_user_memory",
+                        "args": {
+                          "key": "preferred_language",
+                          "value": "kk"
+                        },
+                        "id": "call_ESV3xvhEJjX4dKQKFO58bYuj",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "find_instructions",
+                        "args": {
+                          "topic": "wifi"
+                        },
+                        "id": "call_AQAtTLl5uJGn7GhdATY0e37P",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1022,
+                      "output_tokens": 726,
+                      "total_tokens": 1748,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 640
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I have a Wi-Fi problem.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "325ec4c4-ffe2-41b5-acf7-506d67b001bf"
+              },
+              {
+                "type": "human",
+                "id": "63dbe94295974bf495beeefc658428d5"
+              },
+              {
+                "type": "ai",
+                "id": "resp_09ce4956cb168b47006af24ce27ad887d29b08fa90e3be7ba8"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": [
+                {
+                  "messages": [
+                    {
+                      "content": "{\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "save_user_memory",
+                      "id": "d5985ed0-3f45-4d2e-a697-3db3ba8965e5",
+                      "tool_call_id": "call_ESV3xvhEJjX4dKQKFO58bYuj",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_ESV3xvhEJjX4dKQKFO58bYuj": {
+                      "tool": "save_user_memory",
+                      "data": {
+                        "source": "user_json_memory",
+                        "success": true,
+                        "key": "preferred_language",
+                        "value": "kk",
+                        "changed": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"topic\": \"wifi\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\", \"source\": \"data/helpdesk.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "find_instructions",
+                      "id": "ea4474df-8295-4c55-af67-98ae343332c0",
+                      "tool_call_id": "call_AQAtTLl5uJGn7GhdATY0e37P",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_AQAtTLl5uJGn7GhdATY0e37P": {
+                      "tool": "find_instructions",
+                      "data": {
+                        "topic": "wifi",
+                        "instruction_id": "GUIDE-WIFI",
+                        "source": "data/helpdesk.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_ESV3xvhEJjX4dKQKFO58bYuj": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_AQAtTLl5uJGn7GhdATY0e37P": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "325ec4c4-ffe2-41b5-acf7-506d67b001bf"
+              },
+              {
+                "type": "human",
+                "id": "63dbe94295974bf495beeefc658428d5"
+              },
+              {
+                "type": "ai",
+                "id": "resp_09ce4956cb168b47006af24ce27ad887d29b08fa90e3be7ba8"
+              },
+              {
+                "type": "tool",
+                "id": "d5985ed0-3f45-4d2e-a697-3db3ba8965e5",
+                "tool_call_id": "call_ESV3xvhEJjX4dKQKFO58bYuj"
+              },
+              {
+                "type": "tool",
+                "id": "ea4474df-8295-4c55-af67-98ae343332c0",
+                "tool_call_id": "call_AQAtTLl5uJGn7GhdATY0e37P"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Тілді қазақша деп сақтадым.\n\nМұнда жергілікті демонстрациялық нұсқаулық (fictional) — «Connect to the practice campus network»:\n- Wi‑Fi қосулы екеніне және ұшақ режимі өшірілгеніне көз жеткізіңіз.\n- Campus‑Demo (fictional) желісін таңдаңыз.\n- Қосылу сәтсіз болса, сақталған желіні «ұмыт» (forget) етіп, қайта қосып көріңіз.\n- Проблема шешілмесе, билеттер жасамас бұрын қызмет күйін тексеріңіз.\n\nПроблеманы қысқаша сипаттап жазыңыз және қазірге дейін не істегеніңізді айтыңыз (немесе «ештеңе істемедім» деп жазыңыз).",
+                        "annotations": [],
+                        "id": "msg_09ce4956cb168b47006af24cf3676087d2b2968bc440453c10"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_09ce4956cb168b47006af24ced201887d282b01b742da8524d",
+                      "created_at": 1794264301.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_09ce4956cb168b47006af24ced201887d282b01b742da8524d",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1884,
+                      "output_tokens": 698,
+                      "total_tokens": 2582,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 512
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+                  "model_calls": 2,
+                  "tool_calls": 2,
+                  "tool_attempts": 2,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I have a Wi-Fi problem.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_ESV3xvhEJjX4dKQKFO58bYuj": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_AQAtTLl5uJGn7GhdATY0e37P": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+              "model_calls": 2,
+              "tool_calls": 2,
+              "tool_attempts": 2,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "325ec4c4-ffe2-41b5-acf7-506d67b001bf"
+              },
+              {
+                "type": "human",
+                "id": "63dbe94295974bf495beeefc658428d5"
+              },
+              {
+                "type": "ai",
+                "id": "resp_09ce4956cb168b47006af24ce27ad887d29b08fa90e3be7ba8"
+              },
+              {
+                "type": "tool",
+                "id": "d5985ed0-3f45-4d2e-a697-3db3ba8965e5",
+                "tool_call_id": "call_ESV3xvhEJjX4dKQKFO58bYuj"
+              },
+              {
+                "type": "tool",
+                "id": "ea4474df-8295-4c55-af67-98ae343332c0",
+                "tool_call_id": "call_AQAtTLl5uJGn7GhdATY0e37P"
+              },
+              {
+                "type": "ai",
+                "id": "resp_09ce4956cb168b47006af24ced201887d282b01b742da8524d"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "656376af7cb4412b833e2bab1ee1ed3a",
+        "model_calls": 2,
+        "tool_calls": 2,
+        "tool_attempts": 2,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Тілді қазақша деп сақтадым.\n\nМұнда жергілікті демонстрациялық нұсқаулық (fictional) — «Connect to the practice campus network»:\n- Wi‑Fi қосулы екеніне және ұшақ режимі өшірілгеніне көз жеткізіңіз.\n- Campus‑Demo (fictional) желісін таңдаңыз.\n- Қосылу сәтсіз болса, сақталған желіні «ұмыт» (forget) етіп, қайта қосып көріңіз.\n- Проблема шешілмесе, билеттер жасамас бұрын қызмет күйін тексеріңіз.\n\nПроблеманы қысқаша сипаттап жазыңыз және қазірге дейін не істегеніңізді айтыңыз (немесе «ештеңе істемедім» деп жазыңыз).",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1022,
+          "output_tokens": 726,
+          "total_tokens": 1748,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 640
+          }
+        },
+        {
+          "input_tokens": 1884,
+          "output_tokens": 698,
+          "total_tokens": 2582,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 512
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "1e689567cf1906bb24113ef1fb253e02d3041ac95eeb8dfa025b0961d8bf9582",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": [
+            "GUIDE-WIFI"
+          ]
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          },
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 2,
+          "tool": 2
+        }
+      }
+    },
+    {
+      "fixture_event_index": 2,
+      "user_id": "demo-user-a",
+      "thread_id": "preference-a2",
+      "process_id": 2336,
+      "status_profile": "normal",
+      "user_message": "Which language did I ask you to use? What can you help with?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Сіз қазақ тілін (kk) қолдануды сұрағансыз. Мен университеттің IT қолдау қызметімін — Wi‑Fi пен құпиясөзді қалпына келтіру мәселелері бойынша көмектесе аламын. Жергілікті демонстрациялық нұсқаулықтарды бере аламын және қызметтердің ағымдағы күйін тексере аламын (статустар демонстрациялық және шынайы университет қызметтерін білдірмейді). Қандай мәселе бар және қандай қадамдарды жасадыңыз (немесе әлі ештеңе істемеген болсаңыз соны айтыңыз)?",
+                        "annotations": [],
+                        "id": "msg_0acc0803941ecb84006af24d008f7087d2aaf12aa077bee4ef"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0acc0803941ecb84006af24cf8c17c87d29f0c4696845c186f",
+                      "created_at": 1794264312.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0acc0803941ecb84006af24cf8c17c87d29f0c4696845c186f",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1033,
+                      "output_tokens": 727,
+                      "total_tokens": 1760,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 576
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "6271e40efbec4526af186eafa537dfd0",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "",
+                  "problem_description": "",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "",
+              "problem_description": "",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "6271e40efbec4526af186eafa537dfd0",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "bba5c59e-ac63-418a-8c26-4b3dfd21680e"
+              },
+              {
+                "type": "human",
+                "id": "7f8e410b5f4341158d4874717cadee04"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0acc0803941ecb84006af24cf8c17c87d29f0c4696845c186f"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "6271e40efbec4526af186eafa537dfd0",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Сіз қазақ тілін (kk) қолдануды сұрағансыз. Мен университеттің IT қолдау қызметімін — Wi‑Fi пен құпиясөзді қалпына келтіру мәселелері бойынша көмектесе аламын. Жергілікті демонстрациялық нұсқаулықтарды бере аламын және қызметтердің ағымдағы күйін тексере аламын (статустар демонстрациялық және шынайы университет қызметтерін білдірмейді). Қандай мәселе бар және қандай қадамдарды жасадыңыз (немесе әлі ештеңе істемеген болсаңыз соны айтыңыз)?",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1033,
+          "output_tokens": 727,
+          "total_tokens": 1760,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 576
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "9d4f6f2b1c8dc437ba38a600891dad019fdbf2a785d6791c6ba134b72f2ef0f8",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {
+            "preferred_language": "kk"
+          },
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 1,
+          "tool": 0
+        }
+      }
+    }
+  ],
+  "model": "gpt-5-mini"
+}

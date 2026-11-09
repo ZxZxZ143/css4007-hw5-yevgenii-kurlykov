@@ -57,9 +57,13 @@ class AgentSession:
         self.state["helpdesk"] = derive_helpdesk(self.state["messages"], self.state["helpdesk"])
         self.state["control"] = {"turn": self.state["control"]["turn"] + 1, "model_calls": 0,
                                  "tool_calls": 0, "tool_attempts": 0, "limit_reached": False, "stop_reason": None, "errors": []}
+        return self._execute(self.state, message)
+
+    def _execute(self, graph_input: dict, message: str, *, config=None) -> dict:
+        """Shared stream collection; persistent callers supply only new channel updates."""
         trace = {"user_message": redact(message), "steps": []}
         pending = []
-        for event in self.graph.stream(self.state, context=self.context,
+        for event in self.graph.stream(graph_input, config=config, context=self.context,
                                        stream_mode=["updates", "values"], version="v2"):
             if event["type"] == "updates":
                 for node, update in event["data"].items():

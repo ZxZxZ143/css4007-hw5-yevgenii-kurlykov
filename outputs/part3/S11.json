@@ -1,0 +1,902 @@
+{
+  "scenario_id": "S11",
+  "evidence_kind": "live_openai",
+  "provider": "OpenAI",
+  "command": "python -m helpdesk.cli --scenario S11",
+  "reset_before": true,
+  "scenario_storage": "local-storage/part3-scenarios/S11",
+  "restart_occurred": true,
+  "processes": [
+    {
+      "pid": 4524,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        0
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    },
+    {
+      "pid": 8616,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        2
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    }
+  ],
+  "events": [
+    {
+      "fixture_event_index": 0,
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "process_id": 4524,
+      "status_profile": "normal",
+      "user_message": "Please remember that I prefer replies in Kazakh. My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "arguments": "{\"topic\":\"wifi\"}",
+                        "call_id": "call_AWYa63GgWlOPGQVvzID4G59W",
+                        "name": "find_instructions",
+                        "type": "function_call",
+                        "id": "fc_0355d3f7db66d18c006af24cc3b96087d299e33ba433974116",
+                        "status": "completed"
+                      },
+                      {
+                        "arguments": "{\"service\":\"wifi\"}",
+                        "call_id": "call_SwWYEEgAwNdRzdXHPAawwAMs",
+                        "name": "check_service_status",
+                        "type": "function_call",
+                        "id": "fc_0355d3f7db66d18c006af24cc3b97087d28849a09090da7db7",
+                        "status": "completed"
+                      },
+                      {
+                        "arguments": "{\"key\":\"preferred_language\",\"value\":\"kk\"}",
+                        "call_id": "call_oukTxqQX5yogZb3nc40yIh8B",
+                        "name": "save_user_memory",
+                        "type": "function_call",
+                        "id": "fc_0355d3f7db66d18c006af24cc3b97887d29fdbbd537f193a0e",
+                        "status": "completed"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779",
+                      "created_at": 1794264253.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779",
+                    "tool_calls": [
+                      {
+                        "name": "find_instructions",
+                        "args": {
+                          "topic": "wifi"
+                        },
+                        "id": "call_AWYa63GgWlOPGQVvzID4G59W",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "check_service_status",
+                        "args": {
+                          "service": "wifi"
+                        },
+                        "id": "call_SwWYEEgAwNdRzdXHPAawwAMs",
+                        "type": "tool_call"
+                      },
+                      {
+                        "name": "save_user_memory",
+                        "args": {
+                          "key": "preferred_language",
+                          "value": "kk"
+                        },
+                        "id": "call_oukTxqQX5yogZb3nc40yIh8B",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1023,
+                      "output_tokens": 440,
+                      "total_tokens": 1463,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 320
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c2edbaa2-b793-4a1c-befb-8ec80d82f6c3"
+              },
+              {
+                "type": "human",
+                "id": "dd6ff347a29845c492c6e1130c9292aa"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": [
+                {
+                  "messages": [
+                    {
+                      "content": "{\"topic\": \"wifi\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\", \"source\": \"data/helpdesk.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "find_instructions",
+                      "id": "5ca7d227-156f-4573-9ca2-d9d819ac29b7",
+                      "tool_call_id": "call_AWYa63GgWlOPGQVvzID4G59W",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_AWYa63GgWlOPGQVvzID4G59W": {
+                      "tool": "find_instructions",
+                      "data": {
+                        "topic": "wifi",
+                        "instruction_id": "GUIDE-WIFI",
+                        "source": "data/helpdesk.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"service\": \"wifi\", \"status_profile\": \"normal\", \"status\": \"operational\", \"message\": \"The demo Wi-Fi service has no reported outage.\", \"source\": \"data/service_status.json\", \"fictional\": true}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "check_service_status",
+                      "id": "edfad94b-f90b-4e76-a934-6fc4af696183",
+                      "tool_call_id": "call_SwWYEEgAwNdRzdXHPAawwAMs",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_SwWYEEgAwNdRzdXHPAawwAMs": {
+                      "tool": "check_service_status",
+                      "data": {
+                        "service": "wifi",
+                        "status": "operational",
+                        "status_profile": "normal",
+                        "source": "data/service_status.json",
+                        "fictional": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                },
+                {
+                  "messages": [
+                    {
+                      "content": "{\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}",
+                      "additional_kwargs": {},
+                      "response_metadata": {},
+                      "type": "tool",
+                      "name": "save_user_memory",
+                      "id": "0d1aea07-6216-4585-817c-b91384e24dff",
+                      "tool_call_id": "call_oukTxqQX5yogZb3nc40yIh8B",
+                      "artifact": null,
+                      "status": "success"
+                    }
+                  ]
+                },
+                {
+                  "tool_results": {
+                    "call_oukTxqQX5yogZb3nc40yIh8B": {
+                      "tool": "save_user_memory",
+                      "data": {
+                        "source": "user_json_memory",
+                        "success": true,
+                        "key": "preferred_language",
+                        "value": "kk",
+                        "changed": true
+                      },
+                      "turn": 1,
+                      "executed": true
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AWYa63GgWlOPGQVvzID4G59W": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_SwWYEEgAwNdRzdXHPAawwAMs": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_oukTxqQX5yogZb3nc40yIh8B": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c2edbaa2-b793-4a1c-befb-8ec80d82f6c3"
+              },
+              {
+                "type": "human",
+                "id": "dd6ff347a29845c492c6e1130c9292aa"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779"
+              },
+              {
+                "type": "tool",
+                "id": "5ca7d227-156f-4573-9ca2-d9d819ac29b7",
+                "tool_call_id": "call_AWYa63GgWlOPGQVvzID4G59W"
+              },
+              {
+                "type": "tool",
+                "id": "edfad94b-f90b-4e76-a934-6fc4af696183",
+                "tool_call_id": "call_SwWYEEgAwNdRzdXHPAawwAMs"
+              },
+              {
+                "type": "tool",
+                "id": "0d1aea07-6216-4585-817c-b91384e24dff",
+                "tool_call_id": "call_oukTxqQX5yogZb3nc40yIh8B"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Тілдік қалауыңыз сақталды — қазақша жауап беремін.\n\nҚысқаша тексеру:\n- Демонстрациялық Wi‑Fi қызметінің күйін тексердім: қызмет көрсетілімі жұмыс істеп тұр (бұл тек демонстрациялық/фигуративті статус — нақты университет қызметі емес).\n- Қолдағы нұсқаулықтан маңызды қадамдар: Wi‑Fi қосулы екеніне және ұшақты режим өшірілгеніне көз жеткізу; Campus‑Demo желісін таңдау; қосылу сәтсіз болса сақталған желіні \"ұмытып\" қайта қосып көру. (Нұсқаулық — жергілікті демо нұсқаулық.)\n\nСіздің істегені: Wi‑Fi‑ны қостыңыз және қайта қосып көрдіңіз — бұл бізге хабарланған қадам ретінде жазылды. Енді желіні ұмытып, қайта қосып көруге кеңес беремін. Егер мәселе сақталса, сізге талон-жоба дайындап бере аламын — сол кезде мәселе категориясын, қысқаша сипаттамасын және Сіз жасаған қадамдарды (қазір: Wi‑Fi қосып, қайта қосып көргеніңіз) жіберсеңіз жеткілікті. Қалай істейін?",
+                        "annotations": [],
+                        "id": "msg_0355d3f7db66d18c006af24cd1a85087d2856c81e453c95b2c"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0355d3f7db66d18c006af24cc4eb0c87d2bb27be61952c660a",
+                      "created_at": 1794264260.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0355d3f7db66d18c006af24cc4eb0c87d2bb27be61952c660a",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1661,
+                      "output_tokens": 1250,
+                      "total_tokens": 2911,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 960
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+                  "model_calls": 2,
+                  "tool_calls": 3,
+                  "tool_attempts": 3,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AWYa63GgWlOPGQVvzID4G59W": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_SwWYEEgAwNdRzdXHPAawwAMs": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_oukTxqQX5yogZb3nc40yIh8B": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+              "model_calls": 2,
+              "tool_calls": 3,
+              "tool_attempts": 3,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c2edbaa2-b793-4a1c-befb-8ec80d82f6c3"
+              },
+              {
+                "type": "human",
+                "id": "dd6ff347a29845c492c6e1130c9292aa"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779"
+              },
+              {
+                "type": "tool",
+                "id": "5ca7d227-156f-4573-9ca2-d9d819ac29b7",
+                "tool_call_id": "call_AWYa63GgWlOPGQVvzID4G59W"
+              },
+              {
+                "type": "tool",
+                "id": "edfad94b-f90b-4e76-a934-6fc4af696183",
+                "tool_call_id": "call_SwWYEEgAwNdRzdXHPAawwAMs"
+              },
+              {
+                "type": "tool",
+                "id": "0d1aea07-6216-4585-817c-b91384e24dff",
+                "tool_call_id": "call_oukTxqQX5yogZb3nc40yIh8B"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cc4eb0c87d2bb27be61952c660a"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+        "model_calls": 2,
+        "tool_calls": 3,
+        "tool_attempts": 3,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Тілдік қалауыңыз сақталды — қазақша жауап беремін.\n\nҚысқаша тексеру:\n- Демонстрациялық Wi‑Fi қызметінің күйін тексердім: қызмет көрсетілімі жұмыс істеп тұр (бұл тек демонстрациялық/фигуративті статус — нақты университет қызметі емес).\n- Қолдағы нұсқаулықтан маңызды қадамдар: Wi‑Fi қосулы екеніне және ұшақты режим өшірілгеніне көз жеткізу; Campus‑Demo желісін таңдау; қосылу сәтсіз болса сақталған желіні \"ұмытып\" қайта қосып көру. (Нұсқаулық — жергілікті демо нұсқаулық.)\n\nСіздің істегені: Wi‑Fi‑ны қостыңыз және қайта қосып көрдіңіз — бұл бізге хабарланған қадам ретінде жазылды. Енді желіні ұмытып, қайта қосып көруге кеңес беремін. Егер мәселе сақталса, сізге талон-жоба дайындап бере аламын — сол кезде мәселе категориясын, қысқаша сипаттамасын және Сіз жасаған қадамдарды (қазір: Wi‑Fi қосып, қайта қосып көргеніңіз) жіберсеңіз жеткілікті. Қалай істейін?",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1023,
+          "output_tokens": 440,
+          "total_tokens": 1463,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 320
+          }
+        },
+        {
+          "input_tokens": 1661,
+          "output_tokens": 1250,
+          "total_tokens": 2911,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 960
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "a00ee9471e479b88698a76261f039c10bd0262c955d021df6d28bbba01ed5269",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": [
+            "GUIDE-WIFI"
+          ]
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          },
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 2,
+          "tool": 3
+        }
+      }
+    },
+    {
+      "fixture_event_index": 2,
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "process_id": 8616,
+      "status_profile": "normal",
+      "user_message": "Which problem and steps did we discuss?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Біз талқылаған мәселе: Wi‑Fi‑ға қосыла алмау.\n\nСіз жасаған қадамтар: Wi‑Fi‑ны қостыңыз және қайта қосып көрдіңіз.",
+                        "annotations": [],
+                        "id": "msg_0355d3f7db66d18c006af24cde5c3887d28a7217d01344b622"
+                      }
+                    ],
+                    "additional_kwargs": {},
+                    "response_metadata": {
+                      "id": "resp_0355d3f7db66d18c006af24cd8e8c887d28bf072a12a0fcea3",
+                      "created_at": 1794264280.0,
+                      "metadata": {},
+                      "model": "gpt-5-mini-2025-08-07",
+                      "object": "response",
+                      "service_tier": "default",
+                      "status": "completed",
+                      "model_provider": "openai",
+                      "model_name": "gpt-5-mini-2025-08-07"
+                    },
+                    "type": "ai",
+                    "name": null,
+                    "id": "resp_0355d3f7db66d18c006af24cd8e8c887d28bf072a12a0fcea3",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": {
+                      "input_tokens": 1586,
+                      "output_tokens": 513,
+                      "total_tokens": 2099,
+                      "input_token_details": {
+                        "cache_creation": 0,
+                        "cache_read": 0
+                      },
+                      "output_token_details": {
+                        "reasoning": 448
+                      }
+                    }
+                  }
+                ],
+                "control": {
+                  "turn": 2,
+                  "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+                  "steps_tried": [
+                    "I enabled it and tried reconnecting, but it still fails."
+                  ],
+                  "steps_known": true,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "call_AWYa63GgWlOPGQVvzID4G59W": {
+                "tool": "find_instructions",
+                "data": {
+                  "topic": "wifi",
+                  "instruction_id": "GUIDE-WIFI",
+                  "source": "data/helpdesk.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_SwWYEEgAwNdRzdXHPAawwAMs": {
+                "tool": "check_service_status",
+                "data": {
+                  "service": "wifi",
+                  "status": "operational",
+                  "status_profile": "normal",
+                  "source": "data/service_status.json",
+                  "fictional": true
+                },
+                "turn": 1,
+                "executed": true
+              },
+              "call_oukTxqQX5yogZb3nc40yIh8B": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+              "steps_tried": [
+                "I enabled it and tried reconnecting, but it still fails."
+              ],
+              "steps_known": true,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 2,
+              "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "c2edbaa2-b793-4a1c-befb-8ec80d82f6c3"
+              },
+              {
+                "type": "human",
+                "id": "dd6ff347a29845c492c6e1130c9292aa"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cbde40887d2aa16011297acf779"
+              },
+              {
+                "type": "tool",
+                "id": "5ca7d227-156f-4573-9ca2-d9d819ac29b7",
+                "tool_call_id": "call_AWYa63GgWlOPGQVvzID4G59W"
+              },
+              {
+                "type": "tool",
+                "id": "edfad94b-f90b-4e76-a934-6fc4af696183",
+                "tool_call_id": "call_SwWYEEgAwNdRzdXHPAawwAMs"
+              },
+              {
+                "type": "tool",
+                "id": "0d1aea07-6216-4585-817c-b91384e24dff",
+                "tool_call_id": "call_oukTxqQX5yogZb3nc40yIh8B"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cc4eb0c87d2bb27be61952c660a"
+              },
+              {
+                "type": "human",
+                "id": "730ad179a01b48acb43cafb41cf6a6f4"
+              },
+              {
+                "type": "ai",
+                "id": "resp_0355d3f7db66d18c006af24cd8e8c887d28bf072a12a0fcea3"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 2,
+        "conversation_id": "6f88904d83ac42e5a939429b3721731f",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "Біз талқылаған мәселе: Wi‑Fi‑ға қосыла алмау.\n\nСіз жасаған қадамтар: Wi‑Fi‑ны қостыңыз және қайта қосып көрдіңіз.",
+      "response_source": "model",
+      "token_usage": [
+        {
+          "input_tokens": 1586,
+          "output_tokens": 513,
+          "total_tokens": 2099,
+          "input_token_details": {
+            "cache_creation": 0,
+            "cache_read": 0
+          },
+          "output_token_details": {
+            "reasoning": 448
+          }
+        }
+      ],
+      "memory": {
+        "checkpoint_key": "a00ee9471e479b88698a76261f039c10bd0262c955d021df6d28bbba01ed5269",
+        "checkpoint_restored": true,
+        "checkpoint_messages_before": 7,
+        "checkpoint_human_messages_before": 1,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {
+            "category": "wifi",
+            "problem_description": "I enabled it and tried reconnecting, but it still fails.",
+            "steps_tried": [
+              "I enabled it and tried reconnecting, but it still fails."
+            ],
+            "steps_known": true,
+            "ticket_requested": false,
+            "ticket_condition": "unconditional",
+            "ticket_id": null,
+            "ticket_request_id": null,
+            "secret_detected": false
+          },
+          "user_json_memory": {
+            "preferred_language": "kk"
+          },
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 2,
+          "ai": 3,
+          "tool": 3
+        }
+      }
+    }
+  ],
+  "model": "gpt-5-mini"
+}

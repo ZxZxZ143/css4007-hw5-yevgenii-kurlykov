@@ -1,0 +1,508 @@
+{
+  "scenario_id": "S13",
+  "evidence_kind": "deterministic_fake",
+  "provider": "deterministic fake (not OpenAI)",
+  "command": "python -m scripts.part3.record_offline",
+  "reset_before": true,
+  "scenario_storage": "local-storage/part3-offline/part3-scenarios/S13",
+  "restart_occurred": false,
+  "processes": [
+    {
+      "pid": 26396,
+      "return_code": 0,
+      "exited_before_next_process": true,
+      "event_indices": [
+        0,
+        1
+      ],
+      "input_note": "Only these new fixture events were submitted; previous conversation was not copied."
+    }
+  ],
+  "events": [
+    {
+      "fixture_event_index": 0,
+      "user_id": "demo-user-a",
+      "thread_id": "isolation-a",
+      "process_id": 26396,
+      "status_profile": "normal",
+      "user_message": "Please remember that I prefer replies in Kazakh. I have a Wi-Fi problem.",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "d05b5b51-1b50-4c65-9560-5953a22456f2",
+                    "tool_calls": [
+                      {
+                        "name": "save_user_memory",
+                        "args": {
+                          "key": "preferred_language",
+                          "value": "kk"
+                        },
+                        "id": "4775c3f00adf4d7eaa86d83471ec8dad",
+                        "type": "tool_call"
+                      }
+                    ],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "188238e3974642bab14dab1cf3f30418",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": null,
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I have a Wi-Fi problem.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "188238e3974642bab14dab1cf3f30418",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "76c3805f-2000-4356-913b-b6fb71b13bd4"
+              },
+              {
+                "type": "human",
+                "id": "c9bb91928f6c4c7db3fd786663ac4875"
+              },
+              {
+                "type": "ai",
+                "id": "d05b5b51-1b50-4c65-9560-5953a22456f2"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "tools",
+              "update": {
+                "messages": [
+                  {
+                    "content": "{\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "tool",
+                    "name": "save_user_memory",
+                    "id": "0a9d5e94-cdc8-4d61-b7b5-68c696d78268",
+                    "tool_call_id": "4775c3f00adf4d7eaa86d83471ec8dad",
+                    "artifact": null,
+                    "status": "success"
+                  }
+                ],
+                "tool_results": {
+                  "4775c3f00adf4d7eaa86d83471ec8dad": {
+                    "tool": "save_user_memory",
+                    "data": {
+                      "source": "user_json_memory",
+                      "success": true,
+                      "key": "preferred_language",
+                      "value": "kk",
+                      "changed": true
+                    },
+                    "turn": 1,
+                    "executed": true
+                  }
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "4775c3f00adf4d7eaa86d83471ec8dad": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "188238e3974642bab14dab1cf3f30418",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": null,
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "76c3805f-2000-4356-913b-b6fb71b13bd4"
+              },
+              {
+                "type": "human",
+                "id": "c9bb91928f6c4c7db3fd786663ac4875"
+              },
+              {
+                "type": "ai",
+                "id": "d05b5b51-1b50-4c65-9560-5953a22456f2"
+              },
+              {
+                "type": "tool",
+                "id": "0a9d5e94-cdc8-4d61-b7b5-68c696d78268",
+                "tool_call_id": "4775c3f00adf4d7eaa86d83471ec8dad"
+              }
+            ]
+          }
+        },
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "FAKE kk (Kazakh): {\"save_user_memory\": {\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}}",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "a0cf6569-0ff9-401b-ad7b-26d30fa54061",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "188238e3974642bab14dab1cf3f30418",
+                  "model_calls": 2,
+                  "tool_calls": 1,
+                  "tool_attempts": 1,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "wifi",
+                  "problem_description": "I have a Wi-Fi problem.",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {
+              "4775c3f00adf4d7eaa86d83471ec8dad": {
+                "tool": "save_user_memory",
+                "data": {
+                  "source": "user_json_memory",
+                  "success": true,
+                  "key": "preferred_language",
+                  "value": "kk",
+                  "changed": true
+                },
+                "turn": 1,
+                "executed": true
+              }
+            },
+            "helpdesk": {
+              "category": "wifi",
+              "problem_description": "I have a Wi-Fi problem.",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "188238e3974642bab14dab1cf3f30418",
+              "model_calls": 2,
+              "tool_calls": 1,
+              "tool_attempts": 1,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "76c3805f-2000-4356-913b-b6fb71b13bd4"
+              },
+              {
+                "type": "human",
+                "id": "c9bb91928f6c4c7db3fd786663ac4875"
+              },
+              {
+                "type": "ai",
+                "id": "d05b5b51-1b50-4c65-9560-5953a22456f2"
+              },
+              {
+                "type": "tool",
+                "id": "0a9d5e94-cdc8-4d61-b7b5-68c696d78268",
+                "tool_call_id": "4775c3f00adf4d7eaa86d83471ec8dad"
+              },
+              {
+                "type": "ai",
+                "id": "a0cf6569-0ff9-401b-ad7b-26d30fa54061"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent",
+        "tools",
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "188238e3974642bab14dab1cf3f30418",
+        "model_calls": 2,
+        "tool_calls": 1,
+        "tool_attempts": 1,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "FAKE kk (Kazakh): {\"save_user_memory\": {\"success\": true, \"key\": \"preferred_language\", \"value\": \"kk\", \"changed\": true, \"source\": \"user_json_memory\"}}",
+      "response_source": "model",
+      "token_usage": [],
+      "memory": {
+        "checkpoint_key": "f63420f0bd4b8f91275d546566f6691ffedd7fbd0a31ca7cdb708a1038658f9d",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          },
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [
+              "preferred_language"
+            ],
+            "preferences": {
+              "preferred_language": "kk"
+            }
+          }
+        ],
+        "user_preferences_after": {
+          "preferred_language": "kk"
+        },
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 2,
+          "tool": 1
+        }
+      }
+    },
+    {
+      "fixture_event_index": 1,
+      "user_id": "demo-user-b",
+      "thread_id": "isolation-b",
+      "process_id": 26396,
+      "status_profile": "normal",
+      "user_message": "Have I told you a preferred language or a previous problem?",
+      "steps": [
+        {
+          "node_updates": [
+            {
+              "node": "agent",
+              "update": {
+                "messages": [
+                  {
+                    "content": "FAKE: No preference or previous problem is recorded for this user/thread.",
+                    "additional_kwargs": {},
+                    "response_metadata": {},
+                    "type": "ai",
+                    "name": null,
+                    "id": "45b28458-eb99-4b68-bc14-7a7b39be61e0",
+                    "tool_calls": [],
+                    "invalid_tool_calls": [],
+                    "usage_metadata": null
+                  }
+                ],
+                "control": {
+                  "turn": 1,
+                  "conversation_id": "5c79646c6de24378bf1004af582bf5b0",
+                  "model_calls": 1,
+                  "tool_calls": 0,
+                  "tool_attempts": 0,
+                  "limit_reached": false,
+                  "stop_reason": "final_response",
+                  "errors": []
+                },
+                "helpdesk": {
+                  "category": "",
+                  "problem_description": "",
+                  "steps_tried": [],
+                  "steps_known": false,
+                  "ticket_requested": false,
+                  "ticket_condition": "unconditional",
+                  "ticket_id": null,
+                  "ticket_request_id": null,
+                  "secret_detected": false
+                }
+              }
+            }
+          ],
+          "state_after": {
+            "tool_results": {},
+            "helpdesk": {
+              "category": "",
+              "problem_description": "",
+              "steps_tried": [],
+              "steps_known": false,
+              "ticket_requested": false,
+              "ticket_condition": "unconditional",
+              "ticket_id": null,
+              "ticket_request_id": null,
+              "secret_detected": false
+            },
+            "control": {
+              "turn": 1,
+              "conversation_id": "5c79646c6de24378bf1004af582bf5b0",
+              "model_calls": 1,
+              "tool_calls": 0,
+              "tool_attempts": 0,
+              "limit_reached": false,
+              "stop_reason": "final_response",
+              "errors": []
+            },
+            "message_index": [
+              {
+                "type": "system",
+                "id": "e5283623-1ce6-4b8d-ac77-f477612c2d7e"
+              },
+              {
+                "type": "human",
+                "id": "19c5d3b19bdf427a8850ca7bd05ea09b"
+              },
+              {
+                "type": "ai",
+                "id": "45b28458-eb99-4b68-bc14-7a7b39be61e0"
+              }
+            ]
+          }
+        }
+      ],
+      "nodes_executed": [
+        "agent"
+      ],
+      "control": {
+        "turn": 1,
+        "conversation_id": "5c79646c6de24378bf1004af582bf5b0",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "tool_attempts": 0,
+        "limit_reached": false,
+        "stop_reason": "final_response",
+        "errors": []
+      },
+      "final_response": "FAKE: No preference or previous problem is recorded for this user/thread.",
+      "response_source": "model",
+      "token_usage": [],
+      "memory": {
+        "checkpoint_key": "162f60be5b1a5dfe33914abc21176976fd8787ac9f15d2d05ca9e0a587c86fa9",
+        "checkpoint_restored": false,
+        "checkpoint_messages_before": 0,
+        "checkpoint_human_messages_before": 0,
+        "new_human_messages_submitted": 1,
+        "available_fact_sources": {
+          "conversation_checkpoint": {},
+          "user_json_memory": {},
+          "helpdesk_reference": []
+        },
+        "model_context_reads": [
+          {
+            "source": "user_json_memory",
+            "keys_loaded": [],
+            "preferences": {}
+          }
+        ],
+        "user_preferences_after": {},
+        "message_counts_after": {
+          "system": 1,
+          "human": 1,
+          "ai": 1,
+          "tool": 0
+        }
+      }
+    }
+  ],
+  "model": "FakeMemoryModel (offline; not OpenAI)"
+}
