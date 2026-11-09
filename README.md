@@ -3,6 +3,49 @@
 **CSS-4007 · Artificial Intelligence**  
 **Due:** 8 November 2026, 23:59 (UTC+5)
 
+## Implemented: Part 1 only
+
+Tested with **CPython 3.13.12 on Windows**, LangGraph **1.2.20**, and pytest **9.2.0**. The original assignment remains below. Parts 2–4 are still future work; the setup and tests here support Part 1.
+
+From the repository root, create a fresh environment and install the pinned dependencies and editable local package:
+
+```powershell
+python -m venv .venv-part1
+.\.venv-part1\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+On macOS/Linux, activate with `source .venv-part1/bin/activate`. Use Python 3.13 for the tested setup. Run the following commands from the repository root after activation. Part 1 never loads `.env`, calls a model, or requires an API key. The pinned provider, dotenv and SQLite dependencies are retained for later assignment parts.
+
+```powershell
+# Original / Initial Version: Wi-Fi wins when both keywords appear.
+python -m helpdesk.cli --graph original --message "My Wi-Fi password does not work."
+
+# Improved / Main Version: both topics lead to the new clarification node.
+python -m helpdesk.cli --graph main --message "My Wi-Fi password does not work."
+
+# Without --graph, an ordinary message uses Improved / Main.
+python -m helpdesk.cli --message "My Wi-Fi password does not work."
+
+# Replay the supplied Part 1 scenarios unchanged and save one log per scenario.
+python -m helpdesk.cli --scenario S01
+python -m helpdesk.cli --scenario S02
+python -m helpdesk.cli --scenario S03
+python -m helpdesk.cli --scenario S04
+python -m helpdesk.cli --scenario S05
+
+python -m pytest -q
+```
+
+Scenario replay binds S01–S04 to Original and S05 to Improved / Main, as required by the fixtures. A contradictory explicit `--graph` is rejected. The fixture name `with_clarification` maps to CLI version `main`. Other scenarios are not implemented yet.
+
+Each invocation prints JSON. Scenario commands also save traces in `outputs/part1/original/S01.json` through `S04.json` and `outputs/part1/improved/S05.json`. For a custom message, add `--output outputs/part1/custom.json` to save its trace. These files contain the command, fixture context, prediction, executed nodes, partial updates, complete states and final reply. `START` and `END` are boundary sentinels, so the executed-node list contains only real Python nodes. Traces use LangGraph's `updates` and `values` streams; they are not reconstructed by calling the node functions separately.
+
+The predictions were recorded before implementation/execution in [PREDICTIONS.md](outputs/part1/PREDICTIONS.md). The explanation and measured results are in [SUBMISSION.md](SUBMISSION.md). Instructions are read from `data/helpdesk.json` at execution time. No supplied fixture was edited. Part 1 has no persistent memory, so every invocation starts fresh.
+
+Code: `src/helpdesk/{state,nodes,graphs,trace,cli}.py`. Import `build_original_graph` or `build_main_graph` from `helpdesk.graphs` to compile either graph independently. Both use shared help nodes; only Main includes `clarify_problem` and the two-topic classification. The tests execute real graphs, compare saved evidence with fresh runs, verify fixture retrieval and preserved state, and run the default CLI with provider imports and network connections blocked. No fake model is used.
+
 ## Start from this repository
 
 1. Fork [ardakshalkar/css4007-hw5](https://github.com/ardakshalkar/css4007-hw5) and keep your fork public, as for the earlier homeworks.

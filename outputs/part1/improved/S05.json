@@ -1,0 +1,65 @@
+{
+  "scenario_id": "S05",
+  "status_profile": "normal",
+  "user_id": "demo-user-a",
+  "thread_id": "s05",
+  "fixture_graph_variant": "with_clarification",
+  "reset_note": "Fresh stateless execution; Part 1 has no conversation or user storage.",
+  "command": "python -m helpdesk.cli --scenario S05",
+  "graph_version": "main",
+  "graph_label": "Improved / Main Version",
+  "message": "My Wi-Fi password does not work.",
+  "predicted_route": [
+    "read_request",
+    "clarify_problem"
+  ],
+  "actual_execution_path": [
+    "read_request",
+    "clarify_problem"
+  ],
+  "nodes_executed": [
+    "read_request",
+    "clarify_problem"
+  ],
+  "boundary_note": "START and END are graph sentinels, not executed Python nodes. Stream exhausted normally.",
+  "initial_state": {
+    "message": "My Wi-Fi password does not work.",
+    "category": "",
+    "reply": ""
+  },
+  "steps": [
+    {
+      "node": "read_request",
+      "update": {
+        "category": "both"
+      },
+      "state_after": {
+        "message": "My Wi-Fi password does not work.",
+        "category": "both",
+        "reply": ""
+      }
+    },
+    {
+      "node": "clarify_problem",
+      "update": {
+        "reply": "Which problem would you like to solve first: Wi-Fi connectivity or password recovery?"
+      },
+      "state_after": {
+        "message": "My Wi-Fi password does not work.",
+        "category": "both",
+        "reply": "Which problem would you like to solve first: Wi-Fi connectivity or password recovery?"
+      }
+    }
+  ],
+  "final_state": {
+    "message": "My Wi-Fi password does not work.",
+    "category": "both",
+    "reply": "Which problem would you like to solve first: Wi-Fi connectivity or password recovery?"
+  },
+  "final_response": "Which problem would you like to solve first: Wi-Fi connectivity or password recovery?",
+  "prediction_matched": true,
+  "reference_source": null,
+  "memory_used": false,
+  "model_calls": [],
+  "tool_calls": []
+}

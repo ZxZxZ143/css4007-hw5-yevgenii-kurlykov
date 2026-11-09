@@ -1,0 +1,65 @@
+{
+  "scenario_id": "S03",
+  "status_profile": "normal",
+  "user_id": "demo-user-a",
+  "thread_id": "s03",
+  "fixture_graph_variant": null,
+  "reset_note": "Fresh stateless execution; Part 1 has no conversation or user storage.",
+  "command": "python -m helpdesk.cli --scenario S03",
+  "graph_version": "original",
+  "graph_label": "Original / Initial Version",
+  "message": "My laptop screen is broken.",
+  "predicted_route": [
+    "read_request",
+    "other_help"
+  ],
+  "actual_execution_path": [
+    "read_request",
+    "other_help"
+  ],
+  "nodes_executed": [
+    "read_request",
+    "other_help"
+  ],
+  "boundary_note": "START and END are graph sentinels, not executed Python nodes. Stream exhausted normally.",
+  "initial_state": {
+    "message": "My laptop screen is broken.",
+    "category": "",
+    "reply": ""
+  },
+  "steps": [
+    {
+      "node": "read_request",
+      "update": {
+        "category": "other"
+      },
+      "state_after": {
+        "message": "My laptop screen is broken.",
+        "category": "other",
+        "reply": ""
+      }
+    },
+    {
+      "node": "other_help",
+      "update": {
+        "reply": "Does your problem concern Wi-Fi or a password?"
+      },
+      "state_after": {
+        "message": "My laptop screen is broken.",
+        "category": "other",
+        "reply": "Does your problem concern Wi-Fi or a password?"
+      }
+    }
+  ],
+  "final_state": {
+    "message": "My laptop screen is broken.",
+    "category": "other",
+    "reply": "Does your problem concern Wi-Fi or a password?"
+  },
+  "final_response": "Does your problem concern Wi-Fi or a password?",
+  "prediction_matched": true,
+  "reference_source": null,
+  "memory_used": false,
+  "model_calls": [],
+  "tool_calls": []
+}
