@@ -112,7 +112,11 @@ def verify_evidence(*, repository_root=ROOT, accepted_runs=None, write_status=Fa
 
 
 def main():
-    report = verify_evidence(write_status=True)
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="Validate without rewriting the saved summary")
+    args = parser.parse_args()
+    report = verify_evidence(write_status=not args.check)
     print(json.dumps({"models": report["verified_openai_models"], **report["totals"], **report["token_usage"]}))
 
 

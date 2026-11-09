@@ -98,8 +98,13 @@ def verify_part3(directory=ROOT / "outputs/part3", *, evidence_kind="live_openai
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="Validate without rewriting the saved summary")
+    args = parser.parse_args()
     report = verify_part3()
-    (ROOT / "outputs/part3/LIVE_STATUS.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if not args.check:
+        (ROOT / "outputs/part3/LIVE_STATUS.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"models": report["verified_models"], **report["totals"], **report["token_usage"]}))
 
 

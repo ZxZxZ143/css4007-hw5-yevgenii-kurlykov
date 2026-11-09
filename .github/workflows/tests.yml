@@ -1,0 +1,29 @@
+name: HW5 verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      PYTHONIOENCODING: utf-8
+      OPENAI_API_KEY: ""
+      MODEL_NAME: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: python -m pip install -e .
+      - run: python -m pip check
+      - run: python -m pytest -q
+      - run: python -m scripts.verify_all
+      - run: python -m scripts.part2.verify_live --check
+      - run: python -m scripts.part3.verify_evidence --check
+      - run: git diff --exit-code
